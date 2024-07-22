@@ -3,9 +3,7 @@ def exponentiation(n, m):
         return 1
     if m == 1:
         return n
-    ss = exponentiation(n, m - 1)
-    res = n * ss
-    return res
+    return n * exponentiation(n, m - 1)
 
 
 def test():
