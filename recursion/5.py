@@ -1,5 +1,5 @@
 def print_only_even(input_list: list):
-    if bool(input_list):
+    if len(input_list) > 0:
         if input_list[0] % 2 == 0:
             print(input_list[0])
         input_list.pop(0)
@@ -22,4 +22,3 @@ def test1(capsys):
     print_only_even([1])
     captured = capsys.readouterr()
     assert captured.out == ""
-
