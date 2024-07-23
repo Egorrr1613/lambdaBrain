@@ -1,9 +1,9 @@
 def print_only_even(input_list: list):
-    if len(input_list) > 0:
-        if input_list[0] % 2 == 0:
-            print(input_list[0])
-        input_list.pop(0)
-        return print_only_even(input_list)
+    if len(input_list) == 0:
+        return
+    if input_list[0] % 2 == 0:
+        print(input_list[0])
+    return print_only_even(input_list[1:])
 
 
 def test(capsys):

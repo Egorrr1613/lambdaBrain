@@ -1,7 +1,7 @@
-def print_only_even_index(input_list: list, print_index=0):
-    if len(input_list) > 0 and print_index < len(input_list):
-        print(input_list[print_index])
-        print_only_even_index(input_list, print_index + 2)
+def print_only_even_index(input_list: list):
+    if len(input_list) > 0:
+        print(input_list[0])
+        print_only_even_index(input_list[2:])
 
 
 def test(capsys):
