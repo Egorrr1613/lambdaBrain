@@ -6,7 +6,7 @@ def print_only_even(input_list: list):
         return print_only_even(input_list)
 
 
-def test1(capsys):
+def test(capsys):
     print_only_even([])
     captured = capsys.readouterr()
     assert captured.out == ""
