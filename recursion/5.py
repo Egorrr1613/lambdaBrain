@@ -3,7 +3,7 @@ def print_only_even(input_list: list):
         return
     if input_list[0] % 2 == 0:
         print(input_list[0])
-    return print_only_even(input_list[1:])
+    print_only_even(input_list[1:])
 
 
 def test(capsys):
