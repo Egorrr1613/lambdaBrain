@@ -1,15 +1,12 @@
 def is_palindrome(out_str: str):
-    out_str = out_str.lower().replace(" ", "")
-    start_index, end_index = 0, len(out_str) - 1
-
-    def recursion(inner_str: str, start, end):
-        if start >= end:
+    def recursion(inner_str: str, start_index, end_index):
+        if start_index >= end_index:
             return True
-        if inner_str[start] != inner_str[end]:
+        if inner_str[start_index] != inner_str[end_index]:
             return False
-        return recursion(inner_str, start + 1, end - 1)
+        return recursion(inner_str, start_index + 1, end_index - 1)
 
-    return recursion(out_str, start_index, end_index)
+    return recursion(out_str.lower().replace(" ", ""), 0, len(out_str) - 1)
 
 
 def test():
