@@ -1,9 +1,14 @@
 def print_only_even(input_list: list):
     if len(input_list) == 0:
         return
-    if input_list[0] % 2 == 0:
-        print(input_list[0])
-    print_only_even(input_list[1:])
+    recursion(input_list, 0)
+
+
+def recursion(inner_list: list, index: int):
+    if inner_list[index] % 2 == 0:
+        print(inner_list[index])
+    if index < len(inner_list) - 1:
+        recursion(inner_list, index + 1)
 
 
 def test(capsys):
@@ -22,3 +27,7 @@ def test(capsys):
     print_only_even([1])
     captured = capsys.readouterr()
     assert captured.out == ""
+
+    print_only_even([2])
+    captured = capsys.readouterr()
+    assert captured.out == "2\n"
