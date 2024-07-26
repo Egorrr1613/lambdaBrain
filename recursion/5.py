@@ -7,8 +7,9 @@ def print_only_even(input_list: list):
 def recursion(inner_list: list, index: int):
     if inner_list[index] % 2 == 0:
         print(inner_list[index])
-    if index < len(inner_list) - 1:
-        recursion(inner_list, index + 1)
+    if index >= len(inner_list) - 1:
+        return
+    recursion(inner_list, index + 1)
 
 
 def test(capsys):

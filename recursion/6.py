@@ -1,12 +1,13 @@
-def recursion(inner_list: list, index: int):
-    print(inner_list[index])
-    if index + 2 < len(inner_list):
-        recursion(inner_list, index + 2)
-
-
 def print_only_even_index(input_list: list):
     if len(input_list) > 0:
         recursion(input_list, 0)
+
+
+def recursion(inner_list: list, index: int):
+    print(inner_list[index])
+    if index + 2 >= len(inner_list):
+        return
+    recursion(inner_list, index + 2)
 
 
 def test(capsys):
