@@ -1,12 +1,7 @@
 import os
 
 
-def count_file(start_dir: str) -> list:
-    files_and_dir_list_in_start_dir = os.listdir(start_dir)
-    return recursion(start_dir, [], files_and_dir_list_in_start_dir, [])
-
-
-def recursion(
+def find_files(
     current_dir: str,
     count_files: list,
     not_check_file_and_dir_in_current_dir: list,
@@ -44,11 +39,12 @@ def recursion(
 
         deep_storage.append(not_check_file_and_dir_in_current_dir)
 
-    return recursion(dir_to_rec, count_files, list_to_rec, deep_storage)
+    return find_files(dir_to_rec, count_files, list_to_rec, deep_storage)
 
 
 def test():
-    assert sorted(count_file(os.path.join(os.getcwd(), "..", "data", "8"))) == sorted(
+    test_dir = os.path.join(os.getcwd(), "..", "data", "8")
+    assert sorted(find_files(test_dir, [], os.listdir(test_dir), [])) == sorted(
         [
             "i1.py",
             "i2.py",
