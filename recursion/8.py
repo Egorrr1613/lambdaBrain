@@ -3,7 +3,7 @@ import os
 
 def count_file(start_dir: str) -> list:
     files_and_dir_list_in_start_dir = os.listdir(start_dir)
-    return recursion(start_dir, [], files_and_dir_list_in_start_dir, [[0]])
+    return recursion(start_dir, [], files_and_dir_list_in_start_dir, [])
 
 
 def recursion(
@@ -12,50 +12,49 @@ def recursion(
     not_check_file_and_dir_in_current_dir: list,
     deep_storage: list,
 ) -> list:
-    # Если не проверенных объектов = 0 и размер deep_storage = 1 (начальный уровень) - возвращаем кол-во файлов
-    if len(not_check_file_and_dir_in_current_dir) == 0 and len(deep_storage) == 1:
+    # Если не проверенных объектов = 0 и размер deep_storage = 0 (начальная точка)
+    # Значит все обошли, возвращаем кол-во файлов
+    if len(not_check_file_and_dir_in_current_dir) == 0 and len(deep_storage) == 0:
         return count_files
 
-    # Если не проверенных объектов = 0 и размер deep_storage > 1 - прыгаем на директорию выше
-    if len(not_check_file_and_dir_in_current_dir) == 0 and len(deep_storage) > 1:
+    # Если не проверенных объектов = 0 и размер deep_storage > 1
+    # Значит на этом уровне все проверено, возвращаемся на директорию выше
+    if len(not_check_file_and_dir_in_current_dir) == 0 and len(deep_storage) > 0:
         dir_to_rec = os.path.join(current_dir, "..")
-        list_to_rec = deep_storage[-1][-1]
-        deep_storage.pop()
+        list_to_rec = deep_storage.pop()
 
-    # Если не проверенных объектов больше чем 0 и очередной объект это файл - то
+    # Если не проверенных объектов больше чем 0 и очередной объект это файл - то ...
     if len(not_check_file_and_dir_in_current_dir) > 0 and os.path.isfile(
         os.path.join(current_dir, not_check_file_and_dir_in_current_dir[0])
     ):
-        count_files.append(not_check_file_and_dir_in_current_dir[0])
-        not_check_file_and_dir_in_current_dir.pop(0)
+        count_files.append(not_check_file_and_dir_in_current_dir.pop(0))
 
         dir_to_rec = current_dir
         list_to_rec = not_check_file_and_dir_in_current_dir
 
-    # Если не проверенных объектов больше чем 0 и очередной объект это директория - то
+    # Если не проверенных объектов больше чем 0 и очередной объект это директория - то ...
     elif len(not_check_file_and_dir_in_current_dir) > 0 and os.path.isdir(
         os.path.join(current_dir, not_check_file_and_dir_in_current_dir[0])
     ):
 
         dir_to_rec = os.path.join(current_dir, not_check_file_and_dir_in_current_dir[0])
         list_to_rec = os.listdir(
-            os.path.join(current_dir, not_check_file_and_dir_in_current_dir[0])
+            os.path.join(current_dir, not_check_file_and_dir_in_current_dir.pop(0))
         )
 
-        not_check_file_and_dir_in_current_dir.pop(0)
-        next_deep = [deep_storage[-1][0] + 1, not_check_file_and_dir_in_current_dir]
-        deep_storage.append(next_deep)
+        deep_storage.append(not_check_file_and_dir_in_current_dir)
 
-    count_files = recursion(dir_to_rec, count_files, list_to_rec, deep_storage)
-    return count_files
+    return recursion(dir_to_rec, count_files, list_to_rec, deep_storage)
 
 
 def test():
-    assert set(count_file(os.path.join(os.getcwd(), "..", "data", "8"))) == {
-        "i1.py",
-        "i2.py",
-        "i3.py",
-        "i4.py",
-        "i5.py",
-        "42",
-    }
+    assert sorted(count_file(os.path.join(os.getcwd(), "..", "data", "8"))) == sorted(
+        [
+            "i1.py",
+            "i2.py",
+            "i3.py",
+            "i4.py",
+            "i5.py",
+            "42",
+        ]
+    )
