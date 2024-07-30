@@ -1,10 +1,13 @@
-def find_second_min(input_list: list):
+def find_second_min(input_list: list) -> int or None:
     if len(input_list) < 2:
         return
-    return recursion(input_list, 1, input_list[0], input_list[1])
+    first, second = input_list[0], input_list[1]
+    if first < second:
+        first, second = second, first
+    return recursion(input_list, 2, first, second)
 
 
-def recursion(input_list: list, index: int, first_max: int, second_max: int):
+def recursion(input_list: list, index: int, first_max: int, second_max: int) -> int:
     if index == len(input_list):
         return second_max
     if first_max <= input_list[index]:
@@ -23,5 +26,7 @@ def test():
     assert find_second_min([0, 0]) == 0
     assert find_second_min([1, 2]) == 1
     assert find_second_min([2, 1]) == 1
+    assert find_second_min([2, 2, 1]) == 2
+    assert find_second_min([1, 2, 2]) == 2
     assert find_second_min([1]) is None
     assert find_second_min([]) is None
