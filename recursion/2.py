@@ -1,4 +1,4 @@
-def digits_sum(a: int):
+def digits_sum(a: int) -> int:
     if a == 0 or a == 1:
         return a
     return a + digits_sum(a - 1)

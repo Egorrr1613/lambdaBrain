@@ -1,4 +1,4 @@
-def exponentiation(n, m):
+def exponentiation(n, m) -> int:
     if m == 0:
         return 1
     if m == 1:

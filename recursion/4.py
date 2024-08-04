@@ -1,4 +1,4 @@
-def recursion(inner_str: str, start_index, end_index):
+def recursion(inner_str: str, start_index, end_index) -> bool:
     if start_index >= end_index:
         return True
     if inner_str[start_index] != inner_str[end_index]:
@@ -6,7 +6,7 @@ def recursion(inner_str: str, start_index, end_index):
     return recursion(inner_str, start_index + 1, end_index - 1)
 
 
-def is_palindrome(out_str: str):
+def is_palindrome(out_str: str) -> bool:
     format_str = out_str.lower().replace(" ", "")
     return recursion(format_str, 0, len(format_str) - 1)
 
