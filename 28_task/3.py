@@ -10,8 +10,6 @@ def ConquestCampaign(n: int, m: int, l: int, battalion: list[int]) -> int:
         ] = 1
         drop_coordinate_index_a += 2
         drop_coordinate_index_b += 2
-    print("\n")
-    print(*battlefield, sep="\n")
 
     return recursion(battlefield)
 
@@ -46,8 +44,6 @@ def recursion(battlefield: list[[int]]) -> int:
         j = 0
         i += 1
 
-    print("\n")
-    print(*battlefield, sep="\n")
     return 1 + recursion(battlefield)
 
 
