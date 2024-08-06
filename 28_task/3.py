@@ -51,4 +51,6 @@ def test():
     assert ConquestCampaign(1, 1, 1, [1, 1]) == 1
     assert ConquestCampaign(3, 4, 2, [2, 2, 3, 4]) == 3
     assert ConquestCampaign(2, 2, 1, [1, 1]) == 3
+    assert ConquestCampaign(8, 8, 2, [1, 1, 3, 4]) == 10
+    assert ConquestCampaign(8, 8, 2, [1, 1, 8, 8]) == 8
 
