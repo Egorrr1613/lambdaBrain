@@ -2,7 +2,6 @@ def SynchronizingTables(n: int, ids: list[int], salary: list[int]) -> list[int]:
     if n == 1:
         return salary
 
-    recursion_sort_bubble(salary, 0, n - 1)
     ignore_index = []
 
     while len(ignore_index) < n:
@@ -39,22 +38,6 @@ def find_max_ids_index(
     ) or max_index in ignore_index_list:
         max_index = iter_index
     return find_max_ids_index(max_index, iter_index + 1, ids, ignore_index_list)
-
-
-def recursion_sort_bubble(
-    arr: list[int], start_index: int, tail_index: int
-) -> list[int]:
-    if start_index == 0 and start_index == tail_index:
-        return arr
-    next_start_index = start_index + 1
-    if start_index == tail_index:
-        tail_index -= 1
-        next_start_index = 0
-    elif arr[start_index] > arr[start_index + 1]:
-        buffer = arr[start_index + 1]
-        arr[start_index + 1] = arr[start_index]
-        arr[start_index] = buffer
-    return recursion_sort_bubble(arr, next_start_index, tail_index)
 
 
 def test():
