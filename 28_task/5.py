@@ -69,6 +69,11 @@ def test():
         100000,
         20000,
     ]
+    assert SynchronizingTables(
+        8, [8, 7, 6, 5, 4, 3, 2, 1], [10, 20, 30, 40, 50, 60, 70, 80]
+    ) == [80, 70, 60, 50, 40, 30, 20, 10]
+    assert SynchronizingTables(2, [1, 2], [10, 20]) == [10, 20]
+    assert SynchronizingTables(1, [100], [200]) == [200]
 
     assert find_max_salary_index(2, 2, [20000, 90000, 100000], [2]) == 1
     assert find_max_salary_index(2, 2, [20000, 90000, 100000], [0, 2]) == 1
@@ -82,4 +87,3 @@ def test():
     assert find_max_ids_index(0, 1, [1, 47, 9, 5], [1, 2]) == 3
     assert find_max_ids_index(0, 1, [1, 47, 9, 5], [1, 2, 3]) == 0
     assert find_max_ids_index(0, 1, [50, 4, 1024], [2, 0]) == 1
-
