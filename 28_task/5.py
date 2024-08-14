@@ -87,3 +87,4 @@ def test():
     assert find_max_ids_index(0, 1, [1, 47, 9, 5], [1, 2]) == 3
     assert find_max_ids_index(0, 1, [1, 47, 9, 5], [1, 2, 3]) == 0
     assert find_max_ids_index(0, 1, [50, 4, 1024], [2, 0]) == 1
+
