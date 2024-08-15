@@ -57,6 +57,20 @@ def test():
     ) == [80, 70, 60, 50, 40, 30, 20, 10]
     assert SynchronizingTables(2, [1, 2], [10, 20]) == [10, 20]
     assert SynchronizingTables(1, [100], [200]) == [200]
+    assert SynchronizingTables(5, [1, 2, 3, 4, 5], [90, 20, 20, 10, 20]) == [
+        10,
+        20,
+        20,
+        20,
+        90,
+    ]
+    assert SynchronizingTables(5, [8, 5, 4, 11, 6], [20, 20, 20, 20, 1]) == [
+        20,
+        20,
+        1,
+        20,
+        20,
+    ]
 
     assert find_max_salary_index(2, 2, [20000, 90000, 100000], [2]) == 1
     assert find_max_salary_index(2, 2, [20000, 90000, 100000], [0, 2]) == 1
