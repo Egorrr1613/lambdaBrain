@@ -39,7 +39,7 @@ def is_in_str(s: str, word: str, current_index: int, index_word: int) -> bool:
         current_index > len(s) - 1 or s[current_index] == " "
     ):
         return True
-    elif index_word == len(word) or current_index == len(s):
+    if index_word == len(word) or current_index == len(s):
         return False
     if s[current_index] == word[index_word]:
         index_word += 1
