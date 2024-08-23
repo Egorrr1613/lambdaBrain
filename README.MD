@@ -1,5 +1,5 @@
 
 Run format code:
 ```bash
-python -m black recursion/** 
+./run_checks.sh
 ```
