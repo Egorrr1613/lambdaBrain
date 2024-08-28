@@ -1,11 +1,6 @@
 def TheRabbitsFoot(s: str, encode: bool) -> str:
-    return code(s, encode)  # if encode else decode(s)
-
-
-def code(s: str, encode: bool) -> str:
     strip_s = s.replace(" ", "")
-    len_s = len(strip_s)
-    row, colum, *_ = calculate_matrix_border(len_s)
+    row, colum, *_ = calculate_matrix_border(len(strip_s))
     coded_list: list = [[]] * row
     for i in range(row):
         coded_list[i] = [""] * colum
@@ -13,7 +8,7 @@ def code(s: str, encode: bool) -> str:
     if encode:
         _code_(list(strip_s), coded_list)
     else:
-        _decode_(list(strip_s), coded_list)
+        _decode_(s.split(" "), coded_list)
     res = ""
     for i in range(row):
         for j in range(colum):
@@ -34,22 +29,18 @@ def _code_(source_list: list[str], code_list: list) -> None:
 
 
 def _decode_(source_list: list[str], code_list: list) -> None:
-    source_len = len(source_list)
-    x, y, *_ = [len(code_list[0]), len(code_list)]
-    get_index, buffer = 0, 0
-    for i_x in range(x):
-        for i_y in range(y):
-            if get_index > len(source_list):
-                buffer += 1
-                get_index = 0 + buffer
-            if i_y == y - 1 and x * y - source_len == len(
-                list(filter(lambda el: el == "", code_list[i_y]))
-            ):
+    buffer = 1
+    x, y = 0, 0
+    for i, sublist in enumerate(code_list):
+        for j, _ in enumerate(sublist):
+            if x > len(source_list[y]) - 1:
                 break
-            code_list[i_y][i_x] = source_list[get_index]
-            get_index += x
-        buffer += 1
-        get_index = 0 + buffer
+            code_list[i][j] = source_list[y][x]
+            if y < len(source_list) - 1:
+                y += 1
+            else:
+                y, x = 0, buffer
+                buffer += 1
 
 
 def calculate_matrix_border(matrix_len: int) -> list[int]:
@@ -101,5 +92,11 @@ def test():
     )
     assert TheRabbitsFoot("отдай мою кроличью лапк", True) == "ойкил тмрча дооьп аюлюк"
     assert TheRabbitsFoot("омоюу толл дюиа акчп йрьк", False) == "отдаймоюкроличьюлапку"
+    assert TheRabbitsFoot("ойкил тмрча дооьп аюлюк", False) == "отдаймоюкроличьюлапк"
+    assert TheRabbitsFoot("дай манку", True) == "дмк аау йн"
+    assert TheRabbitsFoot("дмк аау йн", False) == "дайманку"
+    assert TheRabbitsFoot("мы он", True) == "мо ын"
+    assert TheRabbitsFoot("мо ын", False) == "мыон"
+    assert TheRabbitsFoot("солнце ясный день", True) == "сцне оеын ляйь нсд"
+    assert TheRabbitsFoot("сцне оеын ляйь нсд", False) == "солнцеясныйдень"
 
-    assert TheRabbitsFoot("ойкилтмрчадооьпаюлюк", False) == "отдаймоюкроличьюлапк"
