@@ -110,3 +110,4 @@ def test():
     assert PrintingCosts(" ") == 0
     assert PrintingCosts("1") == 19
     assert PrintingCosts(" 1 ") == 19
+
