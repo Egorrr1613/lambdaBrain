@@ -42,4 +42,5 @@ def test():
     assert MassVote(3, [10, 10, 5]) == "no winner"
     assert MassVote(3, [10, 15, 10]) == "minority winner 2"
     assert MassVote(3, [23, 50, 27]) == "minority winner 2"
+    assert MassVote(3, [23, 51, 27]) == "majority winner 2"
 
