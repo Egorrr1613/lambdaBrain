@@ -9,7 +9,7 @@ def MassVote(n: int, votes: list[int]) -> str:
 
     if sorted_vote[n - 1][1] == sorted_vote[n - 2][1]:
         return "no winner"
-    if (sum_vote / 2) <= sorted_vote[n - 1][1]:
+    if (sum_vote / 2) < sorted_vote[n - 1][1]:
         return f"majority winner {(sorted_vote[n - 1][0]) + 1}"
 
     return f"minority winner {(sorted_vote[n - 1][0]) + 1}"
@@ -41,4 +41,5 @@ def test():
     assert MassVote(1, [100]) == "majority winner 1"
     assert MassVote(3, [10, 10, 5]) == "no winner"
     assert MassVote(3, [10, 15, 10]) == "minority winner 2"
+    assert MassVote(3, [23, 50, 27]) == "minority winner 2"
 
