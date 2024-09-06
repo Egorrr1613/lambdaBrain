@@ -1,6 +1,8 @@
 def Unmanned(len_road: int, n: int, track: list[list[int]]) -> int:
     road: list[list] = [[]] * len_road
     for light_index in range(n):
+        if len_road <= track[light_index][0]:
+            continue
         road[track[light_index][0]] = track[light_index]
     time = lets_go(road, len_road, 0, 0)
     return time
@@ -32,6 +34,8 @@ def test():
     assert Unmanned(10, 2, [[3, 5, 5], [5, 2, 2]]) == 12
     assert Unmanned(5, 1, [[3, 6, 6]]) == 8
     assert Unmanned(5, 1, [[3, 10, 10]]) == 12
+    assert Unmanned(10, 2, [[11, 5, 5], [15, 2, 2]]) == 10
+    assert Unmanned(5, 2, [[5, 6, 6], [15, 2, 2]]) == 5
     assert get_time_after_light(3, [3, 5, 5]) == 5
     assert get_time_after_light(7, [0, 5, 5]) == 7
     assert get_time_after_light(14, [0, 3, 3]) == 15
