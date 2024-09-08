@@ -34,36 +34,33 @@ def is_full_in(
     l1: list[list[str]],
     h1: int,
     w1: int,
-    curr_sub_list_index_1: int,
-    current_el_index_1: int,
+    sub_list_index_1: int,
+    index_el_1: int,
     l2: list[list[str]],
     h2: int,
     w2: int,
-    curr_sub_list_index_2: int,
-    current_el_index_2: int,
+    sub_list_index_2: int,
+    index_el_2: int,
 ):
-    if (
-        l1[curr_sub_list_index_1][current_el_index_1]
-        != l2[curr_sub_list_index_2][current_el_index_2]
-    ):
+    if l1[sub_list_index_1][index_el_1] != l2[sub_list_index_2][index_el_2]:
         return False
-    if curr_sub_list_index_2 == (h2 - 1) and current_el_index_2 == (w2 - 1):
+    if sub_list_index_2 == (h2 - 1) and index_el_2 == (w2 - 1):
         return True
-    next_index_sublist_2, next_el_index_2 = curr_sub_list_index_2, current_el_index_2
-    if current_el_index_2 < (w2 - 1):
-        current_el_index_1 += 1
+    next_index_sublist_2, next_el_index_2 = sub_list_index_2, index_el_2
+    if index_el_2 < (w2 - 1):
+        index_el_1 += 1
         next_el_index_2 += 1
-    if current_el_index_2 == (w2 - 1):
+    if index_el_2 == (w2 - 1):
         next_index_sublist_2 += 1
         next_el_index_2 = 0
-        curr_sub_list_index_1 += 1
-        current_el_index_1 = current_el_index_1 - (w2 - 1)
+        sub_list_index_1 += 1
+        index_el_1 = index_el_1 - (w2 - 1)
     return is_full_in(
         l1,
         h1,
         w1,
-        curr_sub_list_index_1,
-        current_el_index_1,
+        sub_list_index_1,
+        index_el_1,
         l2,
         h2,
         w2,
