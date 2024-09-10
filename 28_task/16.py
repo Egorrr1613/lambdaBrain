@@ -2,8 +2,7 @@ def MaximumDiscount(n: int, prices: list[int]) -> int:
     if n < 3:
         return 0
     sort_price = bubble_sort(prices, 0, n - 1)
-    partition = n // 3
-    simple_discount = get_prices_from_start(partition, sort_price, 0)
+    simple_discount = get_prices_from_start(n // 3, sort_price, 0)
     if n < 4:
         return simple_discount
     spl_price = split_prices_by_partition(sort_price, n, -1, [])
