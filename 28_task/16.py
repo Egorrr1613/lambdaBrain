@@ -12,12 +12,12 @@ def MaximumDiscount(n: int, prices: list[int]) -> int:
     return simple_discount if simple_discount > difficult_disc else difficult_disc
 
 
-def get_min_el(input_l: list[int]) -> int:
-    min_el = 0
-    if len(input_l) == 3:
-        min_el = input_l[0]
-        for el in input_l:
-            min_el = el if min_el > el else min_el
+def get_min_el_from_partition(input_l: list[int]) -> int:
+    if len(input_l) < 3:
+        return 0
+    min_el = input_l[0]
+    for i in [1, 2]:
+        min_el = input_l[i] if min_el > input_l[i] else min_el
     return min_el
 
 
