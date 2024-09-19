@@ -138,3 +138,4 @@ def test3():
     assert BastShoe('3 10') == ''
     assert BastShoe('3 2') == 'x'
     assert BastShoe('3 3') == ''
+
