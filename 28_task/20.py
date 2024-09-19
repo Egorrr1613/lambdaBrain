@@ -59,6 +59,8 @@ def redo():
 
 
 def get(i: int):
+    if i > (len(result_str) - 1):
+        return ''
     return result_str[i]
 
 
@@ -133,3 +135,6 @@ def test3():
     assert BastShoe("1 xxx") == "xxx"
     assert buffer == ["", "xxx"]
     assert buffer_index == 1
+    assert BastShoe('3 10') == ''
+    assert BastShoe('3 2') == 'x'
+    assert BastShoe('3 3') == ''
