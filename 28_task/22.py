@@ -15,7 +15,7 @@ def SherlockValidString(s: str) -> bool:
     d_count_value_len = len(d_count_value)
     if d_count_value_len == 1:
         return True
-    if d_count_value_len > 2 or d_count_value_len < 1:
+    if d_count_value_len != 2:
         return False
     items = list(d_count_value.items())
     if items[0][1] > items[1][1]:
