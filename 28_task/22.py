@@ -66,3 +66,4 @@ def test():
     assert SherlockValidString("xxyyy") is True
     assert SherlockValidString("xxxyy") is True
     assert SherlockValidString("xxxxxyyyyyy") is True
+
