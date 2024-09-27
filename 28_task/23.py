@@ -8,10 +8,11 @@ def wrap(h: int, w: int, n: int, tree: list[str]) -> list[list[int]]:
     tree_map = [[0 if j == "." else 1 for j in tree[i]] for i in range(h)]
     for year in range(n):
         tree_map = [[j + 1 for j in i] for i in tree_map]
-        if year > 0 and year % 2 > 0:
-            dead_coordinate = collect_dead_coordinate(tree_map, h, w)
-            for d in dead_coordinate:
-                tree_map[d[0]][d[1]] = 0
+        if year == 0 or year % 2 == 0:
+            continue
+        dead_coordinate = collect_dead_coordinate(tree_map, h, w)
+        for d in dead_coordinate:
+            tree_map[d[0]][d[1]] = 0
     return tree_map
 
 
