@@ -2,9 +2,7 @@ def TransformTransform(a: list[int], _: int) -> bool:
     b = transform(a)
     b_after_first_transform = transform(b)
     s = sum(b_after_first_transform)
-    if s % 2 != 0:
-        return False
-    return True
+    return s % 2 == 0
 
 
 def transform(a):
@@ -38,4 +36,3 @@ def test():
     aa = transform(a)
     assert sum(aa) == 58
     assert TransformTransform([3, 2, 1], 3)
-
