@@ -53,6 +53,7 @@ def test():
     assert white_walkers("=") is False
     assert white_walkers("==") is False
     assert white_walkers("===") is False
+    assert white_walkers("4===6")
     assert white_walkers("======") is False
     assert white_walkers("===1==9===") is False
     assert white_walkers("===1===9===")
