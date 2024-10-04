@@ -57,7 +57,7 @@ def test():
     assert white_walkers("======") is False
     assert white_walkers("===1==9===") is False
     assert white_walkers("===1===9===")
-    assert white_walkers("1===9")
+    assert white_walkers("=1===9=")
 
     assert find_equal_count("==,124214214sdgsdg=", 19, 0) == 3
     assert find_equal_count("==", 2, 0) == 2
