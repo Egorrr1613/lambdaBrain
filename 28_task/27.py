@@ -31,7 +31,7 @@ def check_is_sort(checked_list: list[int], n: int, i: int, comp_i: int) -> bool:
     return check_is_sort(checked_list, n, i, comp_i + 1)
 
 
-def check_is_decrement(checked_list: list[int], n: int, i: int):
+def check_is_decrement(checked_list: list[int], n: int, i: int) -> bool:
     if i + 1 == n:
         return True
     if checked_list[i] != checked_list[i + 1] + 1:
@@ -39,7 +39,7 @@ def check_is_decrement(checked_list: list[int], n: int, i: int):
     return check_is_decrement(checked_list, n, i + 1)
 
 
-def get_list_min_indexes_position(copy_f: list[int], n):
+def get_list_min_indexes_position(copy_f: list[int], n) -> list[int]:
     list_min_indexes: list[int] = []
 
     for _ in range(n):
