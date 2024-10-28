@@ -86,6 +86,8 @@ def test():
     assert digital_rain("11111111") == ""
     assert digital_rain("0101000000101110001") == "0101110001"
     assert digital_rain("0101010") == "101010"
-    assert digital_rain("01001010") == "1010"
+    assert digital_rain("01001010") == "100101"
     assert digital_rain("0101001011100010") == "1011100010"
     assert digital_rain("01010000001011100010") == "1011100010"
+    assert digital_rain("00001101100100100000") == "110110010010"
+

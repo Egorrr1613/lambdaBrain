@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_PATH="28_task/28.py"
+FILE_PATH="8_task/2/2v2.py"
 
 python -m black "$FILE_PATH"
 python -m darker "$FILE_PATH"
