@@ -55,14 +55,19 @@ class LinkedList:
         if self.head.next is None or self.head is None:
             self.tail = self.head
 
-    def __recursion_delete(self, curr_node, val, all_del):
+    def __recursion_delete(self, curr_node, val_to_del, all_del):
         if curr_node.next is None:
             return
-        if curr_node.next.value != val:
-            return self.__recursion_delete(curr_node.next, val, all_del)
-        curr_node.next = curr_node.next.next
-        if all_del:
-            return self.__recursion_delete(curr_node, val, all_del)
+
+        is_del = False
+        next_node = curr_node.next
+        if curr_node.next.value == val_to_del:
+            is_del = True
+            curr_node.next = curr_node.next.next
+            next_node = curr_node
+        if all_del is False and is_del:
+            return
+        self.__recursion_delete(next_node, val_to_del, all_del)
 
     def clean(self):
         self.head = None
