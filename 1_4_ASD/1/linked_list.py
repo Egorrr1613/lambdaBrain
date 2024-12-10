@@ -264,3 +264,4 @@ def test_insert_to_tail():
     assert a.head.next.value == 2
     assert a.tail.value == 9
     assert a.tail.next is None
+
