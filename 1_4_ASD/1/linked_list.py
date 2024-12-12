@@ -41,33 +41,34 @@ class LinkedList:
         return res
 
     def delete(self, val, all_del=False):
-        is_del = False
-        if self.head.value == val:
-            self.head = self.head.next
-            is_del = True
-        if self.head is None:
-            self.tail = None
-            return
-        if all_del and is_del:
-            self.delete(val, all_del)
-            return
-        self.__recursion_delete(self.head, val, all_del)
-        if self.head.next is None or self.head is None:
-            self.tail = self.head
+        prev_node, current_node = None, self.head
+        while current_node is not None:
+            if current_node.value != val:
+                prev_node = current_node
+                current_node = current_node.next
+                continue
 
-    def __recursion_delete(self, curr_node, val_to_del, all_del):
-        if curr_node.next is None:
-            return
+            if current_node is self.head and current_node is self.tail:
+                self.head, self.tail = None, None
+                return
 
-        is_del = False
-        next_node = curr_node.next
-        if curr_node.next.value == val_to_del:
-            is_del = True
-            curr_node.next = curr_node.next.next
-            next_node = curr_node
-        if all_del is False and is_del:
-            return
-        self.__recursion_delete(next_node, val_to_del, all_del)
+            if current_node is self.head:
+                self.head = current_node.next
+                if not all_del:
+                    return
+                prev_node = None
+                current_node = current_node.next
+                continue
+
+            if current_node is self.tail:
+                prev_node.next = None
+                self.tail = prev_node
+                break
+
+            prev_node.next = current_node.next
+            current_node = current_node.next
+            if not all_del:
+                return
 
     def clean(self):
         self.head = None
@@ -126,6 +127,98 @@ def test_del_all_param_is_false(capsys):
     assert a.head.next.value == 3
     assert a.head.next.next.value == 2
     assert a.tail.value == 2
+    assert a.tail.next is None
+
+
+def test_del_single_el_in_list(capsys):
+    a = LinkedList()
+    a.add_in_tail(Node(2))
+
+    a.delete(2, True)
+
+    a.print_all_nodes()
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert a.head is None
+    assert a.tail is None
+
+
+def test_del_all_el_in_two_el_list(capsys):
+    a = LinkedList()
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(2))
+
+    a.delete(2, True)
+    a.print_all_nodes()
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert a.head is None
+    assert a.tail is None
+
+
+def test_del_2_el_all_param(capsys):
+    a = LinkedList()
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(2))
+
+    a.delete(2, True)
+    a.print_all_nodes()
+    captured = capsys.readouterr()
+    assert captured.out == "1\n"
+    assert a.head.value == 1
+    assert a.head.next is None
+    assert a.tail.value == 1
+    assert a.tail.next is None
+
+
+def test_del_el_from_head(capsys):
+    a = LinkedList()
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+    a.add_in_tail(Node(4))
+
+    a.delete(2, True)
+    a.print_all_nodes()
+    captured = capsys.readouterr()
+    assert captured.out == "3\n4\n"
+    assert a.head.value == 3
+    assert a.head.next.value == 4
+    assert a.tail.value == 4
+    assert a.tail.next is None
+
+
+def test_del_any_el_from_head(capsys):
+    a = LinkedList()
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+    a.add_in_tail(Node(4))
+
+    a.delete(2, True)
+    a.print_all_nodes()
+    captured = capsys.readouterr()
+    assert captured.out == "3\n4\n"
+    assert a.head.value == 3
+    assert a.head.next.value == 4
+    assert a.tail.value == 4
+    assert a.tail.next is None
+
+
+def test_del_el_from_tail(capsys):
+    a = LinkedList()
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(3))
+
+    a.delete(3, True)
+    a.print_all_nodes()
+    captured = capsys.readouterr()
+    assert captured.out == "2\n1\n"
+    assert a.head.value == 2
+    assert a.head.next.value == 1
+    assert a.tail.value == 1
     assert a.tail.next is None
 
 
@@ -193,6 +286,21 @@ def test_all_param_is_true_one_deleted_el(capsys):
     a.print_all_nodes()
     captured = capsys.readouterr()
     assert captured.out == "2\n3\n2\n"
+
+
+def test_del_any_el_from_tail(capsys):
+    a = prepare_test_data()
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(2))
+
+    a.delete(2, True)
+    a.print_all_nodes()
+    captured = capsys.readouterr()
+    assert captured.out == "1\n3\n"
+    assert a.head.value == 1
+    assert a.head.next.value == 3
+    assert a.tail.value == 3
+    assert a.tail.next is None
 
 
 def test_clean(capsys):
@@ -264,4 +372,3 @@ def test_insert_to_tail():
     assert a.head.next.value == 2
     assert a.tail.value == 9
     assert a.tail.next is None
-
