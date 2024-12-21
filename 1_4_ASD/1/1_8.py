@@ -1,24 +1,33 @@
 from linked_list import LinkedList, Node, prepare_test_data
 
 
-def sum_two_linked_list(first_list: LinkedList, second_list: LinkedList) -> list[int]:
-    if first_list.len() != second_list.len():
-        return []
-    first_node, second_node, result_list = first_list.head, second_list.head, []
-    while first_node is not None:
-        result_list.append(first_node.value + second_node.value)
-        first_node, second_node = first_node.next, second_node.next
+def sum_any_linked_list(*args: LinkedList) -> list[int]:
+    list_len = args[0].len()
+    for linked_list in args:
+        if linked_list.len() != list_len:
+            return []
+
+    result_list = []
+    nodes_list: list[Node] = [node.head for node in args]
+    for _ in range(list_len):
+        current_sum = 0
+        for node_index, node in enumerate(nodes_list):
+            current_sum += node.value
+            nodes_list[node_index] = node.next
+        result_list.append(current_sum)
+
     return result_list
 
 
 def test_base_case():
-    assert sum_two_linked_list(prepare_test_data(), prepare_test_data()) == [2, 4, 6, 4]
-    assert sum_two_linked_list(LinkedList(), LinkedList()) == []
+    assert sum_any_linked_list(prepare_test_data()) == [1, 2, 3, 2]
+    assert sum_any_linked_list(prepare_test_data(), prepare_test_data()) == [2, 4, 6, 4]
+    assert sum_any_linked_list(prepare_test_data(), prepare_test_data(), prepare_test_data()) == [3, 6, 9, 6]
+    assert sum_any_linked_list(LinkedList(), LinkedList()) == []
 
 
 def test_not_equal_list_len():
     data = LinkedList()
     data.add_in_tail(Node(1))
     data.add_in_tail(Node(2))
-    assert sum_two_linked_list(LinkedList(), data) == []
-
+    assert sum_any_linked_list(LinkedList(), data) == []
