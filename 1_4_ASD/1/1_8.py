@@ -8,7 +8,8 @@ def sum_any_linked_list(*args: LinkedList) -> list[int]:
             return []
 
     result_list = []
-    nodes_list: list[Node] = [node.head for node in args]
+    nodes_list = [node.head for node in args]
+
     for _ in range(list_len):
         current_sum = 0
         for node_index, node in enumerate(nodes_list):
@@ -22,12 +23,14 @@ def sum_any_linked_list(*args: LinkedList) -> list[int]:
 def test_base_case():
     assert sum_any_linked_list(prepare_test_data()) == [1, 2, 3, 2]
     assert sum_any_linked_list(prepare_test_data(), prepare_test_data()) == [2, 4, 6, 4]
-    assert sum_any_linked_list(prepare_test_data(), prepare_test_data(), prepare_test_data()) == [3, 6, 9, 6]
-    assert sum_any_linked_list(LinkedList(), LinkedList()) == []
+    assert sum_any_linked_list(
+        prepare_test_data(), prepare_test_data(), prepare_test_data()
+    ) == [3, 6, 9, 6]
+    assert not sum_any_linked_list(LinkedList(), LinkedList())
 
 
 def test_not_equal_list_len():
     data = LinkedList()
     data.add_in_tail(Node(1))
     data.add_in_tail(Node(2))
-    assert sum_any_linked_list(LinkedList(), data) == []
+    assert not sum_any_linked_list(LinkedList(), data)
