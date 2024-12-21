@@ -10,12 +10,10 @@ def sum_any_linked_list(*args: LinkedList) -> list[int]:
     result_list = []
     nodes_list = [node.head for node in args]
 
-    for _ in range(list_len):
-        current_sum = 0
-        for node_index, node in enumerate(nodes_list):
-            current_sum += node.value
-            nodes_list[node_index] = node.next
-        result_list.append(current_sum)
+    while nodes_list[0] is not None:
+        curr_sum = sum([node.value for node in nodes_list])
+        result_list.append(curr_sum)
+        nodes_list = [node.next for node in nodes_list]
 
     return result_list
 
