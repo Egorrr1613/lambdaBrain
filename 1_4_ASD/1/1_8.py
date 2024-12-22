@@ -22,9 +22,9 @@ def sum_any_linked_list(list_of_linked_lists: list[LinkedList]) -> list[int]:
         result_list.append(curr_sum)
         if count_last_node == 0:
             continue
-        if count_last_node != count_linked_list:
-            return []
-        return result_list
+        if count_last_node == count_linked_list:
+            return result_list
+        return []
 
 
 def test_base_case():
