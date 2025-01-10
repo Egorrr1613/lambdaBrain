@@ -31,7 +31,7 @@ class LinkedList2:
         res = []
         while node is not None:
             prev_node = node.prev if node is self.head else node.prev.value
-            next_node = None if node.next is None else node.next.value
+            next_node = node.next if node.next is None else node.next.value
             res.append((prev_node, node.value, next_node))
             node = node.next
         return res
@@ -121,14 +121,6 @@ class LinkedList2:
             curr_node = curr_node.next
 
         if curr_node is None:
-            return
-
-        if curr_node is self.head:
-            new_node.prev = None
-            new_node.next = self.head
-
-            self.head.prev = new_node
-            self.head = new_node
             return
 
         if curr_node is self.tail:
@@ -460,4 +452,31 @@ def test_base_insert():
 
     a.insert(after_node=Node(1), new_node=Node(99))
     assert [(None, 0, 1), (0, 1, 99), (1, 99, 2), (99, 2, None)] == a.get_all_nodes()
+
+
+def test_base_insert_2():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(4))
+
+    a.insert(Node(2), Node(3))
+
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, 4), (3, 4, None)]
+
+
+def test_base_insert_bound_case():
+    a = LinkedList2()
+
+    a.insert(None, Node(1))
+    assert a.get_all_nodes() == [(None, 1, None)]
+
+    a.insert(None, Node(3))
+    assert a.get_all_nodes() == [(None, 1, 3), (1, 3, None)]
+
+    a.insert(Node(1), Node(2))
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, None)]
+
+    a.insert(None, Node(4))
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, 4), (3, 4, None)]
 
