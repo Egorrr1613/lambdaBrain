@@ -30,7 +30,7 @@ class LinkedList2:
         node = self.head
         res = []
         while node is not None:
-            prev_node = None if node is self.head else node.prev.value
+            prev_node = node.prev if node is self.head else node.prev.value
             next_node = None if node.next is None else node.next.value
             res.append((prev_node, node.value, next_node))
             node = node.next
@@ -53,7 +53,7 @@ class LinkedList2:
             node = node.next
         return res
 
-    def delete(self, val, all=False) -> None:
+    def delete(self, val, is_all=False) -> None:
         curr_node = self.head
         while True:
             if curr_node is None:
@@ -69,10 +69,10 @@ class LinkedList2:
 
             if curr_node is self.head:
                 self.head = curr_node.next
-                curr_node.prev = None
+                self.head.prev = None
 
                 curr_node = curr_node.next
-                if all:
+                if is_all:
                     continue
                 return
 
@@ -81,14 +81,14 @@ class LinkedList2:
                 self.tail.next = None
 
                 curr_node = curr_node.next
-                if all:
+                if is_all:
                     continue
                 return
 
             curr_node.prev.next = curr_node.next
             curr_node.next.prev = curr_node.prev
             curr_node = curr_node.next
-            if not all:
+            if not is_all:
                 return
 
     def clean(self) -> None:
@@ -184,13 +184,12 @@ def test_find_all():
     assert find_all_list[1].next is None
 
 
-def test_del_all_param_is_false(capsys):
+def test_del_all_param_is_false():
     a = prepare_test_data()
 
     a.delete(2, False)
-    a.print_all_nodes()
-    captured = capsys.readouterr()
-    assert captured.out == "1\n3\n2\n"
+
+    assert a.get_all_nodes() == [(None, 1, 3), (1, 3, 2), (3, 2, None)]
     assert a.head.value == 1
     assert a.head.next.value == 3
     assert a.head.next.next.value == 2
@@ -199,35 +198,31 @@ def test_del_all_param_is_false(capsys):
     assert a.len() == 3
 
 
-def test_del_single_el_in_list(capsys):
+def test_del_single_el_in_list():
     a = LinkedList2()
     a.add_in_tail(Node(2))
 
     a.delete(2, True)
 
-    a.print_all_nodes()
-    captured = capsys.readouterr()
-    assert captured.out == ""
+    assert a.get_all_nodes() == []
     assert a.head is None
     assert a.tail is None
     assert a.len() == 0
 
 
-def test_del_all_el_in_two_el_list(capsys):
+def test_del_all_el_in_two_el_list():
     a = LinkedList2()
     a.add_in_tail(Node(2))
     a.add_in_tail(Node(2))
 
     a.delete(2, True)
-    a.print_all_nodes()
-    captured = capsys.readouterr()
-    assert captured.out == ""
+    assert a.get_all_nodes() == []
     assert a.head is None
     assert a.tail is None
     assert a.len() == 0
 
 
-def test_del_2_el_all_param(capsys):
+def test_del_2_el_all_param():
     a = LinkedList2()
     a.add_in_tail(Node(2))
     a.add_in_tail(Node(2))
@@ -235,9 +230,8 @@ def test_del_2_el_all_param(capsys):
     a.add_in_tail(Node(2))
 
     a.delete(2, True)
-    a.print_all_nodes()
-    captured = capsys.readouterr()
-    assert captured.out == "1\n"
+
+    assert a.get_all_nodes() == [(None, 1, None)]
     assert a.head.value == 1
     assert a.head.next is None
     assert a.tail.value == 1
@@ -307,6 +301,21 @@ def test_del_no_match(capsys):
     assert a.head.next.next.value == 3
     assert a.tail.value == 2
     assert a.tail.next is None
+
+
+def test_single_el_after_del():
+    a = LinkedList2()
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(3))
+
+    a.delete(5, False)
+    assert [(None, 3, None)] == a.get_all_nodes()
+    assert a.head.value == 3
+    assert a.head.next is None
+    assert a.head.prev is None
+    assert a.tail.value == 3
+    assert a.tail.next is None
+    assert a.tail.prev is None
 
 
 def test_del_all_param_is_true(capsys):
