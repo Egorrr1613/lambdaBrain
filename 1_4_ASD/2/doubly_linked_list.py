@@ -445,3 +445,4 @@ def test_base_insert():
 
     a.insert(after_node=Node(1), new_node=Node(99))
     assert [(None, 0, 1), (0, 1, 99), (1, 99, 2), (99, 2, None)] == a.get_all_nodes()
+
