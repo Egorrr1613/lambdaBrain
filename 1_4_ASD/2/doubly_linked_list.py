@@ -391,6 +391,12 @@ def test_insert_to_head():
     ] == a.get_all_nodes()
 
 
+def test_clean():
+    a = prepare_test_data()
+    a.clean()
+    assert a.get_all_nodes() == []
+
+
 def test_insert_to_head_in_empty_list():
     a = LinkedList2()
     a.add_in_head(Node(5))
