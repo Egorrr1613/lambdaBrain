@@ -58,10 +58,3 @@ class DynArray:
     def get_list_elements(self):
         return list(self.array._objects.values())
 
-
-def prepare_test_data(len_array: int) -> DynArray:
-    da = DynArray()
-    for i in range(len_array):
-        da.append(i)
-    return da
-

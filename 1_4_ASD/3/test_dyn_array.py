@@ -1,5 +1,12 @@
 import pytest
-from dyn_array import DynArray, prepare_test_data
+from dyn_array import DynArray
+
+
+def prepare_test_data(len_array: int) -> DynArray:
+    da = DynArray()
+    for i in range(len_array):
+        da.append(i)
+    return da
 
 
 def test_insert():
