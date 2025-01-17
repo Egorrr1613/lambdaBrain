@@ -3,18 +3,18 @@ class Node:
         self.value = v
         self.prev = None
         self.next = None
-        self.is_dumpy = False
+        self.is_dummy = False
 
 
-class DumpyNode(Node):
+class DummyNode(Node):
     def __init__(self, v):
         super().__init__(v)
-        self.is_dumpy = True
+        self.is_dummy = True
 
 class LinkedList2:
     def __init__(self):
-        self.head = DumpyNode(None)
-        self.tail = DumpyNode(None)
+        self.head = DummyNode(None)
+        self.tail = DummyNode(None)
         self.head.next = self.tail
         self.tail.prev = self.head
 
@@ -27,14 +27,14 @@ class LinkedList2:
 
     def print_all_nodes(self) -> None:
         node = self.head.next
-        while node.is_dumpy is False:
+        while node.is_dummy is False:
             print(node.value)
             node = node.next
 
     def get_all_nodes(self) -> list:
         node = self.head.next
         res = []
-        while node.is_dumpy is False:
+        while node.is_dummy is False:
             prev_node_val = node.prev.value
             next_node_val = node.next.value
             res.append((prev_node_val, node.value, next_node_val))
@@ -43,7 +43,7 @@ class LinkedList2:
 
     def find(self, val) -> Node | None:
         node = self.head.next
-        while node.is_dumpy is False:
+        while node.is_dummy is False:
             if node.value == val:
                 return node
             node = node.next
@@ -52,7 +52,7 @@ class LinkedList2:
     def find_all(self, val) -> list:
         node = self.head.next
         res = []
-        while node.is_dumpy is False:
+        while node.is_dummy is False:
             if node.value == val:
                 res.append(node)
             node = node.next
@@ -60,7 +60,7 @@ class LinkedList2:
 
     def delete(self, val, is_all=False) -> None:
         curr_node = self.head.next
-        while curr_node.is_dumpy is False:
+        while curr_node.is_dummy is False:
             if not (curr_node.value == val):
                 curr_node = curr_node.next
                 continue
@@ -77,7 +77,7 @@ class LinkedList2:
 
     def len(self) -> int:
         l_count, node = 0, self.head.next
-        while node.is_dumpy is False:
+        while node.is_dummy is False:
             l_count += 1
             node = node.next
         return l_count
@@ -133,7 +133,7 @@ def test_find_all():
     find_all_list = test_list.find_all(2)
     assert len(find_all_list) == 2
     assert find_all_list[0].next.value == 3
-    assert find_all_list[1].next.is_dumpy is True
+    assert find_all_list[1].next.is_dummy is True
 
 
 def test_del_all_param_is_false():
