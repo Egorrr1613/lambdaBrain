@@ -3,87 +3,67 @@ class Node:
         self.value = v
         self.prev = None
         self.next = None
+        self.is_dumpy = False
 
+
+class DumpyNode(Node):
+    def __init__(self, v):
+        super().__init__(v)
+        self.is_dumpy = True
 
 class LinkedList2:
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self.head = DumpyNode(None)
+        self.tail = DumpyNode(None)
+        self.head.next = self.tail
+        self.tail.prev = self.head
 
     def add_in_tail(self, item: Node) -> None:
-        if self.head is None:
-            self.head = item
-            item.prev = None
-            item.next = None
-        else:
-            self.tail.next = item
-            item.prev = self.tail
-        self.tail = item
+        item.prev = self.tail.prev
+        item.next = self.tail
+
+        self.tail.prev.next = item
+        self.tail.prev = item
 
     def print_all_nodes(self) -> None:
-        node = self.head
-        while node is not None:
+        node = self.head.next
+        while node.is_dumpy is False:
             print(node.value)
             node = node.next
 
     def get_all_nodes(self) -> list:
-        node = self.head
+        node = self.head.next
         res = []
-        while node is not None:
-            prev_node = node.prev if node is self.head else node.prev.value
-            next_node = node.next if node.next is None else node.next.value
-            res.append((prev_node, node.value, next_node))
+        while node.is_dumpy is False:
+            prev_node_val = node.prev.value
+            next_node_val = node.next.value
+            res.append((prev_node_val, node.value, next_node_val))
             node = node.next
         return res
 
     def find(self, val) -> Node | None:
-        node = self.head
-        while node is not None:
+        node = self.head.next
+        while node.is_dumpy is False:
             if node.value == val:
                 return node
             node = node.next
         return None
 
     def find_all(self, val) -> list:
-        node = self.head
+        node = self.head.next
         res = []
-        while node is not None:
+        while node.is_dumpy is False:
             if node.value == val:
                 res.append(node)
             node = node.next
         return res
 
     def delete(self, val, is_all=False) -> None:
-        curr_node = self.head
-        while True:
-            if curr_node is None:
-                break
+        curr_node = self.head.next
+        while curr_node.is_dumpy is False:
             if not (curr_node.value == val):
                 curr_node = curr_node.next
                 continue
-
-            if curr_node is self.head and curr_node is self.tail:
-                self.head = None
-                self.tail = None
-                return
-
-            if curr_node is self.head:
-                self.head = curr_node.next
-                self.head.prev = None
-
-                curr_node = curr_node.next
-                if is_all:
-                    continue
-                return
-
-            if curr_node is self.tail:
-                self.tail = curr_node.prev
-                self.tail.next = None
-
-                curr_node = curr_node.next
-                if is_all:
-                    continue
-                return
 
             curr_node.prev.next = curr_node.next
             curr_node.next.prev = curr_node.prev
@@ -92,12 +72,12 @@ class LinkedList2:
                 return
 
     def clean(self) -> None:
-        self.head = None
-        self.tail = None
+        self.head.next = self.tail
+        self.tail.prev = self.head
 
     def len(self) -> int:
-        l_count, node = 0, self.head
-        while node is not None:
+        l_count, node = 0, self.head.next
+        while node.is_dumpy is False:
             l_count += 1
             node = node.next
         return l_count
@@ -113,23 +93,8 @@ class LinkedList2:
         if after_node is None:
             return
 
-        curr_node = self.head
-
-        while curr_node is not None:
-            if curr_node.value == after_node.value:
-                break
-            curr_node = curr_node.next
-
+        curr_node = self.find(after_node.value)
         if curr_node is None:
-            return
-
-        if curr_node is self.tail:
-            buffer = self.tail
-            self.tail = new_node
-
-            buffer.next = self.tail
-            self.tail.prev = buffer
-            self.tail.next = None
             return
 
         new_node.prev = curr_node
@@ -138,16 +103,11 @@ class LinkedList2:
         new_node.prev.next = new_node
 
     def add_in_head(self, new_node) -> None:
-        new_node.prev = None
+        new_node.prev = self.head
+        new_node.next = self.head.next
 
-        if self.head is None:
-            self.head = new_node
-            self.head.next = None
-            self.tail = self.head
-            return
-        new_node.next = self.head
-        self.head.prev = new_node
-        self.head = new_node
+        self.head.next.prev = new_node
+        self.head.next = new_node
 
 
 def prepare_test_data():
@@ -173,7 +133,7 @@ def test_find_all():
     find_all_list = test_list.find_all(2)
     assert len(find_all_list) == 2
     assert find_all_list[0].next.value == 3
-    assert find_all_list[1].next is None
+    assert find_all_list[1].next.is_dumpy is True
 
 
 def test_del_all_param_is_false():
@@ -182,11 +142,11 @@ def test_del_all_param_is_false():
     a.delete(2, False)
 
     assert a.get_all_nodes() == [(None, 1, 3), (1, 3, 2), (3, 2, None)]
-    assert a.head.value == 1
-    assert a.head.next.value == 3
-    assert a.head.next.next.value == 2
-    assert a.tail.value == 2
-    assert a.tail.next is None
+    assert a.head.next.value == 1
+    assert a.head.next.next.value == 3
+    assert a.head.next.next.next.value == 2
+    assert a.tail.prev.value == 2
+    assert a.tail.prev.next.value is None
     assert a.len() == 3
 
 
@@ -197,8 +157,8 @@ def test_del_single_el_in_list():
     a.delete(2, True)
 
     assert a.get_all_nodes() == []
-    assert a.head is None
-    assert a.tail is None
+    assert a.head.next.value is None
+    assert a.tail.prev.value is None
     assert a.len() == 0
 
 
@@ -209,8 +169,8 @@ def test_del_all_el_in_two_el_list():
 
     a.delete(2, True)
     assert a.get_all_nodes() == []
-    assert a.head is None
-    assert a.tail is None
+    assert a.head.next.value is None
+    assert a.tail.prev.value is None
     assert a.len() == 0
 
 
@@ -224,10 +184,10 @@ def test_del_2_el_all_param():
     a.delete(2, True)
 
     assert a.get_all_nodes() == [(None, 1, None)]
-    assert a.head.value == 1
-    assert a.head.next is None
-    assert a.tail.value == 1
-    assert a.tail.next is None
+    assert a.head.next.value == 1
+    assert a.head.next.next.value is None
+    assert a.tail.prev.value == 1
+    assert a.tail.prev.next.next is None
     assert a.len() == 1
 
 
@@ -241,10 +201,10 @@ def test_del_el_from_head(capsys):
     a.print_all_nodes()
     captured = capsys.readouterr()
     assert captured.out == "3\n4\n"
-    assert a.head.value == 3
-    assert a.head.next.value == 4
-    assert a.tail.value == 4
-    assert a.tail.next is None
+    assert a.head.next.value == 3
+    assert a.head.next.next.value == 4
+    assert a.tail.prev.value == 4
+    assert a.tail.prev.next.value is None
     assert a.len() == 2
 
 
@@ -259,10 +219,10 @@ def test_del_any_el_from_head(capsys):
     a.print_all_nodes()
     captured = capsys.readouterr()
     assert captured.out == "3\n4\n"
-    assert a.head.value == 3
-    assert a.head.next.value == 4
-    assert a.tail.value == 4
-    assert a.tail.next is None
+    assert a.head.next.value == 3
+    assert a.head.next.next.value == 4
+    assert a.tail.prev.value == 4
+    assert a.tail.prev.next.value is None
 
 
 def test_del_el_from_tail(capsys):
@@ -275,10 +235,10 @@ def test_del_el_from_tail(capsys):
     a.print_all_nodes()
     captured = capsys.readouterr()
     assert captured.out == "2\n1\n"
-    assert a.head.value == 2
-    assert a.head.next.value == 1
-    assert a.tail.value == 1
-    assert a.tail.next is None
+    assert a.head.next.value == 2
+    assert a.head.next.next.value == 1
+    assert a.tail.prev.value == 1
+    assert a.tail.prev.next.value is None
 
 
 def test_del_no_match(capsys):
@@ -288,11 +248,11 @@ def test_del_no_match(capsys):
     a.print_all_nodes()
     captured = capsys.readouterr()
     assert captured.out == "1\n2\n3\n2\n"
-    assert a.head.value == 1
-    assert a.head.next.value == 2
-    assert a.head.next.next.value == 3
-    assert a.tail.value == 2
-    assert a.tail.next is None
+    assert a.head.next.value == 1
+    assert a.head.next.next.value == 2
+    assert a.head.next.next.next.value == 3
+    assert a.tail.prev.value == 2
+    assert a.tail.prev.next.value is None
 
 
 def test_single_el_after_del():
@@ -302,12 +262,11 @@ def test_single_el_after_del():
 
     a.delete(5, False)
     assert [(None, 3, None)] == a.get_all_nodes()
-    assert a.head.value == 3
-    assert a.head.next is None
-    assert a.head.prev is None
-    assert a.tail.value == 3
-    assert a.tail.next is None
-    assert a.tail.prev is None
+    assert a.head.next.value == 3
+    assert a.head.next.next.value is None
+    assert a.head.next.prev.value is None
+    assert a.tail.prev.value == 3
+    assert a.tail.prev.next.value is None
 
 
 def test_del_all_param_is_true(capsys):
@@ -319,17 +278,17 @@ def test_del_all_param_is_true(capsys):
     assert captured.out == "1\n3\n"
 
     a.delete(1, True)
-    assert a.head.value == 3
-    assert a.head.next is None
-    assert a.tail.value == 3
+    assert a.head.next.value == 3
+    assert a.head.next.next.value is None
+    assert a.tail.prev.value == 3
     assert a.tail.next is None
 
     a.delete(3, True)
     a.print_all_nodes()
     captured = capsys.readouterr()
     assert captured.out == ""
-    assert a.head is None
-    assert a.tail is None
+    assert a.head.next.value is None
+    assert a.tail.prev.value is None
 
 
 def test_del_all_param_is_true_bound_case(capsys):
@@ -347,10 +306,10 @@ def test_del_all_param_is_true_bound_case(capsys):
     a.print_all_nodes()
     captured = capsys.readouterr()
     assert captured.out == "1\n"
-    assert a.head.value == 1
-    assert a.head.next is None
-    assert a.tail.value == 1
-    assert a.tail.next is None
+    assert a.head.next.value == 1
+    assert a.head.next.next.value is None
+    assert a.tail.prev.value == 1
+    assert a.tail.prev.next.value is None
 
 
 def test_all_param_is_true_one_deleted_el(capsys):
@@ -371,10 +330,10 @@ def test_del_any_el_from_tail(capsys):
     a.print_all_nodes()
     captured = capsys.readouterr()
     assert captured.out == "1\n3\n"
-    assert a.head.value == 1
-    assert a.head.next.value == 3
-    assert a.tail.value == 3
-    assert a.tail.next is None
+    assert a.head.next.value == 1
+    assert a.head.next.next.value == 3
+    assert a.tail.prev.value == 3
+    assert a.tail.prev.next.value is None
 
 
 def test_insert_to_head():
@@ -413,32 +372,35 @@ def test_insert_to_head_in_empty_list():
 def test_base_insert():
     a = LinkedList2()
     a.insert(after_node=None, new_node=Node(1))
-    assert a.head.value == 1
-    assert a.head.prev is None
-    assert a.head.next is None
+    assert a.head.next.value == 1
+    assert a.head.next.prev.value is None
+    assert a.head.next.next.value is None
 
-    assert a.tail.value == 1
-    assert a.tail.prev is None
-    assert a.tail.next is None
+    assert a.tail.prev.value == 1
+    assert a.tail.prev.prev.value is None
+    assert a.tail.prev.next.value is None
+    assert [(None, 1, None)] == a.get_all_nodes()
+
 
     a.insert(after_node=None, new_node=Node(2))
-    assert a.head.value == 1
-    assert a.head.prev is None
-    assert a.head.next.value == 2
+    assert a.head.next.value == 1
+    assert a.head.next.prev.value is None
+    assert a.head.next.next.value == 2
 
-    assert a.tail.value == 2
-    assert a.tail.prev.value == 1
-    assert a.tail.next is None
+    assert a.tail.prev.value == 2
+    assert a.tail.prev.prev.value == 1
+    assert a.tail.prev.next.value is None
+    assert [(None, 1, 2), (1, 2, None)] == a.get_all_nodes()
+
 
     a.insert(after_node=Node(1), new_node=Node(0))
-    assert a.head.value == 1
-    assert a.head.prev is None
-    assert a.head.next.value == 0
+    assert a.head.next.next.value == 0
+    assert a.head.next.prev.value is None
+    assert a.head.next.value == 1
 
-    assert a.tail.value == 2
-    assert a.tail.prev.value == 0
-    assert a.tail.next is None
-
+    assert a.tail.prev.value == 2
+    assert a.tail.prev.prev.prev.value == 1
+    assert a.tail.prev.next.value is None
     assert [(None, 1, 0), (1, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
     a.insert(after_node=Node(1), new_node=Node(1))
