@@ -1,34 +1,24 @@
 from doubly_linked_list import Node, LinkedList2, prepare_test_data
 
 
+def bubble_node_sort(current_node: Node, start_node: Node, stop_node: Node) -> None:
+    if start_node is stop_node:
+        return
+    next_node = current_node.next
+    if current_node is stop_node:
+        start_node = start_node.next
+        next_node = start_node
+    elif current_node.value > current_node.next.value:
+        buffer_val = current_node.value
+        current_node.value = next_node.value
+        next_node.value = buffer_val
+    bubble_node_sort(next_node, start_node, stop_node)
+
+
 def sort_linked_list(input_list: LinkedList2) -> None:
     if input_list.head is None or input_list.tail is None:
         return
-
-    nodes_dict: dict[int, list[Node]] = {}
-    current_node = input_list.head
-    while current_node is not None:
-        if nodes_dict.get(current_node.value):
-            nodes_dict[current_node.value].append(current_node)
-        else:
-            nodes_dict[current_node.value] = [current_node]
-        current_node = current_node.next
-
-    sorted_values = sorted(list(nodes_dict.keys()))
-    prev_node = None
-    for val in sorted_values:
-        for iter_node in nodes_dict[val]:
-            if prev_node is None:
-                iter_node.prev = prev_node
-                prev_node = iter_node
-                continue
-            prev_node.next = iter_node
-            iter_node.prev = prev_node
-            prev_node = iter_node
-
-    input_list.head = nodes_dict[sorted_values[0]][0]
-    input_list.tail = nodes_dict[sorted_values[-1]][-1]
-    input_list.tail.next = None
+    bubble_node_sort(input_list.head, input_list.head, input_list.tail)
 
 
 def test_base_sort():
