@@ -9,6 +9,7 @@ class DummyNode(Node):
     def __init__(self, v):
         super().__init__(v)
 
+
 class LinkedList2:
     def __init__(self):
         self.head = DummyNode(None)
@@ -59,7 +60,7 @@ class LinkedList2:
     def delete(self, val, is_all=False) -> None:
         curr_node = self.head.next
         while type(curr_node) is Node:
-            if not (curr_node.value == val):
+            if not curr_node.value == val:
                 curr_node = curr_node.next
                 continue
 
@@ -154,7 +155,7 @@ def test_del_single_el_in_list():
 
     a.delete(2, True)
 
-    assert a.get_all_nodes() == []
+    assert not a.get_all_nodes()
     assert a.head.next.value is None
     assert a.tail.prev.value is None
     assert a.len() == 0
@@ -166,7 +167,7 @@ def test_del_all_el_in_two_el_list():
     a.add_in_tail(Node(2))
 
     a.delete(2, True)
-    assert a.get_all_nodes() == []
+    assert not a.get_all_nodes()
     assert a.head.next.value is None
     assert a.tail.prev.value is None
     assert a.len() == 0
@@ -352,7 +353,7 @@ def test_insert_to_head():
 def test_clean():
     a = prepare_test_data()
     a.clean()
-    assert a.get_all_nodes() == []
+    assert not a.get_all_nodes()
 
 
 def test_insert_to_head_in_empty_list():
@@ -379,7 +380,6 @@ def test_base_insert():
     assert a.tail.prev.next.value is None
     assert [(None, 1, None)] == a.get_all_nodes()
 
-
     a.insert(after_node=None, new_node=Node(2))
     assert a.head.next.value == 1
     assert a.head.next.prev.value is None
@@ -389,7 +389,6 @@ def test_base_insert():
     assert a.tail.prev.prev.value == 1
     assert a.tail.prev.next.value is None
     assert [(None, 1, 2), (1, 2, None)] == a.get_all_nodes()
-
 
     a.insert(after_node=Node(1), new_node=Node(0))
     assert a.head.next.next.value == 0
@@ -439,4 +438,3 @@ def test_base_insert_bound_case():
 
     a.insert(None, Node(4))
     assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, 4), (3, 4, None)]
-
