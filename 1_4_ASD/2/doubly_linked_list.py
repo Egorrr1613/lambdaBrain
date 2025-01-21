@@ -9,6 +9,7 @@ class LinkedList2:
     def __init__(self):
         self.head = None
         self.tail = None
+        self.count_node = 0
 
     def add_in_tail(self, item: Node) -> None:
         if self.head is None:
@@ -19,6 +20,7 @@ class LinkedList2:
             self.tail.next = item
             item.prev = self.tail
         self.tail = item
+        self.count_node += 1
 
     def print_all_nodes(self) -> None:
         node = self.head
@@ -62,6 +64,7 @@ class LinkedList2:
                 curr_node = curr_node.next
                 continue
 
+            self.count_node -= 1
             if curr_node is self.head and curr_node is self.tail:
                 self.head = None
                 self.tail = None
@@ -96,11 +99,7 @@ class LinkedList2:
         self.tail = None
 
     def len(self) -> int:
-        l_count, node = 0, self.head
-        while node is not None:
-            l_count += 1
-            node = node.next
-        return l_count
+        return self.count_node
 
     def insert(self, after_node, new_node) -> None:
         if after_node is None and self.len() == 0:
@@ -123,6 +122,7 @@ class LinkedList2:
         if curr_node is None:
             return
 
+        self.count_node += 1
         if curr_node is self.tail:
             buffer = self.tail
             self.tail = new_node
@@ -140,6 +140,7 @@ class LinkedList2:
     def add_in_head(self, new_node) -> None:
         new_node.prev = None
 
+        self.count_node += 1
         if self.head is None:
             self.head = new_node
             self.head.next = None

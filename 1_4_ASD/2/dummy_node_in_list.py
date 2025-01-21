@@ -16,6 +16,7 @@ class LinkedList2:
         self.tail = DummyNode(None)
         self.head.next = self.tail
         self.tail.prev = self.head
+        self.count_node = 0
 
     def add_in_tail(self, item: Node) -> None:
         item.prev = self.tail.prev
@@ -23,6 +24,7 @@ class LinkedList2:
 
         self.tail.prev.next = item
         self.tail.prev = item
+        self.count_node += 1
 
     def print_all_nodes(self) -> None:
         node = self.head.next
@@ -67,6 +69,7 @@ class LinkedList2:
             curr_node.prev.next = curr_node.next
             curr_node.next.prev = curr_node.prev
             curr_node = curr_node.next
+            self.count_node -= 1
             if not is_all:
                 return
 
@@ -75,11 +78,7 @@ class LinkedList2:
         self.tail.prev = self.head
 
     def len(self) -> int:
-        l_count, node = 0, self.head.next
-        while type(node) is Node:
-            l_count += 1
-            node = node.next
-        return l_count
+        return self.count_node
 
     def insert(self, after_node, new_node) -> None:
         if after_node is None and self.len() == 0:
@@ -100,6 +99,7 @@ class LinkedList2:
         new_node.next = curr_node.next
         new_node.next.prev = new_node
         new_node.prev.next = new_node
+        self.count_node += 1
 
     def add_in_head(self, new_node) -> None:
         new_node.prev = self.head
@@ -107,6 +107,7 @@ class LinkedList2:
 
         self.head.next.prev = new_node
         self.head.next = new_node
+        self.count_node += 1
 
 
 def prepare_test_data():
