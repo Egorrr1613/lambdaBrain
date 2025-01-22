@@ -4,6 +4,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from one_dummy_node_list import LinkedList2, Node, prepare_test_data
 
+
 def has_loop(input_list: LinkedList2) -> bool:
     if input_list.head is None or input_list.tail is None:
         return False
@@ -63,4 +64,26 @@ def test_loop_if_prev_link_is_loop():
     e.add_in_tail(Node(4))
 
     e.head.next.prev = e.head.next.next
+    assert has_loop(e)
+
+
+def test_has_loop_2():
+    e = LinkedList2()
+    e.add_in_tail(Node(1))
+    e.add_in_tail(Node(2))
+    e.add_in_tail(Node(3))
+    e.add_in_tail(Node(4))
+
+    e.tail.prev.next = e.head.next
+    assert has_loop(e)
+
+
+def test_has_loop_3():
+    e = LinkedList2()
+    e.add_in_tail(Node(1))
+    e.add_in_tail(Node(2))
+    e.add_in_tail(Node(3))
+    e.add_in_tail(Node(4))
+
+    e.tail.prev = e.head.next
     assert has_loop(e)
