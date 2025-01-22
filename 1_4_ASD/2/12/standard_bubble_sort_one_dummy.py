@@ -14,12 +14,32 @@ def sort_linked_list(input_list: LinkedList2) -> None:
         swapped = False
         for _ in range(count_step):
             if current_node.value > current_node.next.value:
-                buffer = current_node.next.value
-                current_node.next.value = current_node.value
-                current_node.value = buffer
+                node_prev_change = current_node.prev
+                node_after_change = current_node.next.next
+
+                node_prev_change.next = current_node.next
+                node_after_change.prev = current_node
+
+                node_moved_back = current_node.next
+
+                current_node.next = node_moved_back.next
+                node_moved_back.prev = current_node.prev
+
+                node_moved_back.next = current_node
+                current_node.prev = node_moved_back
                 swapped = True
-            current_node = current_node.next
+            else:
+                current_node = current_node.next
         count_step -= 1
+
+
+def test_sort_2_el():
+    a = LinkedList2()
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(1))
+    sort_linked_list(a)
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, None)]
+
 
 
 def test_base_sort():
