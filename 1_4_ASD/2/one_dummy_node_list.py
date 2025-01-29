@@ -119,6 +119,9 @@ class LinkedList2:
         node_prev_del.next = node_after_del
         node_after_del.prev = node_prev_del
 
+        node_to_del.prev = None
+        node_to_del.next = None
+
         self.count_node -= 1
 
     def insert_by_node(self, after_node: Node, node_to_insert: Node):
