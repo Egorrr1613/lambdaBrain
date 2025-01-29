@@ -363,13 +363,13 @@ def test_insert_to_head():
     a.add_in_head(Node(9))
 
     assert [
-               (None, 9, 10),
-               (9, 10, 1),
-               (10, 1, 2),
-               (1, 2, 3),
-               (2, 3, 2),
-               (3, 2, None),
-           ] == a.get_all_nodes()
+        (None, 9, 10),
+        (9, 10, 1),
+        (10, 1, 2),
+        (1, 2, 3),
+        (2, 3, 2),
+        (3, 2, None),
+    ] == a.get_all_nodes()
 
 
 def test_clean():
@@ -388,10 +388,6 @@ def test_insert_to_head_in_empty_list():
 
     a.add_in_head(Node(3))
     assert [(None, 3, 4), (3, 4, 5), (4, 5, None)] == a.get_all_nodes()
-
-
-"""Будут падать, так как изменил метод insert
-В финальной реализации он первым аргументом принимает существующую ноду списка"""
 
 
 def test_base_insert():
