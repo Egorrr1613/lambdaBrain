@@ -15,10 +15,10 @@ def sort_linked_list(input_list: LinkedList2) -> None:
         for _ in range(count_step):
             next_node = current_node.next
             if current_node.value > next_node.value:
-                input_list.delete_by_node(node_to_del=current_node)
-                input_list.insert_by_node(
-                    after_node=next_node, node_to_insert=current_node
-                )
+                node_to_move = input_list.find(val=current_node.value)
+                input_list.delete(val=current_node.value, is_all=False)
+                input_list.insert(after_node=next_node, node_to_insert=node_to_move)
+                current_node = node_to_move
                 swapped = True
             else:
                 current_node = next_node

@@ -94,12 +94,8 @@ class LinkedList2:
         if after_node is None:
             return
 
-        curr_node = self.find(val=after_node.value)
-        if curr_node is None:
-            return
-
-        node_to_insert.prev = curr_node
-        node_to_insert.next = curr_node.next
+        node_to_insert.prev = after_node
+        node_to_insert.next = after_node.next
         node_to_insert.next.prev = node_to_insert
         node_to_insert.prev.next = node_to_insert
         self.count_node += 1
@@ -110,27 +106,6 @@ class LinkedList2:
 
         self.head.next.prev = new_node
         self.head.next = new_node
-        self.count_node += 1
-
-    def delete_by_node(self, node_to_del: Node):
-        node_prev_del = node_to_del.prev
-        node_after_del = node_to_del.next
-
-        node_prev_del.next = node_after_del
-        node_after_del.prev = node_prev_del
-
-        node_to_del.prev = None
-        node_to_del.next = None
-
-        self.count_node -= 1
-
-    def insert_by_node(self, after_node: Node, node_to_insert: Node):
-        node_to_insert.prev = after_node
-        node_to_insert.next = after_node.next
-
-        after_node.next = node_to_insert
-        node_to_insert.next.prev = node_to_insert
-
         self.count_node += 1
 
 
@@ -392,7 +367,8 @@ def test_insert_to_head_in_empty_list():
     a.add_in_head(Node(3))
     assert [(None, 3, 4), (3, 4, 5), (4, 5, None)] == a.get_all_nodes()
 
-
+"""Будут падать, так как изменил метод insert
+В финальной реализации он первым аргументом принимает существующую ноду списка"""
 def test_base_insert():
     a = LinkedList2()
     a.insert(after_node=None, node_to_insert=Node(1))
