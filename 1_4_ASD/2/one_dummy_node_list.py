@@ -64,15 +64,13 @@ class LinkedList2:
         return res
 
     def delete(self, val, is_all=False) -> None:
-        curr_node = self.head.next
-        while type(curr_node) is Node:
-            if not curr_node.value == val:
-                curr_node = curr_node.next
-                continue
+        while True:
+            node_to_del = self.find(val=val)
+            if node_to_del is None:
+                return
 
-            curr_node.prev.next = curr_node.next
-            curr_node.next.prev = curr_node.prev
-            curr_node = curr_node.next
+            node_to_del.prev.next = node_to_del.next
+            node_to_del.next.prev = node_to_del.prev
             self.count_node -= 1
 
             if not is_all:
@@ -85,25 +83,25 @@ class LinkedList2:
     def len(self) -> int:
         return self.count_node
 
-    def insert(self, after_node, new_node) -> None:
+    def insert(self, after_node, node_to_insert) -> None:
         if after_node is None and self.len() == 0:
-            self.add_in_head(new_node)
+            self.add_in_head(node_to_insert)
             return
         if after_node is None and self.len() > 0:
-            self.add_in_tail(new_node)
+            self.add_in_tail(node_to_insert)
             return
 
         if after_node is None:
             return
 
-        curr_node = self.find(after_node.value)
+        curr_node = self.find(val=after_node.value)
         if curr_node is None:
             return
 
-        new_node.prev = curr_node
-        new_node.next = curr_node.next
-        new_node.next.prev = new_node
-        new_node.prev.next = new_node
+        node_to_insert.prev = curr_node
+        node_to_insert.next = curr_node.next
+        node_to_insert.next.prev = node_to_insert
+        node_to_insert.prev.next = node_to_insert
         self.count_node += 1
 
     def add_in_head(self, new_node) -> None:
@@ -112,6 +110,24 @@ class LinkedList2:
 
         self.head.next.prev = new_node
         self.head.next = new_node
+        self.count_node += 1
+
+    def delete_by_node(self, node_to_del: Node):
+        node_prev_del = node_to_del.prev
+        node_after_del = node_to_del.next
+
+        node_prev_del.next = node_after_del
+        node_after_del.prev = node_prev_del
+
+        self.count_node -= 1
+
+    def insert_by_node(self, after_node: Node, node_to_insert: Node):
+        node_to_insert.prev = after_node
+        node_to_insert.next = after_node.next
+
+        after_node.next = node_to_insert
+        node_to_insert.next.prev = node_to_insert
+
         self.count_node += 1
 
 
@@ -376,7 +392,7 @@ def test_insert_to_head_in_empty_list():
 
 def test_base_insert():
     a = LinkedList2()
-    a.insert(after_node=None, new_node=Node(1))
+    a.insert(after_node=None, node_to_insert=Node(1))
     assert a.head.next.value == 1
     assert a.head.next.prev.value is None
     assert a.head.next.next.value is None
@@ -386,7 +402,7 @@ def test_base_insert():
     assert a.tail.prev.next.value is None
     assert [(None, 1, None)] == a.get_all_nodes()
 
-    a.insert(after_node=None, new_node=Node(2))
+    a.insert(after_node=None, node_to_insert=Node(2))
     assert a.head.next.value == 1
     assert a.head.next.prev.value is None
     assert a.head.next.next.value == 2
@@ -396,7 +412,7 @@ def test_base_insert():
     assert a.tail.prev.next.value is None
     assert [(None, 1, 2), (1, 2, None)] == a.get_all_nodes()
 
-    a.insert(after_node=Node(1), new_node=Node(0))
+    a.insert(after_node=Node(1), node_to_insert=Node(0))
     assert a.head.next.next.value == 0
     assert a.head.next.prev.value is None
     assert a.head.next.value == 1
@@ -406,16 +422,16 @@ def test_base_insert():
     assert a.tail.prev.next.value is None
     assert [(None, 1, 0), (1, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
-    a.insert(after_node=Node(1), new_node=Node(1))
+    a.insert(after_node=Node(1), node_to_insert=Node(1))
     assert [(None, 1, 1), (1, 1, 0), (1, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
-    a.insert(after_node=Node(22), new_node=Node(1))
+    a.insert(after_node=Node(22), node_to_insert=Node(1))
     assert [(None, 1, 1), (1, 1, 0), (1, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
     a.delete(1)
     assert [(None, 1, 0), (1, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
-    a.insert(after_node=Node(1), new_node=Node(99))
+    a.insert(after_node=Node(1), node_to_insert=Node(99))
     assert [(None, 1, 99), (1, 99, 0), (99, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
 

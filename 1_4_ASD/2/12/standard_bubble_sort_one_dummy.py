@@ -14,19 +14,10 @@ def sort_linked_list(input_list: LinkedList2) -> None:
         swapped = False
         for _ in range(count_step):
             if current_node.value > current_node.next.value:
-                node_prev_changed_pair = current_node.prev
-                node_after_changed_pair = current_node.next.next
-
-                node_prev_changed_pair.next = current_node.next
-                node_after_changed_pair.prev = current_node
-
-                node_moved_back = current_node.next
-
-                current_node.next = node_moved_back.next
-                node_moved_back.prev = current_node.prev
-
-                node_moved_back.next = current_node
-                current_node.prev = node_moved_back
+                input_list.delete_by_node(node_to_del=current_node)
+                input_list.insert_by_node(
+                    after_node=current_node.next, node_to_insert=current_node
+                )
                 swapped = True
             else:
                 current_node = current_node.next
@@ -39,7 +30,6 @@ def test_sort_2_el():
     a.add_in_tail(Node(1))
     sort_linked_list(a)
     assert a.get_all_nodes() == [(None, 1, 2), (1, 2, None)]
-
 
 
 def test_base_sort():
@@ -122,3 +112,72 @@ def test_no_need_sort_one_el_lin_tail():
 
     sort_linked_list(a)
     assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 2), (2, 2, 3), (2, 3, None)]
+
+
+def test_bubble_any_equal_big_node_1():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+
+    sort_linked_list(a)
+    assert a.get_all_nodes() == [
+        (None, 1, 2),
+        (1, 2, 3),
+        (2, 3, 5),
+        (3, 5, 5),
+        (5, 5, 5),
+        (5, 5, None),
+    ]
+
+
+def test_bubble_any_equal_big_node_2():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+
+    sort_linked_list(a)
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, 5), (3, 5, None)]
+
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+
+    sort_linked_list(a)
+    assert a.get_all_nodes() == [
+        (None, 1, 2),
+        (1, 2, 3),
+        (2, 3, 5),
+        (3, 5, 5),
+        (5, 5, 5),
+        (5, 5, None),
+    ]
+
+
+def test_bubble_any_equal_big_node_3():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+    a.add_in_tail(Node(5))
+
+    sort_linked_list(a)
+    assert a.get_all_nodes() == [
+        (None, 1, 2),
+        (1, 2, 3),
+        (2, 3, 5),
+        (3, 5, 5),
+        (5, 5, 5),
+        (5, 5, None),
+    ]
