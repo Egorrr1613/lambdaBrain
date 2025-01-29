@@ -94,6 +94,9 @@ class LinkedList2:
         if after_node is None:
             return
 
+        if after_node.next is None or after_node.prev is None:
+            return
+
         node_to_insert.prev = after_node
         node_to_insert.next = after_node.next
         node_to_insert.next.prev = node_to_insert
@@ -107,6 +110,25 @@ class LinkedList2:
         self.head.next.prev = new_node
         self.head.next = new_node
         self.count_node += 1
+
+    def sort(self):
+        count_step = self.len() - 1
+        swapped = True
+        while swapped:
+            current_node = self.head.next
+
+            swapped = False
+            for _ in range(count_step):
+                next_node = current_node.next
+                if current_node.value > next_node.value:
+                    current_node.prev.next = current_node.next
+                    current_node.next.prev = current_node.prev
+
+                    self.insert(after_node=next_node, node_to_insert=current_node)
+                    swapped = True
+                else:
+                    current_node = next_node
+            count_step -= 1
 
 
 def prepare_test_data():
@@ -367,8 +389,11 @@ def test_insert_to_head_in_empty_list():
     a.add_in_head(Node(3))
     assert [(None, 3, 4), (3, 4, 5), (4, 5, None)] == a.get_all_nodes()
 
+
 """Будут падать, так как изменил метод insert
 В финальной реализации он первым аргументом принимает существующую ноду списка"""
+
+
 def test_base_insert():
     a = LinkedList2()
     a.insert(after_node=None, node_to_insert=Node(1))
@@ -391,7 +416,7 @@ def test_base_insert():
     assert a.tail.prev.next.value is None
     assert [(None, 1, 2), (1, 2, None)] == a.get_all_nodes()
 
-    a.insert(after_node=Node(1), node_to_insert=Node(0))
+    a.insert(after_node=a.head.next, node_to_insert=Node(0))
     assert a.head.next.next.value == 0
     assert a.head.next.prev.value is None
     assert a.head.next.value == 1
@@ -401,7 +426,7 @@ def test_base_insert():
     assert a.tail.prev.next.value is None
     assert [(None, 1, 0), (1, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
-    a.insert(after_node=Node(1), node_to_insert=Node(1))
+    a.insert(after_node=a.head.next, node_to_insert=Node(1))
     assert [(None, 1, 1), (1, 1, 0), (1, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
     a.insert(after_node=Node(22), node_to_insert=Node(1))
@@ -410,7 +435,7 @@ def test_base_insert():
     a.delete(1)
     assert [(None, 1, 0), (1, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
-    a.insert(after_node=Node(1), node_to_insert=Node(99))
+    a.insert(after_node=a.head.next, node_to_insert=Node(99))
     assert [(None, 1, 99), (1, 99, 0), (99, 0, 2), (0, 2, None)] == a.get_all_nodes()
 
 
@@ -420,7 +445,7 @@ def test_base_insert_2():
     a.add_in_tail(Node(2))
     a.add_in_tail(Node(4))
 
-    a.insert(Node(2), Node(3))
+    a.insert(a.head.next.next, Node(3))
 
     assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, 4), (3, 4, None)]
     assert a.len() == 4
@@ -435,9 +460,196 @@ def test_base_insert_bound_case():
     a.insert(None, Node(3))
     assert a.get_all_nodes() == [(None, 1, 3), (1, 3, None)]
 
-    a.insert(Node(1), Node(2))
+    a.insert(a.head.next, Node(2))
     assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, None)]
 
     a.insert(None, Node(4))
     assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, 4), (3, 4, None)]
     assert a.len() == 4
+
+
+"""Sort tests:"""
+
+
+def test_sort_2_el():
+    a = LinkedList2()
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(1))
+    a.sort()
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, None)]
+
+
+def test_base_sort():
+    a = prepare_test_data()
+    a.sort()
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 2), (2, 2, 3), (2, 3, None)]
+
+
+def test_sort_empty_list():
+    a = LinkedList2()
+    a.sort()
+    assert not a.get_all_nodes()
+
+
+def test_sort_one_el_list():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.sort()
+    assert a.get_all_nodes() == [(None, 1, None)]
+
+
+def test_sort_two_el_list():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(0))
+    a.sort()
+    assert a.get_all_nodes() == [(None, 0, 1), (0, 1, None)]
+
+
+def test_sort_two_el_list_no_need_sort():
+    a = LinkedList2()
+    a.add_in_tail(Node(0))
+    a.add_in_tail(Node(1))
+    a.sort()
+    assert a.get_all_nodes() == [(None, 0, 1), (0, 1, None)]
+
+
+def test_sort_any_el_list():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(0))
+    a.add_in_tail(Node(-1))
+    a.sort()
+    assert a.get_all_nodes() == [(None, -1, 0), (-1, 0, 1), (0, 1, None)]
+
+    b = LinkedList2()
+    b.add_in_tail(Node(3))
+    b.add_in_tail(Node(2))
+    b.add_in_tail(Node(1))
+    b.sort()
+    assert b.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, None)]
+
+
+def test_no_need_sort_any_el_list():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(1))
+
+    a.sort()
+    assert a.get_all_nodes() == [(None, 1, 1), (1, 1, 1), (1, 1, None)]
+
+
+def test_no_need_sort_any_el_list_2():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+
+    a.sort()
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, None)]
+
+
+def test_no_need_sort_one_el_lin_tail():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+    a.add_in_tail(Node(2))
+
+    a.sort()
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 2), (2, 2, 3), (2, 3, None)]
+
+
+def test_bubble_any_equal_big_node_1():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+
+    a.sort()
+    assert a.get_all_nodes() == [
+        (None, 1, 2),
+        (1, 2, 3),
+        (2, 3, 5),
+        (3, 5, 5),
+        (5, 5, 5),
+        (5, 5, None),
+    ]
+
+
+def test_bubble_any_equal_big_node_2():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+
+    a.sort()
+    assert a.get_all_nodes() == [(None, 1, 2), (1, 2, 3), (2, 3, 5), (3, 5, None)]
+
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+
+    a.sort()
+    assert a.get_all_nodes() == [
+        (None, 1, 2),
+        (1, 2, 3),
+        (2, 3, 5),
+        (3, 5, 5),
+        (5, 5, 5),
+        (5, 5, None),
+    ]
+
+
+def test_bubble_any_equal_big_node_3():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(3))
+    a.add_in_tail(Node(5))
+
+    a.sort()
+    assert a.get_all_nodes() == [
+        (None, 1, 2),
+        (1, 2, 3),
+        (2, 3, 5),
+        (3, 5, 5),
+        (5, 5, 5),
+        (5, 5, None),
+    ]
+
+
+def test_bubble_any_equal_big_node_4():
+    a = LinkedList2()
+    a.add_in_tail(Node(1))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(2))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(5))
+    a.add_in_tail(Node(3))
+    a.add_in_tail(Node(5))
+
+    a.sort()
+    assert a.get_all_nodes() == [
+        (None, 1, 2),
+        (1, 2, 3),
+        (2, 3, 5),
+        (3, 5, 5),
+        (5, 5, 5),
+        (5, 5, 5),
+        (5, 5, 5),
+        (5, 5, None),
+    ]
+
