@@ -1,5 +1,6 @@
 import pytest
-from dyn_array import DynArray
+
+from ASD_FIRST.three_lesson.dyn_array import DynArray
 
 
 def prepare_test_data(len_array: int) -> DynArray:
