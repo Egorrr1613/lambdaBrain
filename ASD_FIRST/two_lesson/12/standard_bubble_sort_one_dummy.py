@@ -1,9 +1,4 @@
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from one_dummy_node_list import Node, LinkedList2, prepare_test_data
-
+from ASD_FIRST.two_lesson.one_dummy_node_list import LinkedList2, Node, prepare_test_data
 
 def sort_linked_list(input_list: LinkedList2) -> None:
     count_step = input_list.len() - 1
