@@ -174,19 +174,19 @@ def test_bank_array_state():
     da.append(itm=3)
     da.append(itm=4)
     assert len(da) == 5
-    assert da.bank == 15
+    assert da.coin_count == 15
     assert da.capacity == 16
     assert da.price_to_next_resize == 32
 
     da.delete(4)
     assert len(da) == 4
-    assert da.bank == 12
+    assert da.coin_count == 12
     assert da.capacity == 16
     assert da.price_to_next_resize == 32
 
     da.append(88)
     assert len(da) == 5
-    assert da.bank == 15
+    assert da.coin_count == 15
     assert da.capacity == 16
     assert da.price_to_next_resize == 32
 
@@ -194,13 +194,13 @@ def test_bank_array_state():
         da.append(str(i))
 
     assert len(da) == 10
-    assert da.bank == 30
+    assert da.coin_count == 30
     assert da.capacity == 16
     assert da.price_to_next_resize == 32
 
     da.insert(8, "abdc")
     assert len(da) == 11
-    assert da.bank == 33
+    assert da.coin_count == 33
     assert da.capacity == 32
     assert da.price_to_next_resize == 64
 
@@ -212,5 +212,5 @@ def test_del_to_empty():
     da.delete(0)
 
     assert len(da) == 0
-    assert da.bank == 0
+    assert da.coin_count == 0
 

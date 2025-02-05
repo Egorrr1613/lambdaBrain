@@ -8,7 +8,7 @@ class DynArray:
         self.capacity = 16
         self.array = self.make_array(self.capacity)
 
-        self.bank = 0
+        self.coin_count = 0
         self.price_to_next_resize = self.__get_new_price__()
 
     def __len__(self):
@@ -40,9 +40,9 @@ class DynArray:
         self.price_to_next_resize = self.__get_new_price__()
 
     def append(self, itm):
-        self.bank += 3
+        self.coin_count += 3
 
-        if self.bank >= self.price_to_next_resize:
+        if self.coin_count >= self.price_to_next_resize:
             self.resize(2 * self.capacity)
 
         self.array[self.count] = itm
@@ -56,9 +56,9 @@ class DynArray:
             self.append(itm=itm)
             return
 
-        self.bank += 3
+        self.coin_count += 3
 
-        if self.bank >= self.price_to_next_resize:
+        if self.coin_count >= self.price_to_next_resize:
             self.resize(2 * self.capacity)
 
         for i_range in range(self.count, i, -1):
@@ -77,7 +77,7 @@ class DynArray:
 
         self.count -= 1
         self.resize(self.capacity)
-        self.bank -= 3
+        self.coin_count -= 3
 
     def get_list_elements(self):
         return list(self.array._objects.values())
