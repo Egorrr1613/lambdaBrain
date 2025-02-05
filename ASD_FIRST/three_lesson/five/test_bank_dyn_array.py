@@ -167,6 +167,10 @@ def test_insert_2():
 
 def test_bank_array_state():
     da = DynArray()
+    assert len(da) == 0
+    assert da.coin_count == 0
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
 
     da.append(itm=0)
     da.append(itm=1)
@@ -203,6 +207,12 @@ def test_bank_array_state():
     assert da.coin_count == 33
     assert da.capacity == 32
     assert da.price_to_next_resize == 64
+
+    da.delete(i=0)
+    assert len(da) == 10
+    assert da.coin_count == 30
+    assert da.capacity == 21
+    assert da.price_to_next_resize == 32
 
 
 def test_del_to_empty():
