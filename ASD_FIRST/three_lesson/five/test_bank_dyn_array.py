@@ -167,41 +167,43 @@ def test_insert_2():
 
 def test_bank_array_state():
     da = DynArray()
-    da.append(0)
-    da.append(1)
-    da.append(2)
-    da.append(3)
-    da.append(4)
-    assert len(da) is 5
-    assert da.bank is 15
-    assert da.capacity is 16
-    assert da.price_to_next_resize is 32
+
+    da.append(itm=0)
+    da.append(itm=1)
+    da.append(itm=2)
+    da.append(itm=3)
+    da.append(itm=4)
+    assert len(da) == 5
+    assert da.bank == 15
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
 
     da.delete(4)
-    assert len(da) is 4
-    assert da.bank is 12
-    assert da.capacity is 16
-    assert da.price_to_next_resize is 32
+    assert len(da) == 4
+    assert da.bank == 12
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
 
     da.append(88)
-    assert len(da) is 5
-    assert da.bank is 15
-    assert da.capacity is 16
-    assert da.price_to_next_resize is 32
+    assert len(da) == 5
+    assert da.bank == 15
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
 
     for i in range(5):
         da.append(str(i))
 
-    assert len(da) is 10
-    assert da.bank is 30
-    assert da.capacity is 16
-    assert da.price_to_next_resize is 32
+    assert len(da) == 10
+    assert da.bank == 30
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
 
     da.insert(8, "abdc")
-    assert len(da) is 11
-    assert da.bank is 33
-    assert da.capacity is 32
-    assert da.price_to_next_resize is 64
+    assert len(da) == 11
+    assert da.bank == 33
+    assert da.capacity == 32
+    assert da.price_to_next_resize == 64
+
 
 def test_del_to_empty():
     da = prepare_test_data(3)
@@ -209,5 +211,6 @@ def test_del_to_empty():
     da.delete(0)
     da.delete(0)
 
-    assert len(da) is 0
-    assert da.bank is 0
+    assert len(da) == 0
+    assert da.bank == 0
+
