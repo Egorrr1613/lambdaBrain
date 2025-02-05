@@ -1,6 +1,6 @@
 import pytest
 
-from ASD_FIRST.three_lesson.dyn_array import DynArray
+from ASD_FIRST.three_lesson.five.bank_dyn_array import DynArray
 
 
 def prepare_test_data(len_array: int) -> DynArray:
@@ -17,17 +17,6 @@ def test_insert():
     assert len(da) == 9
     assert da.capacity == 16
     assert da.get_list_elements() == [0, 1, 2, 3, 99, 4, 5, 6, 7]
-
-
-def test_insert_if_insert_index_eq_count():
-    da = prepare_test_data(len_array=8)
-    assert len(da) == 8
-    da.insert(i=8, itm=88)
-
-    assert len(da) == 9
-    assert da.capacity == 16
-    assert da.get_list_elements() == [0, 1, 2, 3, 4, 5, 6, 7, 88]
-
 
 
 def test_insert_resize():
@@ -101,6 +90,15 @@ def test_insert_to_empty_list():
     assert da.get_list_elements() == [99, 98]
 
 
+def test_insert_if_i_eq_count():
+    da = prepare_test_data(len_array=8)
+    da.insert(i=8, itm=88)
+
+    assert len(da) == 9
+    assert da.capacity == 16
+    assert da.get_list_elements() == [0, 1, 2, 3, 4, 5, 6, 7, 88]
+
+
 def test_delete():
     da = prepare_test_data(3)
     da.delete(1)
@@ -155,3 +153,61 @@ def test_delete_resize():
     assert len(da) == 9
     assert da.capacity == 16
     assert da.get_list_elements() == [0, 7, 10, 11, 12, 13, 14, 15, 16]
+
+
+def test_insert_2():
+    da = prepare_test_data(len_array=8)
+    da.insert(i=4, itm=99)
+    da.insert(i=4, itm=99)
+
+    assert len(da) == 10
+    assert da.capacity == 16
+    assert da.get_list_elements() == [0, 1, 2, 3, 99, 99, 4, 5, 6, 7]
+
+
+def test_bank_array_state():
+    da = DynArray()
+    da.append(0)
+    da.append(1)
+    da.append(2)
+    da.append(3)
+    da.append(4)
+    assert len(da) is 5
+    assert da.bank is 15
+    assert da.capacity is 16
+    assert da.price_to_next_resize is 32
+
+    da.delete(4)
+    assert len(da) is 4
+    assert da.bank is 12
+    assert da.capacity is 16
+    assert da.price_to_next_resize is 32
+
+    da.append(88)
+    assert len(da) is 5
+    assert da.bank is 15
+    assert da.capacity is 16
+    assert da.price_to_next_resize is 32
+
+    for i in range(5):
+        da.append(str(i))
+
+    assert len(da) is 10
+    assert da.bank is 30
+    assert da.capacity is 16
+    assert da.price_to_next_resize is 32
+
+    da.insert(8, "abdc")
+    assert len(da) is 11
+    assert da.bank is 33
+    assert da.capacity is 32
+    assert da.price_to_next_resize is 64
+
+def test_del_to_empty():
+    da = prepare_test_data(3)
+    da.delete(0)
+    da.delete(0)
+    da.delete(0)
+
+    assert len(da) is 0
+    assert da.bank is 0

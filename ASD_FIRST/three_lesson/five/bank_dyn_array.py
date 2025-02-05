@@ -8,8 +8,20 @@ class DynArray:
         self.capacity = 16
         self.array = self.make_array(self.capacity)
 
+        self.bank = 0
+        self.price_to_next_resize = self.__get_new_price__()
+
     def __len__(self):
         return self.count
+
+    def __get_new_price__(self):
+        pow_of_two = 1
+        new_buffer_size = self.capacity * 2
+
+        while True:
+            if 2 ** (pow_of_two + 1) > new_buffer_size:
+                return 2 ** pow_of_two
+            pow_of_two += 1
 
     def make_array(self, new_capacity):
         return (new_capacity * ctypes.py_object)()
@@ -25,21 +37,28 @@ class DynArray:
             new_array[i] = self.array[i]
         self.array = new_array
         self.capacity = new_capacity
+        self.price_to_next_resize = self.__get_new_price__()
 
     def append(self, itm):
-        if self.count == self.capacity:
+        self.bank += 3
+
+        if self.bank >= self.price_to_next_resize:
             self.resize(2 * self.capacity)
+
         self.array[self.count] = itm
         self.count += 1
 
     def insert(self, i, itm):
+        if i < 0 or i > self.count:
+            raise IndexError("Incorrect index")
+
         if i is self.count:
             self.append(itm=itm)
             return
 
-        self.__getitem__(i)
+        self.bank += 3
 
-        if self.count == self.capacity:
+        if self.bank >= self.price_to_next_resize:
             self.resize(2 * self.capacity)
 
         for i_range in range(self.count, i, -1):
@@ -58,6 +77,7 @@ class DynArray:
 
         self.count -= 1
         self.resize(self.capacity)
+        self.bank -= 3
 
     def get_list_elements(self):
         return list(self.array._objects.values())
