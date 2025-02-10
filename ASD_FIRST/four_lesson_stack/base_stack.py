@@ -23,3 +23,4 @@ class Stack:
         if self.size() == 0:
             return None
         return self.stack[self.size() - 1]
+
