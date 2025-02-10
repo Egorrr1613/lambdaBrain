@@ -80,8 +80,11 @@ class LinkedList2:
         self.head.next = self.tail
         self.tail.prev = self.head
 
-    def len(self) -> int:
+    def __len__(self) -> int:
         return self.count_node
+
+    def len(self) -> int:
+        return self.__len__()
 
     def insert(self, after_node, node_to_insert) -> None:
         if after_node is None and self.len() == 0:
