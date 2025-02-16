@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_PATH="1_4_ASD/2/12/standard_bubble_sort_one_dummy.py"
+FILE_PATH="ASD_FIRST/three_lesson/five/bank_dyn_array_no_price.py"
 
 python3 -m black "$FILE_PATH"
 python3 -m darker "$FILE_PATH"
