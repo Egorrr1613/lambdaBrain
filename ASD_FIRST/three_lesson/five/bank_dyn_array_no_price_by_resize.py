@@ -2,6 +2,11 @@ import ctypes
 
 
 class DynArray:
+    """
+    Реализация динамического массива с применением банковского метода
+
+    Реолокация происходит по достижению предела заполнения массива
+    """
 
     def __init__(self):
         self.elements_count = 0
@@ -94,7 +99,7 @@ class DynArray:
             равное количеству перемещаемых элементов
             (по одной монетке на каждую элементарную операцию вставки)
         """
-        self.__getitem__(i)
+        _ = self[i]
 
         if (self.capacity > 16) and (self.elements_count - 1 < self.capacity // 2):
             self.capacity = max(16, int(self.capacity / 1.5))

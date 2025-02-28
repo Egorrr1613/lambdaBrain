@@ -1,6 +1,11 @@
+"""
+Модуль с тестами на динамический массив с банковским методом.
+Вариант релокации: 'Когда текущий массив полностью заполняется'
+"""
+
 import pytest
 
-from ASD_FIRST.three_lesson.five.bank_dyn_array_no_price import DynArray
+from ASD_FIRST.three_lesson.five.bank_dyn_array_no_price_by_resize import DynArray
 
 
 def prepare_test_data(len_array: int) -> DynArray:

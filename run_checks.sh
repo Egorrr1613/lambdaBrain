@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_PATH="ASD_FIRST/three_lesson/five/bank_dyn_array_no_price.py"
+FILE_PATH="ASD_FIRST/three_lesson/six/"
 
 python3 -m black "$FILE_PATH"
 python3 -m darker "$FILE_PATH"

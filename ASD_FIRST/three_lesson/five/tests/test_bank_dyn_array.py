@@ -1,3 +1,9 @@
+"""
+Модуль с тестами на динамический массив с банковским методом.
+Вариант релокации: 'Когда достигается граница накопленных монет'
+
+ЧАСТЬ ТЕСТОВ НЕ РАБОТАЕТ! - решил сделать альтернативную реализацию
+"""
 import pytest
 
 from ASD_FIRST.three_lesson.five.bank_dyn_array import DynArray
@@ -102,7 +108,24 @@ def test_insert_if_i_eq_count():
 def test_delete():
     da = prepare_test_data(3)
     da.delete(1)
+    # da.array[0] = None
+    # da.array[1] = None
+    # x = da.array
+    # print(x)
+    # array = (ctypes.py_object * 5)()
 
+    # # Заполнение массива различными объектами
+    # array[0] = 42  # Число
+    # array[0] = None  # Число
+    # array[1] = "Hello"  # Строка
+    # array[2] = [1, 2, 3]  # Список
+    # array[3] = {"key": "value"}  # Словарь
+    # array[4] = None  # None
+    #
+    # array[3] = None  # Словарь
+
+    # for i in range(5):
+    #     print(array[i])
     assert len(da) == 2
     assert da.capacity == 16
     assert da.get_list_elements() == [0, 2]
@@ -165,10 +188,26 @@ def test_insert_2():
     assert da.get_list_elements() == [0, 1, 2, 3, 99, 99, 4, 5, 6, 7]
 
 
+def test_bank_array_state_add_and_del():
+    da = DynArray()
+
+    da.append(itm=0)
+    assert len(da) == 1
+    assert da.coin_count_in_bank == 2
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
+
+    da.delete(i=0)
+    assert len(da) == 0
+    assert da.coin_count_in_bank == 3
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
+
+
 def test_bank_array_state():
     da = DynArray()
     assert len(da) == 0
-    assert da.coin_count == 0
+    assert da.coin_count_in_bank == 0
     assert da.capacity == 16
     assert da.price_to_next_resize == 32
 
@@ -178,19 +217,19 @@ def test_bank_array_state():
     da.append(itm=3)
     da.append(itm=4)
     assert len(da) == 5
-    assert da.coin_count == 15
+    assert da.coin_count_in_bank == 15
     assert da.capacity == 16
     assert da.price_to_next_resize == 32
 
     da.delete(4)
     assert len(da) == 4
-    assert da.coin_count == 12
+    assert da.coin_count_in_bank == 13
     assert da.capacity == 16
     assert da.price_to_next_resize == 32
 
     da.append(88)
     assert len(da) == 5
-    assert da.coin_count == 15
+    assert da.coin_count_in_bank == 16
     assert da.capacity == 16
     assert da.price_to_next_resize == 32
 
@@ -198,19 +237,19 @@ def test_bank_array_state():
         da.append(str(i))
 
     assert len(da) == 10
-    assert da.coin_count == 30
+    assert da.coin_count_in_bank == 30
     assert da.capacity == 16
     assert da.price_to_next_resize == 32
 
     da.insert(8, "abdc")
     assert len(da) == 11
-    assert da.coin_count == 33
+    assert da.coin_count_in_bank == 33
     assert da.capacity == 32
     assert da.price_to_next_resize == 64
 
     da.delete(i=0)
     assert len(da) == 10
-    assert da.coin_count == 30
+    assert da.coin_count_in_bank == 30
     assert da.capacity == 21
     assert da.price_to_next_resize == 32
 
@@ -222,5 +261,51 @@ def test_del_to_empty():
     da.delete(0)
 
     assert len(da) == 0
-    assert da.coin_count == 0
+    assert da.coin_count_in_bank == 3
 
+
+"""new test:"""
+def test_init_state_and_after_append_state():
+    da = DynArray()
+
+    "Состояние массива после инициализации"
+    assert len(da) == 0
+    assert da.coin_count_in_bank == 0
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
+
+    "Состояние массива после добавления первого элемента в хвост"
+    da.append(99)
+    assert len(da) == 1
+    assert da.coin_count_in_bank == 2
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
+
+
+def test_append_with_resize_state():
+    da = DynArray()
+
+    for _ in range(15):
+        da.append("xxx")
+
+    assert len(da) == 15
+    assert da.coin_count_in_bank == 30
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
+
+    da.append("yyy")
+    assert len(da) == 16
+    assert da.coin_count_in_bank == 32
+    assert da.capacity == 16
+    assert da.price_to_next_resize == 32
+
+    da.append("zzz")
+    assert len(da) == 17
+    assert da.coin_count_in_bank == 18
+    assert da.capacity == 32
+    assert da.price_to_next_resize == 64
+
+    for _ in range(14):
+        da.append("nnn")
+
+    da.append('xyz')
