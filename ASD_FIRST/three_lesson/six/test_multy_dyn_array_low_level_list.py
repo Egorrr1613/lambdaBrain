@@ -2,11 +2,11 @@
 
 import pytest
 
-from ASD_FIRST.three_lesson.six.multy_dyn_array import ValueKeepListClass
+from ASD_FIRST.three_lesson.six.multy_dyn_array import DynMultyArray, ValueKeepListClass
 
 
 def test_value_keep_list_has_element_by_index_method():
-    va = ValueKeepListClass(5)
+    va = ValueKeepListClass(capacity=5, parent=DynMultyArray(dim_count=1, dim_size=[1]))
 
     va[1] = "44"
 
@@ -25,7 +25,9 @@ def test_value_keep_list_has_element_by_index_method():
 
 
 def test_list_value_keep():
-    list_with_data = ValueKeepListClass(capacity=3)
+    list_with_data = ValueKeepListClass(
+        capacity=3, parent=DynMultyArray(dim_count=1, dim_size=[1])
+    )
     assert len(list_with_data) == 0
 
     list_with_data[0] = 5

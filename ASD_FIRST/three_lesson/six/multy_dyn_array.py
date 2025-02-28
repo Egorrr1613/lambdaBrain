@@ -8,11 +8,12 @@ class ValueKeepListClass:
     Класс для хранения конечных данных динамического многомерного массива
     """
 
-    def __init__(self, capacity: int):
+    def __init__(self, capacity: int, parent):
         self.capacity = capacity
         self.count_elements = 0
         self.array = (capacity * ctypes.py_object)()
         self.last_insert_index = 0
+        self.parent = parent
 
     def __getitem__(self, i):
         response_code = self.has_element_by_index(index=i)
@@ -40,6 +41,7 @@ class ValueKeepListClass:
         if response_code == 0:
             self.array[key] = value
             self.count_elements += 1
+            self.parent.elements_count += 1
             return
 
         raise ValueError(f"Response code {response_code} was not processed")
@@ -50,7 +52,7 @@ class ValueKeepListClass:
 
         :param index: Проверяемый индекс
         :return: Код ответа.
-            1 - Ячейка памяти хранит какое то значение
+            1 - Ячейка памяти хранит какое-то значение
             0 - Пустая ячейка памяти
             -1 - Выход за пределы массива
         """
@@ -62,25 +64,6 @@ class ValueKeepListClass:
         except ValueError:
             return 0
         return 1
-
-
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
-#######################################################################
 
 
 def list_multiplication(list_int: list[int]):
@@ -97,17 +80,17 @@ class DynMultyArray:
     """
     Класс, реализующий многомерный динамический массив
 
-    Стурктура выглядит так:
+    Структура выглядит так:
 
     1) Класс обертка DynMultyArray
-        а) реализуюет логику реалокации многомерного массива
+        а) реализуют логику реаллокации многомерного массива
         б) хранит массив ссылок (list)
         в) реализует логику увеличения размерности (измерения) массива
-        г) позволяет получить элемент по "абсолютному" индексу - тоесть без обращения к внутренней структуре
+        г) позволяет получить элемент по "абсолютному" индексу
 
     2) Массив ссылок (self.array) хранит либо:
-        а) ссылки на массивы ссылок - т.е. реализует измерения
-        б) ссылки на объект ValueKeepListClass - конечные хранимые занчения
+        а) ссылки на массивы ссылок. Каждый уровень вложенности - это 1 измерение
+        б) ссылки на объект ValueKeepListClass - конечные хранимые значения
 
     Количество "уровней" вложенности определяет размерность массива
     """
@@ -143,8 +126,11 @@ class DynMultyArray:
             self.dim_size
         )  # количество ячеек для хранения данных
 
-        self.array: list[list] | list[ValueKeepListClass] = self.recursive_create_list(
-            deep=self.dim_count, current_deep_index=0, dims_lens=self.dim_size
+        self.array: list[list] | ValueKeepListClass = self.recursive_create_list(
+            deep=self.dim_count,
+            current_deep_index=0,
+            dims_lens=self.dim_size,
+            replace_el_index=[-1],
         )
 
     def __len__(self):
@@ -181,16 +167,27 @@ class DynMultyArray:
             return
         if response_code == 0:
             self.array[key] = value
-            self.elements_count += 1
             return
         raise ValueError(f"Incorrect state! \n" f"Key: {key}, value: {value}")
 
     def recursive_create_list(
-        self, deep: int, current_deep_index: int, dims_lens: list[int]
+        self,
+        deep: int,
+        current_deep_index: int,
+        dims_lens: list[int],
+        replace_el_index: list[int],
     ) -> list | ValueKeepListClass:
         """
         Рекурсивный метод для создания вложенной структуры массивов по заданным размерам.
         На нижнем уровне для хранения элементов используется тип данных ValueKeepListClass.
+
+        Метод получился чуть сложнее чем планировался изначально,
+            однако удалось внедрить не только расширение,
+            но и перенос элементов в новый массив, когда это необходимо.
+        :param deep:
+        :param current_deep_index:
+        :param dims_lens:
+        :param replace_el_index:
         """
         if deep < 1:
             raise ValueError(
@@ -201,36 +198,67 @@ class DynMultyArray:
         current_level_list = []
         for _ in range(dims_lens[current_deep_index]):
             if current_deep_index == deep - 1:
-                return self.make_low_level_array(dims_lens[current_deep_index])
+                returned_array = self.make_low_level_array(
+                    dims_lens[current_deep_index]
+                )
+                if -1 < replace_el_index[0] < self.capacity_value:
+                    for i in range(returned_array.capacity):
+                        if replace_el_index[0] >= self.capacity_value:
+                            break
+                        coordinate_el = self.get_coordinate_by_element_index(
+                            replace_el_index[0]
+                        )
+                        value = self.get_value_by_coordinate(coordinate_el)
+                        if value is not None:
+                            returned_array[i] = value
+
+                        replace_el_index[0] += 1
+                return returned_array
+
             link_to_sublist = self.recursive_create_list(
                 deep=deep,
                 current_deep_index=current_deep_index + 1,
                 dims_lens=dims_lens,
+                replace_el_index=replace_el_index,
             )
             current_level_list.append(link_to_sublist)
         return current_level_list
 
     def make_low_level_array(self, new_capacity):
-        return ValueKeepListClass(capacity=new_capacity)
+        """Создаем массив "нижнего" уровня, в котором будут храниться данные"""
+        return ValueKeepListClass(capacity=new_capacity, parent=self)
 
-    def resize(self, new_capacity: int):
-        """При реалокации массив увеличивается на 1 по всем измерениям"""
-        # TODO реализовать resize для многомерной структуры
+    def resize(self):
+        """
+        Схема реаллокации выбрана следующая:
+            Если количество измерений массива равно 1:
+                массив увеличивается в 2 раза
+            Если количество измерений массива больше 1:
+                массив увеличивается на 1 единицу по всем существующим измерениям
+        """
+        self.elements_count = 0
 
-        new_multy_dyn_array_capacity = [i + 1 for i in self.dim_size]
+        if self.dim_count == 1:
+            new_multy_dyn_array_capacity = [i * 2 for i in self.dim_size]
+        else:
+            new_multy_dyn_array_capacity = [i + 1 for i in self.dim_size]
 
-        # new_array = self.make_low_level_array(new_capacity)
-        # for i in range(self.elements_count):
-        #     new_array[i] = self.array[i]
-        # self.array = new_array
-        # self.dim_size = [new_capacity]
-        # self.capacity_value = self.calculate_capacity()
+        new_array = self.recursive_create_list(
+            deep=self.dim_count,
+            current_deep_index=0,
+            dims_lens=new_multy_dyn_array_capacity,
+            replace_el_index=[0],
+        )
 
-    def get_link_to_last_el(self):
+        self.dim_size = new_multy_dyn_array_capacity
+        self.capacity_value = list_multiplication(new_multy_dyn_array_capacity)
+        self.array = new_array
+
+    def get_link_to_last_array(self):
         """Метод отдает ссылку на последний массив данных"""
         link_to_free_array = self.array
         for i in range(self.dim_count - 1):
-            iter_coordinate = self.dim_size[i]
+            iter_coordinate = self.dim_size[i] - 1
             link_to_free_array = link_to_free_array[iter_coordinate]
 
         return link_to_free_array
@@ -239,9 +267,9 @@ class DynMultyArray:
         """
 
         :param index: "Абсолютный индекс" - индекс элемента, если бы массив был одномерным.
-        :return: координаты, по котором находится искомый элемент в многомерном массиве.
+        :return: Координаты, по котором находится искомый элемент в многомерном массиве.
         """
-        if index >= self.__len__() or index < 0:
+        if index >= len(self) or index < 0:
             raise IndexError("Index is out of bounds")
         if self.dim_count == 1:
             return [index]
@@ -274,26 +302,40 @@ class DynMultyArray:
     def append_val(self, itm):
         """
         Метод находит координату крайнего элемента многомерного массива и вставляет туда значение.
-        Если в крайнем элементе массива уже есть значение - выполняется расширение и реолокация массива.
+        Если элементы заполнили массив или в крайнем элементе массива уже есть значение
+            - выполняется расширение и реаллокация массива с последующей вставкой.
         """
+        link_to_last_free_array = self.get_link_to_last_array()
 
-        if self.elements_count == self.capacity_value:
-            self.resize(2 * self.capacity_value)
+        if (
+            self.elements_count == self.capacity_value
+            or link_to_last_free_array[self.dim_size[-1] - 1] is not None
+        ):
+            self.resize()
 
-        link_to_last_free_array = self.get_link_to_last_el()
+        link_to_last_free_array = self.get_link_to_last_array()
         link_to_last_free_array[self.dim_size[-1] - 1] = itm
 
-        self.elements_count += 1
-
     def increment_dimension(self):
-        """Метод увеличивает массив на 1 измерение"""
+        """Метод добавляет массиву 1 измерение"""
         new_data = self.recursive_create_list(
-            deep=self.dim_count, current_deep_index=0, dims_lens=self.dim_size
+            deep=self.dim_count,
+            current_deep_index=0,
+            dims_lens=self.dim_size,
+            replace_el_index=[-1],
         )
         self.array = [self.array, new_data]
         self.dim_count += 1
         self.dim_size = [2] + self.dim_size
         self.capacity_value = list_multiplication(self.dim_size)
 
-    def expand_array(self):
-        pass
+    def get_value_by_coordinate(self, list_coordinate: list[int]):
+        """
+        Метод отдает значение по координатам многомерного массива
+        :param list_coordinate: координаты для поиска
+        :return: найденное значение
+        """
+        current_link = self.array
+        for i in list_coordinate:
+            current_link = current_link[i]
+        return current_link

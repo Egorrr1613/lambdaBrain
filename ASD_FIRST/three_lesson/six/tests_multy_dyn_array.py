@@ -75,7 +75,11 @@ def test_create_multy_array_2():
 def test_resize_multy_dyn_array():
     """
     1) da0:
-        * Проверка поведения при созданнии пустого массива размером 2х3
+        * Проверка поведения при создании пустого массива размером 1х1
+        * Проверка добавления элемента в конец массива без реаллокации
+        * Проверка добавления элемента в конец массива с реаллокацией
+    2) da1:
+        * Проверка поведения при создании пустого массива размером 2х3
         * Проверка сохранения значений в двумерном массиве
     """
     da0 = DynMultyArray(dim_count=1, dim_size=[1])
@@ -92,6 +96,21 @@ def test_resize_multy_dyn_array():
     assert da0.elements_count == 2
     assert da0[0] == "xxx"
     assert da0[1] == "yyy"
+
+    da0.append_val("zzz")
+    assert len(da0) == 4
+    assert da0.elements_count == 3
+    assert da0[0] == "xxx"
+    assert da0[1] == "yyy"
+    assert da0[3] == "zzz"
+
+    da0.append_val("aaa")
+    assert len(da0) == 8
+    assert da0.elements_count == 4
+    assert da0[0] == "xxx"
+    assert da0[1] == "yyy"
+    assert da0[3] == "zzz"
+    assert da0[7] == "aaa"
 
 
 def test_scaling_array():
@@ -112,32 +131,32 @@ def test_scaling_array():
     assert da0.dim_count == 2
     assert len(da0) == 10
     assert da0.elements_count == 1
-    assert da0[0][0] == "zzz"
+    assert da0[0][4] == "zzz"
 
     da0.increment_dimension()
     assert da0.dim_count == 3
     assert len(da0) == 20
     assert da0.elements_count == 1
-    assert da0[0][0][0] == "zzz"
+    assert da0[0][0][4] == "zzz"
 
     da0.increment_dimension()
     assert da0.dim_count == 4
     assert len(da0) == 40
     assert da0.elements_count == 1
-    assert da0[0][0][0][0] == "zzz"
+    assert da0[0][0][0][4] == "zzz"
 
     da0.increment_dimension()
     assert da0.dim_count == 5
     assert len(da0) == 80
     assert da0.elements_count == 1
-    assert da0[0][0][0][0][0] == "zzz"
+    assert da0[0][0][0][0][4] == "zzz"
     assert da0[0][0][0][0][1] is None
 
 
 def test_find_el_by_absolute_index():
     """
     1) da1:
-        * Создаем одномерный массив
+        * Создаем одномерный массив.
         * Проверяем работу поиска координат элемента
 
     2) da2:
@@ -205,50 +224,96 @@ def test_find_el_by_absolute_index():
     assert da4.get_coordinate_by_element_index(119) == [1, 3, 2, 4]
 
 
+def test_get_link_to_last_array():
+    """
+    1) da1:
+        * Проверка получения последнего массива нижнего уровня для одномерного массива
+    2) da2:
+        * Проверка получения последнего массива нижнего уровня для двухмерного массива
+    3) da4:
+        * Проверка получения последнего массива нижнего уровня для четырехмерного массива
+
+    :return:
+    """
+    da1 = DynMultyArray(dim_count=1, dim_size=[5])
+    da1[4] = 77
+    test_arr = da1.get_link_to_last_array()
+    assert test_arr[4] == 77
+
+    da2 = DynMultyArray(dim_count=2, dim_size=[2, 4])
+    da2[1][3] = 77
+    test_arr = da2.get_link_to_last_array()
+    assert test_arr[3] == 77
+
+    da4 = DynMultyArray(dim_count=4, dim_size=[2, 4, 3, 5])
+    da4[1][3][2][4] = 77
+    test_arr = da4.get_link_to_last_array()
+    assert test_arr[4] == 77
+
+
 def test_array_relocation():
     """
     1) da0:
         * Создаем одномерный массив
-        * Вставляем ему в несколько элементов, проверяя корректность реолокации одномерного массива
+        * Вставляем ему в несколько элементов, проверяя корректность реаллокации одномерного массива
         * Масштабируем массив до двумерного
-        * Вставляем ему в несколько элементов, проверяя корректность реолокации двумерного массива
+        * Вставляем ему в несколько элементов, проверяя корректность реаллокации двумерного массива
         * Масштабируем массив до трехмерного
-        * Вставляем ему в несколько элементов, проверяя корректность реолокации трехмерного массива
+        * Вставляем ему в несколько элементов, проверяя корректность реаллокации трехмерного массива
     """
     da0 = DynMultyArray(dim_count=1, dim_size=[4])
-    pass
+    da0[2] = 55
+    da0[0] = (77,)
+    da0[3] = True
+    da0.append_val("xxx")
 
+    assert da0[0] == (77,)
+    assert da0[1] is None
+    assert da0[2] == 55
+    assert da0[3] is True
+    assert da0[7] == "xxx"
+    assert len(da0) == 8
+    assert da0.elements_count == 4
 
-# def test_last_element_coordinate():
-# Решил отказаться от переменной "последнего заполненного индекса"
+    da0.increment_dimension()
+    da0[0][6] = "xxxx"
+    da0[1][0] = "aaaa"
+    da0[1][2] = "zzzz"
+    da0[1][7] = (88, 33)
+    assert da0[0][0] == (77,)
+    assert da0[0][1] is None
+    assert da0[0][2] == 55
+    assert da0[0][3] is True
+    assert da0[0][6] == "xxxx"
+    assert da0[0][7] == "xxx"
+    assert da0[1][0] == "aaaa"
+    assert da0[1][2] == "zzzz"
+    assert da0[1][7] == (88, 33)
+    assert len(da0) == 16
+    assert da0.elements_count == 8
 
-#     """
-#     1) da0:
-#         * Создаем одномерный массив
-#         * Проверяем координату крайнего элемента
-#         * Добавляем элемент, не превышая доступный размер массива
-#         * Проверяем координату крайнего элемента
-#         * Добавляем элементы, превышая доступный размер массива для вызова релокации
-#         * Проверяем координату крайнего элемента
-#
-#         * Увеличиваем размерность массива до двухмерного
-#         * Проверяем координату крайнего элемента
-#         * Добавляем элемент, не превышая доступный размер массива
-#         * Проверяем координату крайнего элемента
-#         * Добавляем элементы, превышая доступный размер массива для вызова релокации
-#
-#     """
-#     da0 = DynMultyArray(dim_count=1, dim_size=[3])
-#     assert da0.last_element_coordinate == [0]
-#
-#     da0.append_val('000')
-#     assert da0.last_element_coordinate == [1]
-#
-#     da0.append_val('000')
-#     assert da0.last_element_coordinate == [1]
-#
-#     da0.append_val('000')
-#     assert da0.last_element_coordinate == [2]
-#
-#     da0.append_val('000')
-#     assert da0.last_element_coordinate == [3]
+    da0.increment_dimension()
+    da0.append_val(777)
+    assert da0[0][0][0] == (77,)
+    assert da0[0][0][1] is None
+    assert da0[0][0][2] == 55
+    assert da0[0][0][3] is True
+    assert da0[0][0][6] == "xxxx"
+    assert da0[0][0][7] == "xxx"
+    assert da0[0][1][0] == "aaaa"
+    assert da0[0][1][2] == "zzzz"
+    assert da0[0][1][7] == (88, 33)
+    assert da0.elements_count == 9
+
+    da0.append_val(888)
+    assert da0[0][0][0] == (77,)
+    assert da0[0][0][1] is None
+    assert da0[0][0][2] == 55
+    assert da0[0][0][3] is True
+    assert da0[0][0][6] == "xxxx"
+    assert da0[0][0][7] == "xxx"
+    assert da0[0][0][8] == "aaaa"
+    assert da0[0][1][1] == "zzzz"
+    assert da0[0][1][6] == (88, 33)
+    assert len(da0) == 81
+    assert da0.elements_count == 10
