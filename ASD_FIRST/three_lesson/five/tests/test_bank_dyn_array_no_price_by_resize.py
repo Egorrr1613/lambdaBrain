@@ -107,24 +107,6 @@ def test_insert_if_i_eq_count():
 def test_delete():
     da = prepare_test_data(3)
     da.delete(1)
-    # da.array[0] = None
-    # da.array[1] = None
-    # x = da.array
-    # print(x)
-    # array = (ctypes.py_object * 5)()
-
-    # # Заполнение массива различными объектами
-    # array[0] = 42  # Число
-    # array[0] = None  # Число
-    # array[1] = "Hello"  # Строка
-    # array[2] = [1, 2, 3]  # Список
-    # array[3] = {"key": "value"}  # Словарь
-    # array[4] = None  # None
-    #
-    # array[3] = None  # Словарь
-
-    # for i in range(5):
-    #     print(array[i])
     assert len(da) == 2
     assert da.capacity == 16
     assert da.get_list_elements() == [0, 2]
