@@ -88,8 +88,9 @@ def test_resize_multy_dyn_array():
     assert da0.elements_count == 1
 
     da0.append_val("yyy")
-    assert len(da0) == 4
+    assert len(da0) == 2
     assert da0.elements_count == 2
+    assert da0[0] == "xxx"
     assert da0[1] == "yyy"
 
 
@@ -148,58 +149,60 @@ def test_find_el_by_absolute_index():
         * Проверяем работу поиска координат элемента
     """
     da1 = DynMultyArray(dim_count=1, dim_size=[4])
-    assert da1.get_coordinate_arr_by_element_index(2) == [2]
+    assert da1.get_coordinate_by_element_index(2) == [2]
     with pytest.raises(IndexError):
-        _ = da1.get_coordinate_arr_by_element_index(4)
+        _ = da1.get_coordinate_by_element_index(4)
     with pytest.raises(IndexError):
-        _ = da1.get_coordinate_arr_by_element_index(5)
+        _ = da1.get_coordinate_by_element_index(5)
 
     da2 = DynMultyArray(dim_count=2, dim_size=[2, 4])
-    assert da2.get_coordinate_arr_by_element_index(0) == [0]
-    assert da2.get_coordinate_arr_by_element_index(1) == [0]
-    assert da2.get_coordinate_arr_by_element_index(2) == [0]
-    assert da2.get_coordinate_arr_by_element_index(3) == [0]
-    assert da2.get_coordinate_arr_by_element_index(4) == [1]
-    assert da2.get_coordinate_arr_by_element_index(7) == [1]
+    assert da2.get_coordinate_by_element_index(0) == [0, 0]
+    assert da2.get_coordinate_by_element_index(1) == [0, 1]
+    assert da2.get_coordinate_by_element_index(2) == [0, 2]
+    assert da2.get_coordinate_by_element_index(3) == [0, 3]
+    assert da2.get_coordinate_by_element_index(4) == [1, 0]
+    assert da2.get_coordinate_by_element_index(7) == [1, 3]
     with pytest.raises(IndexError):
-        _ = da2.get_coordinate_arr_by_element_index(8)
+        _ = da2.get_coordinate_by_element_index(8)
 
     da3 = DynMultyArray(dim_count=3, dim_size=[2, 4, 3])
-    assert da3.get_coordinate_arr_by_element_index(0) == [0, 0]
-    assert da3.get_coordinate_arr_by_element_index(1) == [0, 0]
-    assert da3.get_coordinate_arr_by_element_index(2) == [0, 0]
-    assert da3.get_coordinate_arr_by_element_index(3) == [0, 1]
-    assert da3.get_coordinate_arr_by_element_index(4) == [0, 1]
-    assert da3.get_coordinate_arr_by_element_index(5) == [0, 1]
-    assert da3.get_coordinate_arr_by_element_index(6) == [0, 2]
-    assert da3.get_coordinate_arr_by_element_index(8) == [0, 2]
-    assert da3.get_coordinate_arr_by_element_index(9) == [0, 3]
-    assert da3.get_coordinate_arr_by_element_index(10) == [0, 3]
-    assert da3.get_coordinate_arr_by_element_index(11) == [0, 3]
-    assert da3.get_coordinate_arr_by_element_index(12) == [1, 0]
-    assert da3.get_coordinate_arr_by_element_index(13) == [1, 0]
-    assert da3.get_coordinate_arr_by_element_index(14) == [1, 0]
-    assert da3.get_coordinate_arr_by_element_index(15) == [1, 1]
-    assert da3.get_coordinate_arr_by_element_index(17) == [1, 1]
-    assert da3.get_coordinate_arr_by_element_index(18) == [1, 2]
-    assert da3.get_coordinate_arr_by_element_index(20) == [1, 2]
-    assert da3.get_coordinate_arr_by_element_index(21) == [1, 3]
-    assert da3.get_coordinate_arr_by_element_index(23) == [1, 3]
+    assert da3.get_coordinate_by_element_index(0) == [0, 0, 0]
+    assert da3.get_coordinate_by_element_index(1) == [0, 0, 1]
+    assert da3.get_coordinate_by_element_index(2) == [0, 0, 2]
+    assert da3.get_coordinate_by_element_index(3) == [0, 1, 0]
+    assert da3.get_coordinate_by_element_index(4) == [0, 1, 1]
+    assert da3.get_coordinate_by_element_index(5) == [0, 1, 2]
+    assert da3.get_coordinate_by_element_index(6) == [0, 2, 0]
+    assert da3.get_coordinate_by_element_index(7) == [0, 2, 1]
+    assert da3.get_coordinate_by_element_index(8) == [0, 2, 2]
+    assert da3.get_coordinate_by_element_index(9) == [0, 3, 0]
+    assert da3.get_coordinate_by_element_index(10) == [0, 3, 1]
+    assert da3.get_coordinate_by_element_index(11) == [0, 3, 2]
+    assert da3.get_coordinate_by_element_index(12) == [1, 0, 0]
+    assert da3.get_coordinate_by_element_index(13) == [1, 0, 1]
+    assert da3.get_coordinate_by_element_index(14) == [1, 0, 2]
+    assert da3.get_coordinate_by_element_index(15) == [1, 1, 0]
+    assert da3.get_coordinate_by_element_index(17) == [1, 1, 2]
+    assert da3.get_coordinate_by_element_index(18) == [1, 2, 0]
+    assert da3.get_coordinate_by_element_index(20) == [1, 2, 2]
+    assert da3.get_coordinate_by_element_index(21) == [1, 3, 0]
+    assert da3.get_coordinate_by_element_index(23) == [1, 3, 2]
     with pytest.raises(IndexError):
-        _ = da3.get_coordinate_arr_by_element_index(24)
+        _ = da3.get_coordinate_by_element_index(24)
     with pytest.raises(IndexError):
-        _ = da3.get_coordinate_arr_by_element_index(-1)
+        _ = da3.get_coordinate_by_element_index(-1)
 
     da4 = DynMultyArray(dim_count=4, dim_size=[2, 4, 3, 5])
-    assert da4.get_coordinate_arr_by_element_index(1) == [0, 0, 0]
-    assert da4.get_coordinate_arr_by_element_index(0) == [0, 0, 0]
-    assert da4.get_coordinate_arr_by_element_index(18) == [0, 1, 0]
-    assert da4.get_coordinate_arr_by_element_index(89) == [1, 1, 2]
-    assert da4.get_coordinate_arr_by_element_index(90) == [1, 2, 0]
-    assert da4.get_coordinate_arr_by_element_index(94) == [1, 2, 0]
-    assert da4.get_coordinate_arr_by_element_index(95) == [1, 2, 1]
-    assert da4.get_coordinate_arr_by_element_index(114) == [1, 3, 1]
-    assert da4.get_coordinate_arr_by_element_index(119) == [1, 3, 2]
+    assert da4.get_coordinate_by_element_index(0) == [0, 0, 0, 0]
+    assert da4.get_coordinate_by_element_index(1) == [0, 0, 0, 1]
+    assert da4.get_coordinate_by_element_index(18) == [0, 1, 0, 3]
+    assert da4.get_coordinate_by_element_index(89) == [1, 1, 2, 4]
+    assert da4.get_coordinate_by_element_index(90) == [1, 2, 0, 0]
+    assert da4.get_coordinate_by_element_index(92) == [1, 2, 0, 2]
+    assert da4.get_coordinate_by_element_index(94) == [1, 2, 0, 4]
+    assert da4.get_coordinate_by_element_index(95) == [1, 2, 1, 0]
+    assert da4.get_coordinate_by_element_index(114) == [1, 3, 1, 4]
+    assert da4.get_coordinate_by_element_index(119) == [1, 3, 2, 4]
 
 
 def test_array_relocation():
@@ -214,30 +217,6 @@ def test_array_relocation():
     """
     da0 = DynMultyArray(dim_count=1, dim_size=[4])
     pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # def test_last_element_coordinate():

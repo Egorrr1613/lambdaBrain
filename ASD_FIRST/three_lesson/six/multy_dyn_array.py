@@ -83,6 +83,16 @@ class ValueKeepListClass:
 #######################################################################
 
 
+def list_multiplication(list_int: list[int]):
+    """
+    Принимает лист int и отдает их произведение
+
+    :param list_int: числа для переменожения
+    :return: произведение
+    """
+    return reduce(operator.mul, list_int)
+
+
 class DynMultyArray:
     """
     Класс, реализующий многомерный динамический массив
@@ -129,8 +139,8 @@ class DynMultyArray:
 
         self.elements_count: int = 0  # количество добавленных в массив элементов
 
-        self.capacity_value: int = (
-            self.product_multiplication(self.dim_size)
+        self.capacity_value: int = list_multiplication(
+            self.dim_size
         )  # количество ячеек для хранения данных
 
         self.array: list[list] | list[ValueKeepListClass] = self.recursive_create_list(
@@ -142,15 +152,6 @@ class DynMultyArray:
         Возвращает количество ячеек для хранения конечных данных
         """
         return self.capacity_value
-
-    def product_multiplication(self, list_int: list[int]):
-        """
-        Принимает лист int и отдает их произведение
-
-        :param list_int: числа для переменожения
-        :return: произведение
-        """
-        return reduce(operator.mul, list_int)
 
     def __getitem__(self, i):
         """
@@ -185,8 +186,12 @@ class DynMultyArray:
         raise ValueError(f"Incorrect state! \n" f"Key: {key}, value: {value}")
 
     def recursive_create_list(
-            self, deep: int, current_deep_index: int, dims_lens: list[int]
+        self, deep: int, current_deep_index: int, dims_lens: list[int]
     ) -> list | ValueKeepListClass:
+        """
+        Рекурсивный метод для создания вложенной структуры массивов по заданным размерам.
+        На нижнем уровне для хранения элементов используется тип данных ValueKeepListClass.
+        """
         if deep < 1:
             raise ValueError(
                 f"Incorrect value to param `deep`: {deep}. "
@@ -230,11 +235,11 @@ class DynMultyArray:
 
         return link_to_free_array
 
-    def get_coordinate_arr_by_element_index(self, index: int) -> list[int]:
+    def get_coordinate_by_element_index(self, index: int) -> list[int]:
         """
-        Получаем координаты массива, в котором содержится искомое по абсолютному индексу значение
-        :param index: "Абсолютный индекс" - индекс элемента из общей вместимости массива
-        :return: координаты массива, в котором находится искомый индекс
+
+        :param index: "Абсолютный индекс" - индекс элемента, если бы массив был одномерным.
+        :return: координаты, по котором находится искомый элемент в многомерном массиве.
         """
         if index >= self.__len__() or index < 0:
             raise IndexError("Index is out of bounds")
@@ -249,21 +254,22 @@ class DynMultyArray:
 
             for j in range(1, v + 1):
                 is_find_index = False
-                x = j * self.product_multiplication(self.dim_size[k + 1:])
+                x = j * list_multiplication(self.dim_size[k + 1 :])
                 if x > index:
                     coordinate.append(j - 1)
                     is_find_index = True
                 if j > 1 and is_find_index:
-                    index = index - ((j - 1) * self.product_multiplication(self.dim_size[k + 1:]))
+                    index = index - (
+                        (j - 1) * list_multiplication(self.dim_size[k + 1 :])
+                    )
                 if is_find_index:
                     break
 
-
-        if len(coordinate) != self.dim_count - 1:
+        coordinate.append(index)
+        if len(coordinate) != self.dim_count:
             raise ValueError("Incorrect state")
 
         return coordinate
-
 
     def append_val(self, itm):
         """
@@ -272,7 +278,7 @@ class DynMultyArray:
         """
 
         if self.elements_count == self.capacity_value:
-            self.resize(2 * (self.capacity_value + 1))
+            self.resize(2 * self.capacity_value)
 
         link_to_last_free_array = self.get_link_to_last_el()
         link_to_last_free_array[self.dim_size[-1] - 1] = itm
@@ -287,7 +293,7 @@ class DynMultyArray:
         self.array = [self.array, new_data]
         self.dim_count += 1
         self.dim_size = [2] + self.dim_size
-        self.capacity_value = self.product_multiplication(self.dim_size)
+        self.capacity_value = list_multiplication(self.dim_size)
 
     def expand_array(self):
         pass
