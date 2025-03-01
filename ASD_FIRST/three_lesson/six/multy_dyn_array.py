@@ -1,6 +1,4 @@
 import ctypes
-import operator
-from functools import reduce
 
 
 class ValueKeepListClass:
@@ -70,10 +68,13 @@ def list_multiplication(list_int: list[int]):
     """
     Принимает лист int и отдает их произведение
 
-    :param list_int: числа для переменожения
+    :param list_int: числа для умножения
     :return: произведение
     """
-    return reduce(operator.mul, list_int)
+    result = 1
+    for x in list_int:
+        result *= x
+    return result
 
 
 class DynMultyArray:
@@ -339,3 +340,4 @@ class DynMultyArray:
         for i in list_coordinate:
             current_link = current_link[i]
         return current_link
+

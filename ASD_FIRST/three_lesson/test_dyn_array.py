@@ -29,7 +29,6 @@ def test_insert_if_insert_index_eq_count():
     assert da.get_list_elements() == [0, 1, 2, 3, 4, 5, 6, 7, 88]
 
 
-
 def test_insert_resize():
     da = prepare_test_data(len_array=15)
     da.insert(i=4, itm=15)
@@ -155,3 +154,4 @@ def test_delete_resize():
     assert len(da) == 9
     assert da.capacity == 16
     assert da.get_list_elements() == [0, 7, 10, 11, 12, 13, 14, 15, 16]
+

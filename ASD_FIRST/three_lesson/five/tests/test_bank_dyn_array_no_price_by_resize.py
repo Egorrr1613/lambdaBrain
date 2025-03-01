@@ -288,13 +288,14 @@ def test_append_with_resize_state():
     assert da.capacity == 32
 
     """Проверяем состояние перед в второй реаллокацией, на длинне 32 элемента"""
-    da.append('xyz')
+    da.append("xyz")
     assert len(da) == 32
     assert da.coin_count_in_bank == 48
     assert da.capacity == 32
 
     """Проверяем состояние после второй реаллокации, т.е. после переноса 32 элементов и добавления одного нового"""
-    da.append('qwe')
+    da.append("qwe")
     assert len(da) == 33
     assert da.coin_count_in_bank == 18
     assert da.capacity == 64
+
