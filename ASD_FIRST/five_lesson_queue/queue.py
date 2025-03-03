@@ -44,17 +44,3 @@ class Queue:
 
     def size(self):
         return self.count_node
-
-    def print_all_nodes(self) -> None:
-        node = self.head.next
-        while type(node) is Node:
-            print(node.value)
-            node = node.next
-
-    def clean(self) -> None:
-        self.head.next = self.tail
-        self.tail.prev = self.head
-
-    def __len__(self) -> int:
-        return self.count_node
-
