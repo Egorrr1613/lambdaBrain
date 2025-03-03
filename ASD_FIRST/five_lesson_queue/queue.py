@@ -44,3 +44,4 @@ class Queue:
 
     def size(self) -> int:
         return self.count_node
+
