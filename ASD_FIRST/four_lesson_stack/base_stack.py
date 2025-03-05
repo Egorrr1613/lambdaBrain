@@ -86,3 +86,58 @@ class Stack:
             return None
         return self.stack[self.size() - 1]
 
+
+class Node:
+    def __init__(self, v):
+        self.value = v
+        self.prev = None
+        self.next = None
+
+
+class DummyNode(Node):
+    def __init__(self, v):
+        super().__init__(v)
+
+
+class ReverseStack:
+    """Задание 2: Вариант стека в котором голова списка реализована как верхушка стека"""
+    def __init__(self):
+        self.head = DummyNode(None)
+        self.tail = self.head
+
+        self.head.next = self.tail
+        self.head.prev = self.tail
+
+        self.tail.prev = self.head
+        self.tail.next = self.head
+        self.count_node = 0
+
+    def push(self, value) -> None:
+        new_node = Node(value)
+        new_node.next = self.head.next
+        new_node.prev = self.head
+
+        self.head.next.prev = new_node
+        self.head.next = new_node
+
+        self.count_node += 1
+
+    def size(self):
+        return self.count_node
+
+    def pop(self):
+        if self.count_node == 0:
+            return None
+        result = self.head.next.value
+
+        self.head.next = self.head.next.next
+
+        self.count_node -= 1
+        return result
+
+
+    def peek(self):
+        if self.count_node == 0:
+            return None
+        return self.head.next.value
+

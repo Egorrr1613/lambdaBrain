@@ -1,4 +1,4 @@
-from ASD_FIRST.four_lesson_stack.base_stack import Stack
+from ASD_FIRST.four_lesson_stack.base_stack import Stack, ReverseStack
 
 def test_base_append_and_del():
     s = Stack()
@@ -64,3 +64,31 @@ def test_base_pop():
     assert s.pop() == 96
     assert s.pop() is None
     assert s.pop() is None
+
+
+
+def test_reverse_stack():
+    s = ReverseStack()
+    assert s.size() == 0
+    assert s.peek() is None
+
+    s.push(123)
+    assert s.size() == 1
+
+    s.push(456)
+    assert s.size() == 2
+
+    s.push(789)
+    assert s.size() == 3
+
+    assert s.pop() == 789
+    assert s.size() == 2
+
+    assert s.pop() == 456
+    assert s.size() == 1
+
+    assert s.pop() == 123
+    assert s.size() == 0
+
+    assert s.pop() is None
+    assert s.size() == 0
