@@ -103,9 +103,14 @@ class ExpandedStack:
 
 def calculate_math_expression(stack_with_math_expression: ExpandedStack):
     """Решение 9 дополнительного задания"""
-    number_stack = ExpandedStack()
+    number_stack = Stack()
 
     math_symbol = "+-*="
+    math_operation = {
+        '+': lambda x, y: x + y,
+        '-': lambda x, y: x - y,
+        '*': lambda x, y: x * y,
+    }
 
     for _ in range(stack_with_math_expression.size()):
         ch = stack_with_math_expression.pop()
@@ -114,25 +119,15 @@ def calculate_math_expression(stack_with_math_expression: ExpandedStack):
             continue
 
         if ch not in math_symbol:
-            return ("Error",)
+            return (f"Error, incorrect data in math operation: {ch}",)
 
         a = number_stack.pop()
         b = number_stack.pop()
 
-        if ch == "+":
-            number_stack.push(str(int(a) + int(b)))
-            continue
-
-        if ch == "*":
-            number_stack.push(str(int(a) * int(b)))
-            continue
-
-        if ch == "-":
-            number_stack.push(str(int(a) - int(b)))
-            continue
-
         if ch == "=":
             return int(a)
+
+        number_stack.push(math_operation[ch](int(a), int(b)))
 
     return int(number_stack.pop())
 
