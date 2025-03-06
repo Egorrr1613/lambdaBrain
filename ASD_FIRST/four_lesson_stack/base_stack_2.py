@@ -121,11 +121,16 @@ def calculate_math_expression(stack_with_math_expression: ExpandedStack):
         if ch not in math_symbol:
             return (f"Error, incorrect data in math operation: {ch}",)
 
+        if ch == "=":
+            return int(number_stack.pop())
+
+        if number_stack.size() < 2:
+            return (f"Error, incorrect number_stack size."
+                    f"For correct calculations there must be more than 1 element in the number_stack."
+                    f"Current number_stack size: {number_stack.size()}",)
+
         a = number_stack.pop()
         b = number_stack.pop()
-
-        if ch == "=":
-            return int(a)
 
         number_stack.push(math_operation[ch](int(a), int(b)))
 
