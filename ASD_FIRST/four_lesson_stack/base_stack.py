@@ -101,6 +101,7 @@ class DummyNode(Node):
 
 class ReverseStack:
     """Задание 2: Вариант стека в котором голова списка реализована как верхушка стека"""
+
     def __init__(self):
         self.head = DummyNode(None)
         self.tail = self.head
@@ -134,7 +135,6 @@ class ReverseStack:
 
         self.count_node -= 1
         return result
-
 
     def peek(self):
         if self.count_node == 0:

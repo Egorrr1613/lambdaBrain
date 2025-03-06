@@ -1,5 +1,6 @@
 from ASD_FIRST.four_lesson_stack.base_stack import Stack, ReverseStack
 
+
 def test_base_append_and_del():
     s = Stack()
 
@@ -53,6 +54,7 @@ def test_base_peek():
     s.pop()
     assert s.peek() is None
 
+
 def test_base_pop():
     s = Stack()
 
@@ -64,7 +66,6 @@ def test_base_pop():
     assert s.pop() == 96
     assert s.pop() is None
     assert s.pop() is None
-
 
 
 def test_reverse_stack():
