@@ -45,3 +45,10 @@ class Queue:
     def size(self) -> int:
         return self.count_node
 
+    def get_all_nodes(self) -> list:
+        node = self.head.next
+        res = []
+        while type(node) is Node:
+            res.append(node.value)
+            node = node.next
+        return res
