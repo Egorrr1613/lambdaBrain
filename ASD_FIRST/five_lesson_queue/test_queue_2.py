@@ -1,11 +1,15 @@
 from ASD_FIRST.five_lesson_queue.queue import Queue
-from ASD_FIRST.five_lesson_queue.queue_2 import circulation_queue, QueueByTwoStack, revert_queue
+from ASD_FIRST.five_lesson_queue.queue_2 import (
+    circulation_queue,
+    QueueByTwoStack,
+    revert_queue,
+)
 
 
 def test_circulation_0():
     q = Queue()
     circulation_queue(input_q=q, count_element_shift=99)
-    assert q.get_all_nodes() == []
+    assert not q.get_all_nodes()
 
     q.enqueue(88)
     circulation_queue(input_q=q, count_element_shift=4)
@@ -90,9 +94,10 @@ def test_queue_by_two_stack():
     assert q.dequeue() == 7
     assert q.size() == 0
 
+
 def test_revert_queue():
     q = Queue()
-    assert revert_queue(q).get_all_nodes() == []
+    assert not revert_queue(q).get_all_nodes()
 
     q = Queue()
     q.enqueue(1)

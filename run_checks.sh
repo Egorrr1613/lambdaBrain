@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_PATH="ASD_FIRST/four_lesson_stack/"
+FILE_PATH="ASD_FIRST/five_lesson_queue/"
 
 python3 -m black "$FILE_PATH"
 python3 -m darker "$FILE_PATH"
