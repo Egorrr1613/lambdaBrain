@@ -11,6 +11,7 @@ def test_is_balance():
     assert is_balance(input_str="(())") is True
     assert is_balance(input_str="(()((())()))") is True
     assert is_balance(input_str="(()((())()))") is True
+    assert is_balance(input_str="[]({})") is True
     assert is_balance(input_str="") is True
 
     assert is_balance(input_str="(()()(()") is False
@@ -21,6 +22,8 @@ def test_is_balance():
     assert is_balance(input_str="(") is False
     assert is_balance(input_str="))((") is False
     assert is_balance(input_str="(()()(()") is False
+    assert is_balance(input_str="(())}{(") is False
+    assert is_balance(input_str="(())}{") is False
 
 
 def test_is_balance_v2():
