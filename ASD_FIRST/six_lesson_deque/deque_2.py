@@ -1,5 +1,6 @@
-
+from ASD_FIRST.four_lesson_stack.base_stack import Stack
 from ASD_FIRST.six_lesson_deque.deque import Deque
+from ASD_FIRST.six_lesson_deque.dyn_array_by_dec import DynArrayByDec
 
 
 def is_palindrome(checked_str: str) -> bool:
@@ -88,3 +89,116 @@ class DequeWithGetMin:
             if self.array[i] < res:
                 res = self.array[i]
         return res
+
+
+class DequeByDynArray:
+    """Решение 5 дополнительного задания
+    Реализовал через циклическую работу с индексами динамического массива,
+        с учетом расширения и релокации при заполнении доступного пространства"""
+
+    def __init__(self):
+        self.array = DynArrayByDec()
+        self.head_index = 0
+        self.tail_index = 0
+
+    def addFront(self, item):
+        if self.size() == 0:
+            self.head_index = 0
+            self.tail_index = 0
+            self.array[self.head_index] = item
+            return
+
+        if self.size() == self.array.capacity:
+            self.array.head_index = self.head_index
+            self.array.insert(i=0, itm=item)
+            self.head_index = 0
+            self.tail_index = self.size() - 1
+            return
+
+        if self.size() >= 1:
+            next_head_index = self.array.capacity - 1 if self.head_index - 1 < 0 else self.head_index - 1
+            self.array[next_head_index] = item
+            self.head_index = next_head_index
+
+    def addTail(self, item):
+        if self.size() == 0:
+            self.head_index = 0
+            self.tail_index = 0
+            self.array[self.tail_index] = item
+            return
+
+        if self.size() == self.array.capacity:
+            self.array.head_index = self.head_index
+            self.array.insert(i=self.array.capacity, itm=item)
+            self.head_index = 0
+            self.tail_index = self.size()
+            return
+
+        if self.size() >= 1:
+            next_tail_index = 0 if self.tail_index + 1 == self.array.capacity else self.tail_index + 1
+            self.array.insert(i=next_tail_index, itm=item)
+            self.tail_index = next_tail_index
+
+    def removeFront(self):
+        if self.size() == 0:
+            return None
+        if self.size() == 1:
+            result = self.array[self.head_index]
+            self.array.delete(self.head_index)
+            self.head_index = 0
+            self.tail_index = 0
+            return result
+        if self.size() > 1:
+            result = self.array[self.head_index]
+            self.array.delete(self.head_index)
+            if self.head_index > self.tail_index:
+                self.head_index = 0 if self.head_index + 1 >= self.array.capacity else self.head_index + 1
+            else:
+                self.head_index = 0
+                self.tail_index -= 1
+            return result
+        return ('Error',)
+
+    def removeTail(self):
+        if self.size() == 0:
+            return None
+        if self.size() == 1:
+            result = self.array[self.tail_index]
+            self.array.delete(self.tail_index)
+            self.head_index = 0
+            self.tail_index = 0
+            return result
+        if self.size() > 1:
+            result = self.array[self.tail_index]
+            self.array.delete(self.tail_index)
+            self.tail_index = self.array.capacity - 1 if self.tail_index - 1 < 0 else self.tail_index - 1
+            return result
+        return ('Error',)
+
+    def size(self):
+        return len(self.array)
+
+
+def is_balance(input_str: str):
+    """Решение 6 дополнительного задания.
+
+    Это задание ранее уже встречалось на курсе.
+    Задавалось в 4 уроке по теме "Стек", доп задание 4.5 и 4.6
+    Ниже продублировал старое решение"""
+
+    stack = Stack()
+    reverse_symbol = {")": "(", "}": "{", "]": "["}
+    for i in input_str:
+        if i in ["(", "{", "["]:
+            stack.push(i)
+            continue
+        if i in [")", "}", "]"] and stack.size() > 0:
+            rm_symbol = stack.pop()
+            if rm_symbol != reverse_symbol[i]:
+                return False
+            continue
+        return False
+
+    if stack.size() == 0:
+        return True
+    return False
