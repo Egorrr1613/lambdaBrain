@@ -217,12 +217,12 @@ def test_bank_array_state():
 
     da.insert(8, "abdc")
     assert len(da) == 11
-    assert da.coin_count_in_bank == 25
+    assert da.coin_count_in_bank == 23
     assert da.capacity == 16
 
     da.delete(i=0)
     assert len(da) == 10
-    assert da.coin_count_in_bank == 16
+    assert da.coin_count_in_bank == 14
     assert da.capacity == 16
 
 

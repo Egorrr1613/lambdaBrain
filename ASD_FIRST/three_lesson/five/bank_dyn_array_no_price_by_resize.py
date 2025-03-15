@@ -77,6 +77,7 @@ class DynArray:
 
         for i_range in range(self.elements_count, i, -1):
             self.array[i_range] = self.array[i_range - 1]
+            self.coin_count_in_bank -= 1
         self.array[i] = itm
         self.elements_count += 1
 
