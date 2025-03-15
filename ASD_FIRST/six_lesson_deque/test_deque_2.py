@@ -1,4 +1,8 @@
-from ASD_FIRST.six_lesson_deque.deque_2 import is_palindrome, DequeWithGetMin, DequeByDynArray
+from ASD_FIRST.six_lesson_deque.deque_2 import (
+    is_palindrome,
+    DequeWithGetMin,
+    DequeByDynArray,
+)
 
 
 def test_palindrome():
@@ -284,3 +288,4 @@ def test_dec_by_dyn_array_5():
     assert d.removeTail() == 6
     assert d.head_index == 0
     assert d.tail_index == 0
+

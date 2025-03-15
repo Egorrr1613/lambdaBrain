@@ -98,3 +98,4 @@ def test_dec_add_tail():
     assert d.removeTail() == 6
     assert d.removeTail() is None
     assert d.size() == 0
+

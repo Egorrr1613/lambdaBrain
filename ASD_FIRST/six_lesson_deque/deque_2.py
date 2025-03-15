@@ -26,8 +26,8 @@ def is_palindrome(checked_str: str) -> bool:
 class DequeWithGetMin:
     """Решение 4 дополнительного задания
 
-        Использую переменную для хранения минимального элемента.
-        Если этот элемент удаляется - находим по внутреннему массиву перебором новый элемент
+    Использую переменную для хранения минимального элемента.
+    Если этот элемент удаляется - находим по внутреннему массиву перебором новый элемент
     """
 
     def __init__(self):
@@ -36,11 +36,15 @@ class DequeWithGetMin:
 
     def addFront(self, item):
         self.array.insert(0, item)
-        self.check_add_element_by_min(item, )
+        self.check_add_element_by_min(
+            item,
+        )
 
     def addTail(self, item):
         self.array.insert(self.size(), item)
-        self.check_add_element_by_min(item, )
+        self.check_add_element_by_min(
+            item,
+        )
 
     def removeFront(self):
         if self.size() == 0:
@@ -69,19 +73,20 @@ class DequeWithGetMin:
         if self.min_el is None:
             self.min_el = element
             return
-        if self.min_el > element:
-            self.min_el = element
+        self.min_el = min(self.min_el, element)
 
-    def check_del_element_by_min(self, element):
+    def check_del_element_by_min(self, element) -> None | tuple:
         if not isinstance(element, int):
-            return
+            return None
         if element < self.min_el:
-            return ('Incorrect state',)
+            return ("Incorrect state",)
         if self.size() == 0:
             self.min_el = None
-            return
+            return None
         if element == self.min_el:
             self.min_el = self.find_min_el()
+            return None
+        return ("Error",)
 
     def find_min_el(self):
         res = self.array[0]
@@ -116,7 +121,11 @@ class DequeByDynArray:
             return
 
         if self.size() >= 1:
-            next_head_index = self.array.capacity - 1 if self.head_index - 1 < 0 else self.head_index - 1
+            next_head_index = (
+                self.array.capacity - 1
+                if self.head_index - 1 < 0
+                else self.head_index - 1
+            )
             self.array[next_head_index] = item
             self.head_index = next_head_index
 
@@ -135,7 +144,9 @@ class DequeByDynArray:
             return
 
         if self.size() >= 1:
-            next_tail_index = 0 if self.tail_index + 1 == self.array.capacity else self.tail_index + 1
+            next_tail_index = (
+                0 if self.tail_index + 1 == self.array.capacity else self.tail_index + 1
+            )
             self.array.insert(i=next_tail_index, itm=item)
             self.tail_index = next_tail_index
 
@@ -152,12 +163,16 @@ class DequeByDynArray:
             result = self.array[self.head_index]
             self.array.delete(self.head_index)
             if self.head_index > self.tail_index:
-                self.head_index = 0 if self.head_index + 1 >= self.array.capacity else self.head_index + 1
+                self.head_index = (
+                    0
+                    if self.head_index + 1 >= self.array.capacity
+                    else self.head_index + 1
+                )
             else:
                 self.head_index = 0
                 self.tail_index -= 1
             return result
-        return ('Error',)
+        return ("Error",)
 
     def removeTail(self):
         if self.size() == 0:
@@ -171,9 +186,13 @@ class DequeByDynArray:
         if self.size() > 1:
             result = self.array[self.tail_index]
             self.array.delete(self.tail_index)
-            self.tail_index = self.array.capacity - 1 if self.tail_index - 1 < 0 else self.tail_index - 1
+            self.tail_index = (
+                self.array.capacity - 1
+                if self.tail_index - 1 < 0
+                else self.tail_index - 1
+            )
             return result
-        return ('Error',)
+        return ("Error",)
 
     def size(self):
         return len(self.array)
@@ -202,3 +221,4 @@ def is_balance(input_str: str):
     if stack.size() == 0:
         return True
     return False
+
