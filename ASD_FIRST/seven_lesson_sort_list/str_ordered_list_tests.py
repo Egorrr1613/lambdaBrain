@@ -153,10 +153,10 @@ def test_del_0_elements():
     assert o.len() == 0
 
     o.add("33")
-    assert o.get_all() == ["33"]
+    assert [i.value for i in o.get_all()] == ["33"]
 
     o.delete("23")
-    assert o.get_all() == ["33"]
+    assert [i.value for i in o.get_all()] == ["33"]
 
     o.delete("33")
     assert not o.get_all()
@@ -247,7 +247,7 @@ def test_clean():
         ("20", "3", "5"),
         ("3", "5", None),
     ]
-    assert o.get_all() == ["1", "14", "20", "3", "5"]
+    assert [i.value for i in o.get_all()] == ["1", "14", "20", "3", "5"]
     assert o.len() == 5
 
     o.clean(asc=False)
@@ -266,7 +266,7 @@ def test_clean():
         ("20", "14", "1"),
         ("14", "1", None),
     ]
-    assert o.get_all() == ["5", "3", "20", "14", "1"]
+    assert [i.value for i in o.get_all()] == ["5", "3", "20", "14", "1"]
     assert o.len() == 5
 
 
@@ -275,4 +275,4 @@ def test_upper_case():
     o.add("rr")
     o.add("Rr")
     o.add("zz")
-    assert o.get_all() == ["Rr", "rr", "zz"]
+    assert [i.value for i in o.get_all()] == ["Rr", "rr", "zz"]

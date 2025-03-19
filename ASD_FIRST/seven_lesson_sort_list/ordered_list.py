@@ -129,7 +129,7 @@ class OrderedList:
         r = []
         node = self.head.next
         while type(node) is Node:
-            r.append(node.value)
+            r.append(node)
             node = node.next
         return r
 

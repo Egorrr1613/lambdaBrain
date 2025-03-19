@@ -159,10 +159,10 @@ def test_del_0_elements():
     assert o.len() == 0
 
     o.add(33)
-    assert o.get_all() == [33]
+    assert o.get_all()[0].value == 33
 
     o.delete(23)
-    assert o.get_all() == [33]
+    assert o.get_all()[0].value == 33
 
     o.delete(33)
     assert not o.get_all()
@@ -247,7 +247,7 @@ def test_clean():
         (5, 14, 20),
         (14, 20, None),
     ]
-    assert o.get_all() == [1, 3, 5, 14, 20]
+    assert [i.value for i in o.get_all()] == [1, 3, 5, 14, 20]
     assert o.len() == 5
 
     o.clean(asc=False)
@@ -266,5 +266,5 @@ def test_clean():
         (5, 3, 1),
         (3, 1, None),
     ]
-    assert o.get_all() == [20, 14, 5, 3, 1]
+    assert [i.value for i in o.get_all()] == [20, 14, 5, 3, 1]
     assert o.len() == 5
