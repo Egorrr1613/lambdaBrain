@@ -1,6 +1,12 @@
 from ASD_FIRST.seven_lesson_sort_list.ordered_list import OrderedList
 
 
+def test_order_list_empty():
+    o = OrderedList(asc=True)
+    assert o.get_all() == []
+    assert o.len() == 0
+
+
 def test_order_list_add_one_el():
     o = OrderedList(asc=True)
     o.add(1)
