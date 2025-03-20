@@ -276,3 +276,14 @@ def test_upper_case():
     o.add("Rr")
     o.add("zz")
     assert [i.value for i in o.get_all()] == ["Rr", "rr", "zz"]
+
+def test_find():
+    o = OrderedStringList(asc=True)
+    o.add("rr")
+    o.add("Rr")
+    o.add("zz")
+
+    node = o.find('Rr')
+    assert node.value == 'Rr'
+    assert node.prev is None
+    assert node.next.value == 'rr'

@@ -268,3 +268,40 @@ def test_clean():
     ]
     assert [i.value for i in o.get_all()] == [20, 14, 5, 3, 1]
     assert o.len() == 5
+
+
+def test_find():
+    test_list = OrderedList(asc=False)
+    assert test_list.find(5) is None
+
+    test_list.add(7)
+    node_0 = test_list.find(7)
+    assert node_0.value == 7
+    assert node_0.next is None
+    assert node_0.prev is None
+
+    test_list.add(3)
+    test_list.add(2)
+    assert test_list.find(5) is None
+
+    node_3 = test_list.find(3)
+    assert node_3.value == 3
+    assert node_3.next.value == 2
+
+def test_find_2():
+    test_list = OrderedList(asc=True)
+    assert test_list.find(5) is None
+
+    test_list.add(7)
+    node_0 = test_list.find(7)
+    assert node_0.value == 7
+    assert node_0.next is None
+    assert node_0.prev is None
+
+    test_list.add(3)
+    test_list.add(2)
+    assert test_list.find(5) is None
+
+    node_3 = test_list.find(3)
+    assert node_3.value == 3
+    assert node_3.next.value == 7
