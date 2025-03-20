@@ -187,3 +187,4 @@ class OrderedStringList(OrderedList):
         if not self._OrderedList__ascending and v1 > v2:
             return -1
         return ("Error: Compare error",)
+
