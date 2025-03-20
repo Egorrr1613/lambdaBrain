@@ -7,13 +7,13 @@ class Node:
 
 class OrderedList:
     def __init__(self, asc: bool):
-        self.head = None
-        self.tail = None
+        self.head: Node | None = None
+        self.tail: Node | None = None
 
         self.__ascending = asc
         self.count_el = 0
 
-    def compare(self, v1, v2):
+    def compare(self, v1, v2) -> int | tuple[str]:
         if v1 == v2:
             return 0
 
@@ -27,7 +27,7 @@ class OrderedList:
             return 1
         return ("Error: Compare error",)
 
-    def add(self, value):
+    def add(self, value) -> None | tuple[str]:
         new_node = Node(value)
 
         if self.count_el == 0:
@@ -81,7 +81,7 @@ class OrderedList:
             return ("Error: Incorrect compare result",)
         return ("Error: Incorrect state",)
 
-    def find(self, val) -> Node | None | tuple:
+    def find(self, val) -> Node | None | tuple[str]:
         iter_node = self.head
         while isinstance(iter_node, Node):
             compare_res = self.compare(val, iter_node.value)
@@ -95,7 +95,7 @@ class OrderedList:
             return ("Error: Incorrect compare result",)
         return None
 
-    def delete(self, val) -> None | tuple:
+    def delete(self, val) -> None:
         if self.head is None or self.compare(v1=self.tail.value, v2=val) == -1:
             return None
 
@@ -133,16 +133,16 @@ class OrderedList:
                 iter_node = iter_node.next
         return None
 
-    def clean(self, asc):
+    def clean(self, asc) -> None:
         self.__ascending = asc
         self.head = None
         self.tail = None
         self.count_el = 0
 
-    def len(self):
+    def len(self) -> int:
         return self.count_el
 
-    def get_all(self):
+    def get_all(self) -> list:
         r = []
         node = self.head
         while node is not None:
@@ -187,4 +187,3 @@ class OrderedStringList(OrderedList):
         if not self._OrderedList__ascending and v1 > v2:
             return -1
         return ("Error: Compare error",)
-
