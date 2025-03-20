@@ -6,8 +6,6 @@ class Node:
 
 
 class OrderedList:
-    __ascending: bool
-
     def __init__(self, asc: bool):
         self.head = None
         self.tail = None
