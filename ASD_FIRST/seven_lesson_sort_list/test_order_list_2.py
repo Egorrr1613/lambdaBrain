@@ -1,0 +1,131 @@
+from ASD_FIRST.seven_lesson_sort_list.ordered_list_2 import OrderedList, join_two_sorted_lists
+
+
+def test_del_duplicate():
+    o = OrderedList(asc=True)
+    o.add(1)
+    o.add(1)
+    o.add(3)
+    o.add(5)
+    o.add(5)
+    o.add(14)
+    o.add(20)
+    o.add(20)
+
+    o.delete_duplicate()
+    assert o.get_all_v2() == [(None, 1, 3), (1, 3, 5), (3, 5, 14), (5, 14, 20), (14, 20, None)]
+
+
+def test_del_duplicate_non_duplicate():
+    o = OrderedList(asc=True)
+    o.add(1)
+    o.add(3)
+    o.add(5)
+    o.add(14)
+    o.add(20)
+
+    o.delete_duplicate()
+    assert o.get_all_v2() == [(None, 1, 3), (1, 3, 5), (3, 5, 14), (5, 14, 20), (14, 20, None)]
+
+
+def test_del_duplicate_two_el():
+    o = OrderedList(asc=True)
+    o.add(1)
+    o.add(1)
+
+    o.delete_duplicate()
+    assert o.get_all_v2() == [(None, 1, None)]
+
+
+def test_del_duplicate_zero_el():
+    o = OrderedList(asc=True)
+
+    o.delete_duplicate()
+    assert o.get_all_v2() == []
+
+
+def test_join_list():
+    o_1 = OrderedList(asc=True)
+    o_1.add(1)
+    o_1.add(3)
+    o_1.add(5)
+    o_1.add(14)
+    o_1.add(20)
+
+    o_2 = OrderedList(asc=True)
+    o_2.add(2)
+    o_2.add(4)
+    o_2.add(6)
+    o_2.add(15)
+    o_2.add(21)
+
+    assert join_two_sorted_lists(first_list=o_1, second_list=o_2,
+                                 asc=True).get_all_v2() == [(None, 1, 2), (1, 2, 3), (2, 3, 4), (3, 4, 5), (4, 5, 6),
+                                                            (5, 6, 14), (6, 14, 15), (14, 15, 20), (15, 20, 21),
+                                                            (20, 21, None)]
+
+
+def test_has_sublist():
+    o = OrderedList(asc=True)
+
+    o.add(1)
+    o.add(3)
+    o.add(5)
+    o.add(14)
+    o.add(20)
+
+    o_sub = OrderedList(asc=True)
+    o_sub.add(3)
+    assert o.has_sub_list(o_sub)
+
+    o_sub.add(5)
+    assert o.has_sub_list(o_sub)
+
+    o_sub.add(6)
+    assert not o.has_sub_list(o_sub)
+
+
+def test_has_sublist_1():
+    o = OrderedList(asc=True)
+
+    o_sub = OrderedList(asc=True)
+    assert o.has_sub_list(o_sub)
+
+    o_sub.add(3)
+    assert not o.has_sub_list(o_sub)
+
+    o.add(3)
+    assert o.has_sub_list(o_sub)
+
+
+def test_has_sublist_2():
+    o = OrderedList(asc=True)
+    o.add(3)
+    o.add(4)
+    o.add(5)
+    o.add(6)
+    o.add(8)
+
+    o_sub = OrderedList(asc=True)
+    o_sub.add(4)
+    o_sub.add(5)
+    o_sub.add(6)
+    o_sub.add(8)
+    assert o.has_sub_list(o_sub)
+
+    o_sub.add(8)
+    assert not o.has_sub_list(o_sub)
+
+    o_sub = OrderedList(asc=True)
+    o_sub.add(3)
+    o_sub.add(4)
+    o_sub.add(5)
+    o_sub.add(6)
+    o_sub.add(8)
+    assert o.has_sub_list(o_sub)
+
+    o_sub.add(8)
+    assert not o.has_sub_list(o_sub)
+
+
+
