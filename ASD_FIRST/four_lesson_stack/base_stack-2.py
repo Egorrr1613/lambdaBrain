@@ -2,6 +2,12 @@ from ASD_FIRST.four_lesson_stack.base_stack import Stack
 
 
 def is_balance(input_str: str):
+    """
+    Задание: №4
+    Номер задачи из задания: №5/6
+    Краткое название: "Функция для определения сбалансирована ли строка из скобок: (), {}, []"
+    Сложность: size - O(n)/time - O(n)
+    """
     stack = Stack()
     reverse_symbol = {")": "(", "}": "{", "]": "["}
     for i in input_str:
@@ -89,27 +95,42 @@ class ExpandedStack:
         return self.head.next.value
 
     def get_min_el(self):
-        """Решение 7 дополнительного задания"""
+        """
+        Задание: №4
+        Номер задачи из задания: №7
+        Краткое название: "Метод для получения минимального элемента за О(1)"
+        Сложность: size - O(1)/time - O(1)
+        """
         if self.count_node == 0:
             return None
         return self.min_stack.peek()
 
     def get_avg(self):
-        """Решение 8 дополнительного задания"""
+        """
+        Задание: №4
+        Номер задачи из задания: №8
+        Краткое название: "Метод для получения среднего значения всех элементов стека за О(1)"
+        Сложность: size - O(1)/time - O(1)
+        """
         if self.count_node == 0:
             return 0
         return self.__element_sum__ // self.count_node
 
 
 def calculate_math_expression(stack_with_math_expression: ExpandedStack):
-    """Решение 9 дополнительного задания"""
+    """
+    Задание: №4
+    Номер задачи из задания: №9
+    Краткое название: "Метод расчета постфиксных выражений"
+    Сложность: size - O(n)/time - O(n)
+    """
     number_stack = Stack()
 
     math_symbol = "+-*="
     math_operation = {
-        '+': lambda x, y: x + y,
-        '-': lambda x, y: x - y,
-        '*': lambda x, y: x * y,
+        "+": lambda x, y: x + y,
+        "-": lambda x, y: x - y,
+        "*": lambda x, y: x * y,
     }
 
     for _ in range(stack_with_math_expression.size()):
@@ -125,9 +146,11 @@ def calculate_math_expression(stack_with_math_expression: ExpandedStack):
             return int(number_stack.pop())
 
         if number_stack.size() < 2:
-            return (f"Error, incorrect number_stack size."
-                    f"For correct calculations there must be more than 1 element in the number_stack."
-                    f"Current number_stack size: {number_stack.size()}",)
+            return (
+                f"Error, incorrect number_stack size."
+                f"For correct calculations there must be more than 1 element in the number_stack."
+                f"Current number_stack size: {number_stack.size()}",
+            )
 
         a = number_stack.pop()
         b = number_stack.pop()
@@ -135,4 +158,3 @@ def calculate_math_expression(stack_with_math_expression: ExpandedStack):
         number_stack.push(math_operation[ch](int(a), int(b)))
 
     return int(number_stack.pop())
-
