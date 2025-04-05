@@ -189,47 +189,77 @@ class OrderedList:
         Номер задачи из задания: №10
         Краткое название: "Метод проверки наличия упорядоченного под-списка в списке"
         Сложность: size - O(1)/time - O(n)
-        """
-        if sublist.count_el == 0:
-            return True
 
+        Рефлексия:
+            Самостоятельно реализовал через линейный поиск.
+            Однако во время написания рефлексии по заданию обратил внимание на свою частую проблему, а именно опять
+            в решении было много лишних проверок завязанных на косвенные признаки, вместо явных состояний.
+            Решил переписать решение. Выписал на бумагу все явные состояния,
+            которые будут возникать по ходу моего алгоритма. Оказалось всего 10 штук комбинаций таких состояний:
+                * Очередная нода в основном списке и head в sub_list (None/None, Node/None, Node/None, None/Node)
+                * Очередная нода в основном списке и очередная нода из sub_list (None/None, Node/None, Node/None, None/Node)
+                * Совпадает ли значения ноды из основного списка и sub_list(True/False)
+
+            Далее переписал основную часть решения, завязав логику алгоритма ТОЛЬКО на комбинации этих состояний,
+            прописывая условия поведения под каждое из них.
+            Получилось не идеально, но лучше и надежнее чем было.
+            И немного короче - 27 строк нового решения против 35 строк старого.
+        """
+        if sublist.head is None or (self.head is None and sublist.head is None):
+            return True
+        if self.head is None:
+            return False
         if (
             self.compare(v1=sublist.head.value, v2=self.tail.value) == 1
             or sublist.count_el > self.count_el
         ):
             return False
-
         current_main_node = self.head
-        current_sub_list_node = sublist.head
-
-        for _ in range(self.count_el):
-            if (
-                current_main_node.value == current_sub_list_node.value
-                and current_sub_list_node is sublist.tail
-            ):
-                return True
-            if current_main_node is self.tail:
-                return False
-
-            if current_main_node.value != current_sub_list_node.value:
+        while current_main_node is not None:
+            if current_main_node.value != sublist.head.value:
                 current_main_node = current_main_node.next
-                current_sub_list_node = sublist.head
                 continue
-
-            compare_node_by_main_list = current_main_node.next
-            current_sub_list_node = current_sub_list_node.next
-            while current_sub_list_node is not None:
-                if compare_node_by_main_list is None:
+            compare_node_by_main = current_main_node.next
+            compare_sublist_node = sublist.head.next
+            while compare_sublist_node is not None:
+                if compare_node_by_main is None:
                     return False
-                if compare_node_by_main_list.value != current_sub_list_node.value:
-                    current_sub_list_node = sublist.head
+                if compare_node_by_main.value != compare_sublist_node.value:
                     current_main_node = current_main_node.next
                     break
-                if current_sub_list_node is sublist.tail:
-                    return True
-                compare_node_by_main_list = compare_node_by_main_list.next
-                current_sub_list_node = current_sub_list_node.next
+                compare_node_by_main = compare_node_by_main.next
+                compare_sublist_node = compare_sublist_node.next
+            if compare_sublist_node is None:
+                return True
         return False
+
+    def get_frequent_element(self):
+        """
+        Задание: №7
+        Номер задачи из задания: №11
+        Краткое название: "Метод получения наиболее часто встречающегося элемента"
+        Сложность: size - O(n)/time - O(n)
+
+        Рефлексия:
+            Самостоятельно решил задание.
+            Мое решение получилось довольно близким к тому, которое приводилось в качестве решения.
+        """
+        if self.head is None:
+            return None
+
+        current_node = self.head
+        max_val = self.head.value
+        count_values = {}
+
+        while current_node is not None:
+            if count_values.get(current_node.value) is None:
+                count_values[current_node.value] = 1
+            else:
+                count_values[current_node.value] += 1
+            if count_values[max_val] < count_values[current_node.value]:
+                max_val = current_node.value
+            current_node = current_node.next
+        return max_val
 
 
 def join_two_sorted_lists(
@@ -240,6 +270,10 @@ def join_two_sorted_lists(
     Номер задачи из задания: №9
     Краткое название: "Алгоритм слияния двух упорядоченных списков в один"
     Сложность: size - O(1)/time - O(n)
+
+    Рефлексия:
+        Решил самостоятельно без особых проблем.
+
     """
     result_list = OrderedList(asc=asc)
 

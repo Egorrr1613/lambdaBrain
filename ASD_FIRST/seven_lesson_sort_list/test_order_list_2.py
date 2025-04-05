@@ -128,4 +128,98 @@ def test_has_sublist_2():
     assert not o.has_sub_list(o_sub)
 
 
+def test_has_sublist_3():
+    o = OrderedList(asc=True)
+    o.add(1)
+    o.add(1)
+    o.add(1)
+    o.add(1)
+    o.add(2)
+    o.add(2)
+    o.add(2)
+    o.add(2)
+    o.add(3)
+    o.add(3)
+    o.add(3)
+    o.add(4)
 
+    o_sub = OrderedList(asc=True)
+
+    o_sub.add(1)
+    assert o.has_sub_list(o_sub)
+
+    o_sub.add(2)
+    assert o.has_sub_list(o_sub)
+
+    o_sub.add(3)
+    assert not o.has_sub_list(o_sub)
+
+    o_sub_2 = OrderedList(asc=True)
+    o_sub_2.add(3)
+    assert o.has_sub_list(o_sub_2)
+    o_sub_2.add(4)
+    assert o.has_sub_list(o_sub_2)
+    o_sub_2.add(5)
+    assert not o.has_sub_list(o_sub_2)
+
+
+def test_has_sublist_4():
+    o = OrderedList(asc=True)
+
+    o.add(1)
+    o.add(3)
+    o.add(5)
+    o.add(14)
+    o.add(20)
+
+    o_sub = OrderedList(asc=True)
+    o_sub.add(14)
+    assert o.has_sub_list(o_sub)
+
+    o_sub.add(20)
+    assert o.has_sub_list(o_sub)
+
+    o_sub.add(21)
+    assert not o.has_sub_list(o_sub)
+
+    o_sub_2 = OrderedList(asc=True)
+    o_sub_2.add(20)
+    assert o.has_sub_list(o_sub_2)
+    o_sub_2.add(21)
+    assert not o.has_sub_list(o_sub_2)
+
+
+def test_get_frequent_element_1():
+    o = OrderedList(asc=True)
+    o.add(3)
+    o.add(4)
+    o.add(5)
+    o.add(6)
+    o.add(8)
+
+    assert o.get_frequent_element() == 3
+
+    o.add(6)
+    assert o.get_frequent_element() == 6
+
+    o.add(5)
+    o.add(5)
+    assert o.get_frequent_element() == 5
+
+
+def test_get_frequent_element_2():
+    o = OrderedList(asc=True)
+    assert o.get_frequent_element() is None
+
+    o.add(8)
+    assert o.get_frequent_element() == 8
+
+    o.add(9)
+    assert o.get_frequent_element() == 8
+
+    o.add(8)
+    assert o.get_frequent_element() == 8
+
+    o.add(9)
+    o.add(9)
+    assert o.get_frequent_element() == 9
