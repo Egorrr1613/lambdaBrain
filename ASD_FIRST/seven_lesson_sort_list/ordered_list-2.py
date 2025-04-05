@@ -1,3 +1,6 @@
+from ASD_FIRST.three_lesson.dyn_array import DynArray
+
+
 class Node:
     def __init__(self, v):
         self.value = v
@@ -310,3 +313,103 @@ def join_two_sorted_lists(
         )
 
     return result_list
+
+
+class OrderedListByDynArray:
+    """
+    Задание: №7
+    Номер задачи из задания: №12
+    Краткое название: "Метод нахождения индекса элемента за o(log(n))"
+    Сложность:
+        * add: size - O(1), O(n) при реалокации/time амортизированный O(log(n))
+        * delete: size - O(1), O(n) при реалокации/time амортизированный O(log(n))
+        * find: size - O(1)/time O(log(n))
+
+    Рефлексия:
+        Изначально была идея реализовать через словарь, где ключами были бы индексы, а значением были бы ноды.
+        Однако показалось что в таком случае я просто продублирую логику "сдвига" индекса при добавлении/удалении,
+        которая уже реализована для динамического массива.
+        В итоге за основу взял динамический массив. Эта структура очень хорошо подошла,
+        реализация упорядоченного списка на динамическом массиве получилась очень простой и лаконичной.
+
+        Алгоритм бинарного поиска заставил подумать. Концептуально понимал как можно его реализовать,
+        однако на практике код очень усложнялся. Добавлялись лишние состояния и не нужные проверки.
+        Потратил некоторое время на самостоятельную реализацию рабочего варианта,
+        а после сравнил с примерами из интернета.
+
+        Кажется итоговый вариант получился довольно близким к тому, который рекомендуется в качестве решения.
+    """
+
+    def __init__(self, asc: bool):
+        self.array = DynArray()
+        self.count_el = 0
+        self.__ascending = asc
+
+    def compare(self, v1, v2) -> int | tuple[str]:
+        if v1 == v2:
+            return 0
+
+        if self.__ascending and v1 < v2:
+            return -1
+        if not self.__ascending and v1 > v2:
+            return -1
+        if not self.__ascending and v1 < v2:
+            return 1
+        if self.__ascending and v1 > v2:
+            return 1
+        return ("Error: Compare error",)
+
+    def bin_search(self, value) -> int:
+        left_index = 0
+        right_index = self.count_el - 1
+        middle_index = (left_index + right_index) // 2
+
+        while self.array[middle_index] != value:
+            if self.compare(v1=value, v2=self.array[middle_index]) == 1:
+                left_index = middle_index + 1
+            else:
+                right_index = middle_index - 1
+            middle_index = (left_index + right_index) // 2
+            if left_index >= right_index:
+                break
+        return middle_index
+
+    def add(self, value):
+        if self.count_el == 0:
+            self.array.append(value)
+            self.count_el += 1
+            return
+        if self.compare(v1=value, v2=self.array[0]) == -1:
+            self.array.insert(i=0, itm=value)
+            self.count_el += 1
+            return
+        if self.compare(v1=value, v2=self.array[self.count_el - 1]) in [0, 1]:
+            self.array.append(itm=value)
+            self.count_el += 1
+            return
+        self.array.insert(i=self.bin_search(value), itm=value)
+        self.count_el += 1
+        return
+
+    def delete(self, value):
+        index = self.find(value)
+        if index:
+            self.array.delete(index)
+            self.count_el -= 1
+
+    def find(self, value):
+        index = self.bin_search(value)
+        if self.array[index] == value:
+            return index
+        return None
+
+    def __getitem__(self, index: int):
+        if index < 0 or index >= self.count_el:
+            raise IndexError("Index is out of bounds")
+        return self.array[index]
+
+    def get_all(self) -> list:
+        return [self.array[i] for i in range(self.count_el)]
+
+    def len(self):
+        return self.count_el

@@ -1,4 +1,4 @@
-from ASD_FIRST.seven_lesson_sort_list.ordered_list_2 import OrderedList, join_two_sorted_lists
+from ASD_FIRST.seven_lesson_sort_list.ordered_list_2 import OrderedList, join_two_sorted_lists, OrderedListByDynArray
 
 
 def test_del_duplicate():
@@ -223,3 +223,49 @@ def test_get_frequent_element_2():
     o.add(9)
     o.add(9)
     assert o.get_frequent_element() == 9
+
+
+def test_order_list_by_dyn_arr():
+    o = OrderedListByDynArray(asc=True)
+    assert o.get_all() == []
+
+    o.add(3)
+    assert o.get_all() == [3]
+
+    o.add(1)
+    assert o.get_all() == [1, 3]
+
+    o.add(2)
+    assert o.get_all() == [1, 2, 3]
+
+
+def test_order_list_by_dyn_arr_reverse():
+    o_reverse = OrderedListByDynArray(asc=False)
+    assert o_reverse.get_all() == []
+
+    o_reverse.add(3)
+    assert o_reverse.get_all() == [3]
+
+    o_reverse.add(1)
+    assert o_reverse.get_all() == [3, 1]
+
+    o_reverse.add(2)
+    assert o_reverse.get_all() == [3, 2, 1]
+
+
+def test_find_in_order_list_by_dyn_arr():
+    o = OrderedListByDynArray(asc=True)
+
+    o.add(3)
+    assert o.find(3) == 0
+    assert o.find(33) is None
+
+    o.add(1)
+    assert o.find(1) == 0
+    assert o.find(3) == 1
+
+    o.add(2)
+    assert o.find(1) == 0
+    assert o.find(2) == 1
+    assert o.find(3) == 2
+    assert o.find(55) is None
