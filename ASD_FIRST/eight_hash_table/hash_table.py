@@ -26,9 +26,5 @@ class HashTable:
         for _ in range(self.size // self.step + 1):
             if self.slots[index] == value:
                 return index
-            index = (
-                index + self.step
-                if index + self.step < self.size
-                else (index + self.step) % self.size
-            )
+            index = (index + self.step) % self.size
         return None
