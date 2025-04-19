@@ -16,11 +16,11 @@ class NativeDictionary:
     def hash_fun(self, key: str) -> int:
         return sum(i for i in str.encode(key)) % self.size
 
-    def is_key(self, key: str) -> bool:
+    def is_key(self, key: str | None) -> bool:
         return key in self.slots
 
     def put(self, key: str, value) -> None | int:
-        if None not in self.slots:
+        if not self.is_key(None):
             return None
         index = self.__seek_slot__(key)
         self.slots[index] = key
