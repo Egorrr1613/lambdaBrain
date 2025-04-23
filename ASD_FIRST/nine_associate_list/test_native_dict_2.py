@@ -1,4 +1,5 @@
-from ASD_FIRST.nine_associate_list.native_dict_2 import NativeDictionaryBySortedList
+from ASD_FIRST.nine_associate_list.native_dict_2 import NativeDictionaryBySortedList, NativeDictionaryByByteKeys, \
+    EmptySlot
 
 
 def test_native_dict_by_sort_list():
@@ -20,3 +21,14 @@ def test_native_dict_by_sort_list():
     assert n.find("asdddd") is None
 
 
+def test_native_dictionary_by_byte_keys():
+    n = NativeDictionaryByByteKeys()
+
+    n.put(key='0b01110', value='abc')
+    assert n.find(key='0b01110') == 'abc'
+
+    n.put(key='0b01110', value='abd')
+    assert n.find(key='0b01110') == 'abd'
+
+    n.delete('0b01110')
+    assert isinstance(n.find(key='0b01110'), EmptySlot)
