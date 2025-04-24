@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_PATH="ASD_FIRST/seven_lesson_sort_list/ordered_list_2.py"
+FILE_PATH="ASD_FIRST/lesson_10_set/"
 
 python3 -m black "$FILE_PATH"
 python3 -m darker "$FILE_PATH"
