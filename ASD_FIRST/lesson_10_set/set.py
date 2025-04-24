@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Any
 
 
 class PowerSet:
@@ -10,19 +11,19 @@ class PowerSet:
     def hash_fun(self, value: str) -> int:
         return sum(i for i in str.encode(value)) % self.capacity
 
-    def size(self):
+    def size(self) -> int:
         return self.count_el
 
-    def put(self, value: str) -> None:
+    def put(self, value: Any) -> None:
         if value in self.slots[index := self.hash_fun(value)]:
             return
         self.slots[index].append(value)
         self.count_el += 1
 
-    def get(self, value: str):
+    def get(self, value: Any) -> bool:
         return value in self.slots[self.hash_fun(value)]
 
-    def remove(self, value: str):
+    def remove(self, value: Any) -> bool:
         if value in self.slots[index := self.hash_fun(value)]:
             self.slots[index].remove(value)
             self.count_el -= 1
