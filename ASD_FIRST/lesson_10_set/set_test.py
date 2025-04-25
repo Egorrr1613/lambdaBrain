@@ -84,6 +84,16 @@ def test_union_2():
     assert s3.get("123")
     assert s3.get("456")
 
+    s4 = s2.union(s1)
+    assert s4.size() == 2
+    assert s4.get("123")
+    assert s4.get("456")
+
+def test_union_3():
+    s1 = PowerSet()
+    s2 = PowerSet()
+    s3 = s1.union(s2)
+    assert s3.size() == 0
 
 def test_difference_1():
     s1 = PowerSet()

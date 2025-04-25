@@ -39,11 +39,13 @@ class PowerSet:
         return result_set
 
     def union(self, set2: PowerSet) -> PowerSet:
-        result_set = set2
+        result_set = PowerSet()
         for slot in self.slots:
             for el in slot:
-                if not result_set.get(el):
-                    result_set.put(el)
+                result_set.put(el)
+        for slot in set2.slots:
+            for el in slot:
+                result_set.put(el)
         return result_set
 
     def difference(self, set2: PowerSet) -> PowerSet:
