@@ -1,28 +1,29 @@
 from __future__ import annotations
+from typing import Any
 
 
 class PowerSet:
     def __init__(self):
-        self.capacity = 20_011
+        self.capacity = 25
         self.slots = [[] for _ in range(self.capacity)]
         self.count_el = 0
 
-    def hash_fun(self, value: str) -> int:
-        return sum(i for i in str.encode(value)) % self.capacity
+    def hash_fun(self, value: Any) -> int:
+        return sum(i for i in str.encode(str(value))) % self.capacity
 
     def size(self) -> int:
         return self.count_el
 
-    def put(self, value: str) -> None:
+    def put(self, value: Any) -> None:
         if value in self.slots[index := self.hash_fun(value)]:
             return
         self.slots[index].append(value)
         self.count_el += 1
 
-    def get(self, value: str) -> bool:
+    def get(self, value: Any) -> bool:
         return value in self.slots[self.hash_fun(value)]
 
-    def remove(self, value: str) -> bool:
+    def remove(self, value: Any) -> bool:
         if value in self.slots[index := self.hash_fun(value)]:
             self.slots[index].remove(value)
             self.count_el -= 1
@@ -38,11 +39,13 @@ class PowerSet:
         return result_set
 
     def union(self, set2: PowerSet) -> PowerSet:
-        result_set = set2
+        result_set = PowerSet()
         for slot in self.slots:
             for el in slot:
-                if not result_set.get(el):
-                    result_set.put(el)
+                result_set.put(el)
+        for slot in set2.slots:
+            for el in slot:
+                result_set.put(el)
         return result_set
 
     def difference(self, set2: PowerSet) -> PowerSet:
@@ -77,7 +80,9 @@ class PowerSet:
         Сложность: size - O(n) / time - O(n^2)
 
         Рефлексия: Реализовал "в лоб", перебором всех значений.
-        Кажется варианта оптимальнее не реализовать.
+            Мой алгоритм совпал с тем, который был предложен в качестве рекомендованного решения.
+            Чуть ниже, в методе decart_product_by_list реализовал расширенный вариант
+            для произведения произвольного количества множеств.
         """
         result_set = PowerSet()
 
@@ -87,11 +92,37 @@ class PowerSet:
             ), "Incorrect set size. Current and param set must 1 or more elements"
 
         for slot in self.slots:
-            for el in slot:
+            for el1 in slot:
                 for slot2 in set2.slots:
                     for el2 in slot2:
-                        result_set.put(el + el2)
+                        if isinstance(el1, str) and isinstance(el2, str):
+                            result_set.put((el1, el2))
+                            continue
+                        if isinstance(el1, str) and isinstance(el2, tuple):
+                            result_set.put((el1, *el2))
+                            continue
+                        assert False, f"Incorrect state. \nel1: {el1}\nel2: {el2}"
+
         return result_set
+
+    def decart_product_by_list(self, list_sets: list[PowerSet]) -> PowerSet:
+        if self.size() == 0 or len(list_sets) == 0:
+            assert (
+                False
+            ), "Incorrect set size. Current and param set must 1 or more elements"
+
+        if len(list_sets) == 1:
+            return self.decart_product(list_sets[0])
+
+        list_decart = self._recursion_decart_(result_set=list_sets[0].union(PowerSet()), list_sets=list_sets,
+                                              index_set=1)
+        return self.decart_product(list_decart)
+
+    def _recursion_decart_(self, result_set: PowerSet, list_sets: list[PowerSet], index_set: int) -> PowerSet:
+        if index_set == len(list_sets):
+            return result_set
+        result_set = result_set.decart_product(list_sets[index_set])
+        return self._recursion_decart_(result_set=result_set, list_sets=list_sets, index_set=index_set + 1)
 
     def multi_intersection(self, sets: list[PowerSet]) -> PowerSet:
         """
@@ -132,12 +163,8 @@ class Bag:
 
     Рефлексия: Необходимо было реализовать метод, позволяющий списком получить все элементы и то,
         сколько раз они встречаются.
-        Была идея использовать ассоциативный массив для хранения количества
-        элементов, однако та реализация массива которую выполняли в 9 уроке не подразумевала метода
-        для получения всех ключей.
-        Хочется посмотреть рекомендации по решению к этому уроку,
-        однако сейчас доступны рекомендации только к 9 уроку.
-        После ознакомления с рекомендациями дополню рефлексии.
+        Реализовал как хеш таблицу, где каждый элемент хранит значение и свой счетчик.
+        После ознакомления с рекомендациями увидел, что мое решение совпадает с рекомендованным.
     """
 
     def __init__(self):

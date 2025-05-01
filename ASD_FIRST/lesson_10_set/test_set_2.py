@@ -14,12 +14,12 @@ def test_decart_1():
     s3 = s1.decart_product(s2)
 
     assert s3.size() == 6
-    assert s3.get("123aa")
-    assert s3.get("123bb")
-    assert s3.get("456aa")
-    assert s3.get("456bb")
-    assert s3.get("789aa")
-    assert s3.get("789bb")
+    assert s3.get(("123", "aa"))
+    assert s3.get(("123", "bb"))
+    assert s3.get(("456", "aa"))
+    assert s3.get(("456", "bb"))
+    assert s3.get(("789", "aa"))
+    assert s3.get(("789", "bb"))
 
 
 def test_decart_2():
@@ -56,8 +56,8 @@ def test_decart_3():
     s3 = s1.decart_product(s2)
 
     assert s3.size() == 2
-    assert s3.get("123z")
-    assert s3.get("456z")
+    assert s3.get(("123", "z"))
+    assert s3.get(("456", "z"))
 
 
 def test_decart_4():
@@ -73,12 +73,31 @@ def test_decart_4():
     s3 = s1.decart_product(s2)
 
     assert s3.size() == 6
-    assert s3.get("123z")
-    assert s3.get("456z")
-    assert s3.get("123x")
-    assert s3.get("456x")
-    assert s3.get("123c")
-    assert s3.get("456c")
+    assert s3.get(("123", "z"))
+    assert s3.get(("456", "z"))
+    assert s3.get(("123", "x"))
+    assert s3.get(("456", "x"))
+    assert s3.get(("123", "c"))
+    assert s3.get(("456", "c"))
+
+
+def test_decart_multi_list_5():
+    s1 = PowerSet()
+    s1.put("123")
+    s1.put("456")
+
+    s2 = PowerSet()
+    s2.put("z")
+    s2.put("x")
+    s2.put("c")
+
+    s3 = PowerSet()
+    s3.put("AA")
+    s3.put("BB")
+    s3.put("DD")
+
+    s4 = s1.decart_product_by_list([s2, s3])
+    assert s4.count_el == 18
 
 
 def test_multi_intersection_1():
