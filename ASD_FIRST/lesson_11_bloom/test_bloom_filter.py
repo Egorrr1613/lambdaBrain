@@ -1,4 +1,4 @@
-from ASD_FIRST.lesson_11_blume.blume_filter import BloomFilter
+from ASD_FIRST.lesson_11_bloom.bloom_filter import BloomFilter
 
 
 def test_empty_bloom():

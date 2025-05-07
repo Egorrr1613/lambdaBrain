@@ -18,10 +18,10 @@ class BloomFilter:
         hash_const = 223
         return self._base_hash_fun_(hash_const=hash_const, value=str1)
 
-    def add(self, str1):
+    def add(self, str1: str) -> None:
         add_mask = self.hash1(str1) | self.hash2(str1)
         self.byte_array |= add_mask
 
-    def is_value(self, str1):
+    def is_value(self, str1: str) -> bool:
         validate_mask = self.hash1(str1) | self.hash2(str1)
         return (self.byte_array & validate_mask) != 0
