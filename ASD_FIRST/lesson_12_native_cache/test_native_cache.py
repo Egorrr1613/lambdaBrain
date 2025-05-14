@@ -15,7 +15,11 @@ def test_native_cache_2():
     c = NativeCache(11)
 
     c.put(key="123", value="zzz")
+    index = c.__seek_slot__("123")
+    assert c.hits[index] == 0
     c.get("123")
+    assert c.hits[index] == 1
+
     c.put(key="124", value="zzz")
     c.get("124")
     c.put(key="125", value="zzz")
@@ -39,3 +43,6 @@ def test_native_cache_2():
     c.put(key="XXXX", value="new_data")
 
     assert c.get("129d") is None
+    index = c.__seek_slot__("XXXX")
+    assert c.hits[index] == 0
+
