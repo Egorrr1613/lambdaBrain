@@ -45,4 +45,3 @@ def test_native_cache_2():
     assert c.get("129d") is None
     index = c.__seek_slot__("XXXX")
     assert c.hits[index] == 0
-

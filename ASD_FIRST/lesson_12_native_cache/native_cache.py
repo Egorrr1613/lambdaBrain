@@ -1,8 +1,8 @@
 class NativeCache:
     def __init__(self, sz):
         self.size = sz
-        self.slots: list[None | str] = [None] * self.size
-        self.values: list[None | str] = [None] * self.size
+        self.slots = [None] * self.size
+        self.values = [None] * self.size
         self.hits = [0] * self.size
         self.step = 3
 
@@ -39,3 +39,4 @@ class NativeCache:
         key_index = self.__seek_slot__(key)
         self.hits[key_index] += 1
         return self.values[key_index]
+

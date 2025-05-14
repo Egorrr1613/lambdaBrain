@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_PATH="ASD_FIRST/lesson_10_set/"
+FILE_PATH="ASD_FIRST/lesson_12_native_cache/"
 
 python3 -m black "$FILE_PATH"
 python3 -m darker "$FILE_PATH"
