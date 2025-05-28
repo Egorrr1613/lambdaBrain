@@ -1,52 +1,53 @@
-def WordSearch(len_sep: int, s: str, subs: str) -> list[int]:
-    sep_str: str = separate_string(list(s), len_sep, 0)
-    return find_word(sep_str, subs)
+def WordSearch(len_sep: int, s: str, word_to_search_in_text: str) -> list[int]:
+    str_with_new_line_symbol: str = separate_string(list(s), len_sep, 0)
+    return find_word(str_with_new_line_symbol, word_to_search_in_text)
 
 
 def separate_string(
-    input_arr: list[str], separator_len: int, start_iter_index: int
+    symbols_by_text_list: list[str], separator_len: int, start_iter_index: int
 ) -> str:
     end_iter_index, go_next_iter = start_iter_index + (separator_len - 1), False
-    if end_iter_index >= len(input_arr):
-        return "".join(input_arr)
-    if input_arr[end_iter_index + 1] == " ":
-        input_arr[end_iter_index + 1] = "\n"
+    if end_iter_index >= len(symbols_by_text_list):
+        return "".join(symbols_by_text_list)
+    if symbols_by_text_list[end_iter_index + 1] == " ":
+        symbols_by_text_list[end_iter_index + 1] = "\n"
         go_next_iter = True
         end_iter_index += 1
     while not go_next_iter and end_iter_index >= start_iter_index:
-        if input_arr[end_iter_index] == " ":
-            input_arr[end_iter_index] = "\n"
+        if symbols_by_text_list[end_iter_index] == " ":
+            symbols_by_text_list[end_iter_index] = "\n"
             break
         end_iter_index -= 1
     if end_iter_index < start_iter_index:
-        input_arr.insert(start_iter_index + separator_len, "\n")
+        symbols_by_text_list.insert(start_iter_index + separator_len, "\n")
         end_iter_index = start_iter_index + separator_len
-    return separate_string(input_arr, separator_len, end_iter_index + 1)
+    return separate_string(symbols_by_text_list, separator_len, end_iter_index + 1)
 
 
 def find_word(s: str, word: str) -> list[int]:
-    sep_list, result = s.split("\n"), []
-    for i in range(len(sep_list)):
-        if is_in_str(sep_list[i], word, 0, 0):
+    list_with_split_words = s.split("\n")
+    result = []
+    for i in range(len(list_with_split_words)):
+        if is_in_str(list_with_split_words[i], word, 0, 0):
             result.append(1)
         else:
             result.append(0)
     return result
 
 
-def is_in_str(s: str, word: str, current_index: int, index_word: int) -> bool:
+def is_in_str(string_for_search: str, word: str, current_index: int, index_word: int) -> bool:
     if index_word == len(word) and (
-        current_index > len(s) - 1 or s[current_index] == " "
+            current_index > len(string_for_search) - 1 or string_for_search[current_index] == " "
     ):
         return True
-    if index_word == len(word) or current_index == len(s):
+    if index_word == len(word) or current_index == len(string_for_search):
         return False
-    if s[current_index] == word[index_word]:
+    if string_for_search[current_index] == word[index_word]:
         index_word += 1
     else:
         index_word = 0
     current_index += 1
-    return is_in_str(s, word, current_index, index_word)
+    return is_in_str(string_for_search, word, current_index, index_word)
 
 
 def test():

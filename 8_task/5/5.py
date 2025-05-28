@@ -1,28 +1,28 @@
 def massdriver(activate: list[int]) -> int:
-    result = -1
-    buffer: dict[int: list[int: int]] = {}
+    first_duplicate_index = -1
+    index_and_count_duplicate_dict: dict[int: list[int: int]] = {}
     for i, v in enumerate(activate):
 
         find_duplicate_num = False
-        buffer_data = buffer.get(v)
+        buffer_data = index_and_count_duplicate_dict.get(v)
         if buffer_data is None:
-            buffer[v] = [i, 0]
+            index_and_count_duplicate_dict[v] = [i, 0]
             continue
 
         if buffer_data[1] == 0:
-            buffer[v] = [buffer[v][0], i]
+            index_and_count_duplicate_dict[v] = [index_and_count_duplicate_dict[v][0], i]
             find_duplicate_num = True
 
-        if find_duplicate_num and result == -1:
-            result = v
+        if find_duplicate_num and first_duplicate_index == -1:
+            first_duplicate_index = v
             continue
 
         if find_duplicate_num:
-            result = v if buffer[v][0] < buffer[result][0] else result
+            first_duplicate_index = v if index_and_count_duplicate_dict[v][0] < index_and_count_duplicate_dict[first_duplicate_index][0] else first_duplicate_index
 
-    if result == -1:
-        return result
-    return buffer[result][0]
+    if first_duplicate_index == -1:
+        return first_duplicate_index
+    return index_and_count_duplicate_dict[first_duplicate_index][0]
 
 
 def test():
