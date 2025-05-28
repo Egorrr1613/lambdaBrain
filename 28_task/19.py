@@ -1,7 +1,7 @@
 def ShopOLAP(_: int, items: list[str]) -> list[str]:
-    format_input = list(map(lambda x: x.split(), items))
-    uniq_position = dict.fromkeys(set(map(lambda x: x[0], format_input)), 0)
-    for i in format_input:
+    products_without_space_list = list(map(lambda x: x.split(), items))
+    uniq_position = dict.fromkeys(set(map(lambda x: x[0], products_without_space_list)), 0)
+    for i in products_without_space_list:
         uniq_position[i[0]] = uniq_position[i[0]] + int(i[1])
     concatenate_position = list(
         map(lambda x: f"{x} {str(uniq_position.get(x))}", uniq_position)

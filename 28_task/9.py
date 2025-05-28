@@ -1,12 +1,12 @@
 def TheRabbitsFoot(s: str, encode: bool) -> str:
-    strip_s = s.replace(" ", "")
-    row, colum, *_ = calculate_matrix_border(len(strip_s))
+    str_without_space = s.replace(" ", "")
+    row, colum, *_ = calculate_matrix_border(len(str_without_space))
     coded_list: list = [[]] * row
     for i in range(row):
         coded_list[i] = [""] * colum
 
     if encode:
-        _code_(list(strip_s), coded_list)
+        _code_(list(str_without_space), coded_list)
     else:
         _decode_(s.split(" "), coded_list)
     res = ""

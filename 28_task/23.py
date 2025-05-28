@@ -17,21 +17,21 @@ def wrap(h: int, w: int, n: int, tree: list[str]) -> list[list[int]]:
 
 
 def collect_dead_coordinate(tree_map: list[list[int]], h: int, w: int) -> list[tuple]:
-    result = set()
+    unique_dead_coordinates = set()
     for k1, v1 in enumerate(tree_map):
         for k2, v2 in enumerate(v1):
             if v2 > 2:
-                result.add((k1, k2))
+                unique_dead_coordinates.add((k1, k2))
 
                 if k1 > 0:
-                    result.add((k1 - 1, k2))
+                    unique_dead_coordinates.add((k1 - 1, k2))
                 if k2 > 0:
-                    result.add((k1, k2 - 1))
+                    unique_dead_coordinates.add((k1, k2 - 1))
                 if k2 < w - 1:
-                    result.add((k1, k2 + 1))
+                    unique_dead_coordinates.add((k1, k2 + 1))
                 if k1 < h - 1:
-                    result.add((k1 + 1, k2))
-    return list(result)
+                    unique_dead_coordinates.add((k1 + 1, k2))
+    return list(unique_dead_coordinates)
 
 
 def test():
