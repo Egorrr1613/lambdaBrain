@@ -4,8 +4,8 @@ def Unmanned(len_road: int, n: int, track: list[list[int]]) -> int:
         if len_road <= track[light_index][0]:
             continue
         road[track[light_index][0]] = track[light_index]
-    time = lets_go(road, len_road, 0, 0)
-    return time
+    pilot_finish_time = lets_go(road, len_road, 0, 0)
+    return pilot_finish_time
 
 
 def get_time_after_light(current_time: int, periods: list[int]) -> int:

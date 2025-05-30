@@ -1,24 +1,24 @@
 def white_walkers(village: str) -> bool:
-    buffer = []  # O(1)
-    for i, v in enumerate(village):  # O(n)
+    peasants_and_walkers = []  # O(1)
+    for _, v in enumerate(village):  # O(n)
         if v.isdigit() or v == "=":  # O(1)
-            buffer.append(v)  # O(1)
+            peasants_and_walkers.append(v)  # O(1)
 
-    if len(buffer) < 5:  # O(1)
+    if len(peasants_and_walkers) < 5:  # O(1)
         return False
 
-    buffer_2 = []  # O(1)
-    for i, v in enumerate(buffer):  # O(n)
-        if v.isdigit():  # O(1)
-            buffer_2.append((i, int(v)))  # O(1)
+    neighboring_peasants = []  # O(1)
+    for i, peasant_or_walker in enumerate(peasants_and_walkers):  # O(n)
+        if peasant_or_walker.isdigit():  # O(1)
+            neighboring_peasants.append((i, int(peasant_or_walker)))  # O(1)
         if (
-            len(buffer_2) >= 2
-            and (buffer_2[-1][1] + buffer_2[-2][1]) == 10
-            and (buffer_2[-1][0] - buffer_2[-2][0]) != 4
+            len(neighboring_peasants) >= 2
+            and (neighboring_peasants[-1][1] + neighboring_peasants[-2][1]) == 10
+            and (neighboring_peasants[-1][0] - neighboring_peasants[-2][0]) != 4
         ):  # O(1)
             return False
 
-    return len(buffer_2) >= 2  # O(1)
+    return len(neighboring_peasants) >= 2  # O(1)
 
 
 def test():

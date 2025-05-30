@@ -16,19 +16,19 @@ def MassVote(n: int, votes: list[int]) -> str:
 
 
 def sort_vote(
-    indexing_vote_list: list[tuple[int, int]], index: int, tail_index: int
+    indexing_vote_list: list[tuple[int, int]], index: int, last_vote_index: int
 ) -> list[tuple[int, int]]:
-    if tail_index == 0:
+    if last_vote_index == 0:
         return indexing_vote_list
-    if index == tail_index:
+    if index == last_vote_index:
         index = 0
-        tail_index -= 1
+        last_vote_index -= 1
     if indexing_vote_list[index][1] > indexing_vote_list[index + 1][1]:
         indexing_vote_list[index], indexing_vote_list[index + 1] = (
             indexing_vote_list[index + 1],
             indexing_vote_list[index],
         )
-    return sort_vote(indexing_vote_list, index + 1, tail_index)
+    return sort_vote(indexing_vote_list, index + 1, last_vote_index)
 
 
 def test():

@@ -35,10 +35,10 @@ def bubble_sort(input_arr: list[int], curr_i: int, tail_i: int):
     return bubble_sort(input_arr, next_i, tail_i)
 
 
-def get_prices_from_start(n: int, prises: list, iter_index: int):
-    if iter_index == (n - 1) or n == 0:
-        return prises[iter_index]
-    return prises[iter_index] + get_prices_from_start(n, prises, iter_index + 1)
+def get_prices_from_start(n: int, prises: list, product_index: int):
+    if product_index == (n - 1) or n == 0:
+        return prises[product_index]
+    return prises[product_index] + get_prices_from_start(n, prises, product_index + 1)
 
 
 def split_prices_by_partition(

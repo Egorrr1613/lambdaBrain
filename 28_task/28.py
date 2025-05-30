@@ -1,17 +1,16 @@
 def Keymaker(k: int) -> str:
     door_status = [0] * k
 
-    for i in range(k):
-        step = i + 1
-        door_edit(door_status, step)
+    for door_number in range(1, k + 1):
+        door_edit(door_status, door_number)
     door_status_str = map(str, door_status)
 
     return "".join(door_status_str)
 
 
-def door_edit(door_list: list[int], step: int) -> None:
+def door_edit(door_list: list[int], door_number: int) -> None:
     for i, _ in enumerate(door_list):
-        if (i + 1) % step == 0:
+        if (i + 1) % door_number == 0:
             door_list[i] = int(door_list[i] == 0)
 
 

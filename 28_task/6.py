@@ -1,5 +1,5 @@
 def PatternUnlock(n: int, hits: list[int]) -> str:
-    matrix: list[[int]] = [[6, 1, 9], [5, 2, 8], [4, 3, 7]]
+    matrix: list[list[int]] = [[6, 1, 9], [5, 2, 8], [4, 3, 7]]
     result = "".join(
         list(
             filter(
@@ -12,7 +12,7 @@ def PatternUnlock(n: int, hits: list[int]) -> str:
 
 
 def recursion_score(
-    hits: list[int], matrix: list[[int]], next_index: int, n: int
+    hits: list[int], matrix: list[list[int]], next_index: int, n: int
 ) -> int:
     if next_index == n:
         return 0
@@ -29,7 +29,7 @@ def recursion_score(
     return increment_int + recursion_score(hits, matrix, next_index + 1, n)
 
 
-def find_coordinate(matrix: list[[int]], num: int) -> list[int]:
+def find_coordinate(matrix: list[list[int]], num: int) -> list[int]:
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
             if num == matrix[i][j]:

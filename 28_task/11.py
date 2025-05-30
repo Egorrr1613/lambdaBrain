@@ -1,11 +1,11 @@
 def BigMinus(input1: str, input2: str) -> str:
-    l_s1, l_s2 = len(input1), len(input2)
-    s1, s2, *_ = zero_left_padding_str(input1, l_s1, input2, l_s2)
-    max_str = find_max(s1, s2)
-    if max_str == 0:
+    first_str_len, second_str_len = len(input1), len(input2)
+    s1, s2, *_ = zero_left_padding_str(input1, first_str_len, input2, second_str_len)
+    biggest_num_as_str = find_max(s1, s2)
+    if biggest_num_as_str == 0:
         return "0"
     return unpadding_str(
-        _minus_(s1, s2, l_s1) if max_str == 1 else _minus_(s2, s1, l_s2)
+        _minus_(s1, s2, first_str_len) if biggest_num_as_str == 1 else _minus_(s2, s1, second_str_len)
     )
 
 

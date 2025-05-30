@@ -2,15 +2,15 @@ def MisterRobot(n: int, data: list[int]) -> bool:
     return find_inversion(n, data, 0, 1) % 2 == 0
 
 
-def find_inversion(n: int, data: list[int], curr_i: int, compared_index: int) -> int:
-    if curr_i == n - 2 and compared_index == n:
+def find_inversion(n: int, data: list[int], current_index: int, compared_index: int) -> int:
+    if current_index == n - 2 and compared_index == n:
         return 0
     if compared_index == n:
-        curr_i += 1
-        compared_index = curr_i + 1
+        current_index += 1
+        compared_index = current_index + 1
 
-    return int(data[curr_i] > data[compared_index]) + find_inversion(
-        n, data, curr_i, compared_index + 1
+    return int(data[current_index] > data[compared_index]) + find_inversion(
+        n, data, current_index, compared_index + 1
     )
 
 

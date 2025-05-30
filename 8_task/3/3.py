@@ -1,10 +1,10 @@
 def EEC_help(arr1: list[int], arr2: list[int]) -> bool:
-    l1 = len(arr1)
-    if l1 != len(arr2):
+    first_arr_len = len(arr1)
+    if first_arr_len != len(arr2):
         return False
 
     store: dict[int, int] = {}
-    for i in range(l1):
+    for i in range(first_arr_len):
         if store.get(arr1[i]):
             store[arr1[i]] += 1
         else:
