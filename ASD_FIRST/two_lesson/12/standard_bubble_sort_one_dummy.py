@@ -2,11 +2,11 @@ from ASD_FIRST.two_lesson.one_dummy_node_list import LinkedList2, Node, prepare_
 
 def sort_linked_list(input_list: LinkedList2) -> None:
     count_step = input_list.len() - 1
-    swapped = True
-    while swapped:
+    was_swap = True
+    while was_swap:
         current_node = input_list.head.next
 
-        swapped = False
+        was_swap = False
         for _ in range(count_step):
             next_node = current_node.next
             if current_node.value > next_node.value:
@@ -14,7 +14,7 @@ def sort_linked_list(input_list: LinkedList2) -> None:
                 input_list.delete(val=current_node.value, is_all=False)
                 input_list.insert(after_node=next_node, node_to_insert=node_to_move)
                 current_node = node_to_move
-                swapped = True
+                was_swap = True
             else:
                 current_node = next_node
         count_step -= 1

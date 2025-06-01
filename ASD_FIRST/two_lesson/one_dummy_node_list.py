@@ -116,11 +116,11 @@ class LinkedList2:
 
     def sort(self):
         count_step = self.len() - 1
-        swapped = True
-        while swapped:
+        was_swap = True
+        while was_swap:
             current_node = self.head.next
 
-            swapped = False
+            was_swap = False
             for _ in range(count_step):
                 next_node = current_node.next
                 if current_node.value > next_node.value:
@@ -128,7 +128,7 @@ class LinkedList2:
                     current_node.next.prev = current_node.prev
 
                     self.insert(after_node=next_node, node_to_insert=current_node)
-                    swapped = True
+                    was_swap = True
                 else:
                     current_node = next_node
             count_step -= 1

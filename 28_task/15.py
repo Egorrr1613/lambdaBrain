@@ -15,15 +15,16 @@ def check_size(h1, h2, w1, w2, current_sublist_index_1, current_el_index_1):
 
 
 def find_first_in(
-    l1: list[list[str]], h1: int, w1: int, l2: list[list[str]], h2: int, w2: int
+    list_1: list[list[str]], h1: int, w1: int,
+        list_2: list[list[str]], h2: int, w2: int
 ) -> bool:
-    for index_sublist_1, sublist in enumerate(l1):
+    for index_sublist_1, sublist in enumerate(list_1):
         for index_element_1, element in enumerate(sublist):
             if (
-                element == l2[0][0]
+                element == list_2[0][0]
                 and check_size(h1, h2, w1, w2, index_sublist_1, index_element_1)
                 and is_full_in(
-                    l1, h1, w1, index_sublist_1, index_element_1, l2, h2, w2, 0, 0
+                    list_1, h1, w1, index_sublist_1, index_element_1, list_2, h2, w2, 0, 0
                 )
             ):
                 return True
