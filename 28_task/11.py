@@ -1,6 +1,6 @@
-def BigMinus(input1: str, input2: str) -> str:
-    first_str_len, second_str_len = len(input1), len(input2)
-    s1, s2, *_ = zero_left_padding_str(input1, first_str_len, input2, second_str_len)
+def BigMinus(number_as_str_first: str, number_as_str_second: str) -> str:
+    first_str_len, second_str_len = len(number_as_str_first), len(number_as_str_second)
+    s1, s2, *_ = zero_left_padding_str(number_as_str_first, first_str_len, number_as_str_second, second_str_len)
     biggest_num_as_str = find_max(s1, s2)
     if biggest_num_as_str == 0:
         return "0"

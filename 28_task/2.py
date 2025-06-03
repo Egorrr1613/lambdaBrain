@@ -5,15 +5,15 @@ def odometer(oksana: list) -> int:
 
 
 def recursion(oksana: list, time_index: int) -> int:
-    current_time = (
+    current_time_slot = (
         oksana[time_index]
         if time_index == 1
         else oksana[time_index] - oksana[time_index - 2]
     )
 
     if time_index == len(oksana) - 1:
-        return oksana[time_index - 1] * current_time
-    return oksana[time_index - 1] * current_time + recursion(oksana, time_index + 2)
+        return oksana[time_index - 1] * current_time_slot
+    return oksana[time_index - 1] * current_time_slot + recursion(oksana, time_index + 2)
 
 
 def test():

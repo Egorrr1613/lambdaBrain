@@ -52,7 +52,7 @@ class ExpandedStack:
 
         self.count_node = 0
         self.min_stack = Stack()
-        self.__element_sum__ = 0
+        self.__all_elements_sum__ = 0
 
     def push(self, value) -> None:
         new_node = Node(value)
@@ -65,7 +65,7 @@ class ExpandedStack:
 
         self.count_node += 1
         if isinstance(value, (int, float)):
-            self.__element_sum__ += value
+            self.__all_elements_sum__ += value
 
         if self.count_node == 1:
             self.min_stack.push(value)
@@ -86,7 +86,7 @@ class ExpandedStack:
 
         self.count_node -= 1
         if isinstance(value, (int, float)):
-            self.__element_sum__ -= value
+            self.__all_elements_sum__ -= value
 
         if self.min_stack.peek() == value:
             self.min_stack.pop()
@@ -126,7 +126,7 @@ class ExpandedStack:
         """
         if self.count_node == 0:
             return 0
-        return self.__element_sum__ // self.count_node
+        return self.__all_elements_sum__ // self.count_node
 
 
 def calculate_math_expression(stack_with_math_expression: ExpandedStack):

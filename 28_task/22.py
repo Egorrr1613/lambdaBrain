@@ -1,47 +1,47 @@
 def SherlockValidString(s: str) -> bool:
-    d_char_count: dict[str, int] = {}
-    for char in s:
-        if d_char_count.get(char) is None:
-            d_char_count[char] = 0
-        d_char_count[char] += 1
+    symbol_counter_as_dict: dict[str, int] = {}
+    for symbol in s:
+        if symbol_counter_as_dict.get(symbol) is None:
+            symbol_counter_as_dict[symbol] = 0
+        symbol_counter_as_dict[symbol] += 1
 
-    d_value_char: dict[int, list[str]] = {}
-    for k, v in d_char_count.items():
-        if d_value_char.get(v) is None:
-            d_value_char[v] = []
-        d_value_char[v].append(k)
+    frequency_symbols: dict[int, list[str]] = {}
+    for symbol, symbol_count in symbol_counter_as_dict.items():
+        if frequency_symbols.get(symbol_count) is None:
+            frequency_symbols[symbol_count] = []
+        frequency_symbols[symbol_count].append(symbol)
 
-    d_count_value_len = len(d_value_char)
-    if d_count_value_len == 1:
+    frequency_symbols_len = len(frequency_symbols)
+    if frequency_symbols_len == 1:
         return True
-    if d_count_value_len != 2:
+    if frequency_symbols_len != 2:
         return False
 
-    items = list(d_value_char.items())
+    items = list(frequency_symbols.items())
     if len(items[0][1]) > len(items[1][1]):
         key_max, key_min = items[0][0], items[1][0]
     else:
         key_max, key_min = items[1][0], items[0][0]
 
     if (
-        len(d_value_char[key_min]) == 1
-        and d_char_count[d_value_char[key_min][0]] - 1
-        == d_char_count[d_value_char[key_max][0]]
+        len(frequency_symbols[key_min]) == 1
+        and symbol_counter_as_dict[frequency_symbols[key_min][0]] - 1
+        == symbol_counter_as_dict[frequency_symbols[key_max][0]]
     ):
         return True
     if (
-        len(d_value_char[key_max]) == 1
-        and d_char_count[d_value_char[key_max][0]] - 1
-        == d_char_count[d_value_char[key_min][0]]
+        len(frequency_symbols[key_max]) == 1
+        and symbol_counter_as_dict[frequency_symbols[key_max][0]] - 1
+        == symbol_counter_as_dict[frequency_symbols[key_min][0]]
     ):
         return True
 
     if (
-        len(d_value_char[key_min]) == 1
-        and d_char_count[d_value_char[key_min][0]] - 1 == 0
+        len(frequency_symbols[key_min]) == 1
+        and symbol_counter_as_dict[frequency_symbols[key_min][0]] - 1 == 0
     ) or (
-        len(d_value_char[key_max]) == 1
-        and d_char_count[d_value_char[key_max][0]] - 1 == 0
+        len(frequency_symbols[key_max]) == 1
+        and symbol_counter_as_dict[frequency_symbols[key_max][0]] - 1 == 0
     ):
         return True
 

@@ -17,24 +17,25 @@ def SynchronizingTables(n: int, ids: list[int], salary: list[int]) -> list[int]:
 
 
 def find_max_salary_index(
-    max_salary_index: int, index: int, salary: list[int], ignore_index: list[int]
+        max_salary_index: int, checked_salary_index: int,
+        salary: list[int], ignore_index: list[int]
 ) -> int:
-    if index not in ignore_index and salary[max_salary_index] <= salary[index]:
-        max_salary_index = index
-    elif (max_salary_index in ignore_index) and (index not in ignore_index):
-        max_salary_index = index
-    if index == 0:
+    if checked_salary_index not in ignore_index and salary[max_salary_index] <= salary[checked_salary_index]:
+        max_salary_index = checked_salary_index
+    elif (max_salary_index in ignore_index) and (checked_salary_index not in ignore_index):
+        max_salary_index = checked_salary_index
+    if checked_salary_index == 0:
         return max_salary_index
-    return find_max_salary_index(max_salary_index, index - 1, salary, ignore_index)
+    return find_max_salary_index(max_salary_index, checked_salary_index - 1, salary, ignore_index)
 
 
 def find_max_ids_index(
-    max_index: int, iter_index: int, ids: list[int], ignore_index_list: list[int]
+        max_index: int, iter_index: int, ids: list[int], ignore_index_list: list[int]
 ):
     if iter_index == len(ids):
         return max_index
     if (
-        (ids[max_index] <= ids[iter_index]) and (iter_index not in ignore_index_list)
+            (ids[max_index] <= ids[iter_index]) and (iter_index not in ignore_index_list)
     ) or max_index in ignore_index_list:
         max_index = iter_index
     return find_max_ids_index(max_index, iter_index + 1, ids, ignore_index_list)
@@ -84,4 +85,3 @@ def test():
     assert find_max_ids_index(0, 1, [1, 47, 9, 5], [1, 2]) == 3
     assert find_max_ids_index(0, 1, [1, 47, 9, 5], [1, 2, 3]) == 0
     assert find_max_ids_index(0, 1, [50, 4, 1024], [2, 0]) == 1
-

@@ -149,14 +149,14 @@ class CycleBufferQueue:
     def dequeue(self):
         if self.count_free_el == self.max_count_el:
             return None
-        result = self.array[self.tail_index]
+        last_queue_element = self.array[self.tail_index]
         self.array[self.tail_index] = None
         self.tail_index = self.calculate_next_index(self.tail_index)
         self.count_free_el += 1
         if self.count_free_el == self.max_count_el:
             self.head_index = None
             self.tail_index = None
-        return result
+        return last_queue_element
 
     def size(self) -> int:
         return self.max_count_el

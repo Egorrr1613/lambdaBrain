@@ -8,10 +8,10 @@ def Keymaker(k: int) -> str:
     return "".join(door_status_str)
 
 
-def door_edit(door_list: list[int], door_number: int) -> None:
-    for i, _ in enumerate(door_list):
-        if (i + 1) % door_number == 0:
-            door_list[i] = int(door_list[i] == 0)
+def door_edit(door_list: list[int], edited_door_number: int) -> None:
+    for current_door_index, _ in enumerate(door_list):
+        if (current_door_index + 1) % edited_door_number == 0:
+            door_list[current_door_index] = int(door_list[current_door_index] == 0)
 
 
 def test():

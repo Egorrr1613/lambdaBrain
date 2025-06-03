@@ -1,11 +1,11 @@
 def MassVote(n: int, votes: list[int]) -> str:
     if n == 1:
         return "majority winner 1"
-    votes_with_num = []
+    indexed_votes = []
     for i in range(n):
-        votes_with_num.append((i, votes[i]))
+        indexed_votes.append((i, votes[i]))
     sum_vote = sum(votes)
-    sorted_vote = sort_vote(votes_with_num, 0, n - 1)
+    sorted_vote = sort_vote(indexed_votes, 0, n - 1)
 
     if sorted_vote[n - 1][1] == sorted_vote[n - 2][1]:
         return "no winner"

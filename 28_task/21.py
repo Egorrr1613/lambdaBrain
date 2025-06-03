@@ -15,11 +15,11 @@ def BiggerGreater(input_str: str) -> str:
     return find_min(bigger_list, bigger_len, 1, bigger_list[0])
 
 
-def find_min(input_arr: list[str], len_arr: int, index: int, min_el: str) -> str:
-    if index == len_arr:
+def find_min(input_arr: list[str], len_arr: int, current_el_index: int, min_el: str) -> str:
+    if current_el_index == len_arr:
         return min_el
-    compare_res = min_el if input_arr[index] > min_el else input_arr[index]
-    return find_min(input_arr, len_arr, index + 1, compare_res)
+    compare_res = min_el if input_arr[current_el_index] > min_el else input_arr[current_el_index]
+    return find_min(input_arr, len_arr, current_el_index + 1, compare_res)
 
 
 def get_all_combination(arr):

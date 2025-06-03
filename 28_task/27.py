@@ -39,12 +39,12 @@ def check_is_decrement(checked_list: list[int], n: int, i: int) -> bool:
     return check_is_decrement(checked_list, n, i + 1)
 
 
-def get_list_min_indexes_position(copy_f: list[int], n) -> list[int]:
+def get_list_min_indexes_position(football_field: list[int], football_field_size: int) -> list[int]:
     list_min_indexes: list[int] = []
 
-    for _ in range(n):
+    for _ in range(football_field_size):
         min_i = find_first_min_index_not_in_list(list_min_indexes)
-        min_iter_index = find_min_index(copy_f, list_min_indexes, len(copy_f), 0, min_i)
+        min_iter_index = find_min_index(football_field, list_min_indexes, len(football_field), 0, min_i)
         list_min_indexes.append(min_iter_index)
 
     return list_min_indexes

@@ -26,13 +26,13 @@ def separate_string(
 
 def find_word(s: str, word: str) -> list[int]:
     list_with_split_words = s.split("\n")
-    result = []
-    for i in range(len(list_with_split_words)):
-        if is_in_str(list_with_split_words[i], word, 0, 0):
-            result.append(1)
+    is_find_word_flag_list = []
+    for word_index in range(len(list_with_split_words)):
+        if is_in_str(list_with_split_words[word_index], word, 0, 0):
+            is_find_word_flag_list.append(1)
         else:
-            result.append(0)
-    return result
+            is_find_word_flag_list.append(0)
+    return is_find_word_flag_list
 
 
 def is_in_str(string_for_search: str, word: str, current_index: int, index_word: int) -> bool:
