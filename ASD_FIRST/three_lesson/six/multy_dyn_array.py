@@ -1,7 +1,7 @@
 import ctypes
 
 
-class ValueKeepListClass:
+class FixedCapacityList:
     """
     Класс для хранения конечных данных динамического многомерного массива
     """
@@ -27,17 +27,17 @@ class ValueKeepListClass:
     def __len__(self):
         return self.count_elements
 
-    def __setitem__(self, key, value) -> None:
-        response_code = self.has_element_by_index(key)
+    def __setitem__(self, index, value) -> None:
+        response_code = self.has_element_by_index(index)
         if response_code == -1:
             raise IndexError("Index is out of bounds")
 
         if response_code == 1:
-            self.array[key] = value
+            self.array[index] = value
             return
 
         if response_code == 0:
-            self.array[key] = value
+            self.array[index] = value
             self.count_elements += 1
             self.parent.elements_count += 1
             return
@@ -127,7 +127,7 @@ class DynMultyArray:
             self.dim_size
         )  # количество ячеек для хранения данных
 
-        self.array: list[list] | ValueKeepListClass = self.recursive_create_list(
+        self.array: list[list] | FixedCapacityList = self.recursive_create_list(
             deep=self.dim_count,
             current_deep_index=0,
             dims_lens=self.dim_size,
@@ -153,7 +153,7 @@ class DynMultyArray:
         Метод позволяет изменять значения только если массив одномерный.
         Если в массиве больше измерений - изменение элементов запрещено
         """
-        if self.dim_count != 1 or not isinstance(self.array, ValueKeepListClass):
+        if self.dim_count != 1 or not isinstance(self.array, FixedCapacityList):
             raise ValueError(
                 "You should not change the array of links directly. "
                 "You should change only elements in ValueKeepListClass object"
@@ -177,7 +177,7 @@ class DynMultyArray:
         current_deep_index: int,
         dims_lens: list[int],
         replace_el_index: list[int],
-    ) -> list | ValueKeepListClass:
+    ) -> list | FixedCapacityList:
         """
         Рекурсивный метод для создания вложенной структуры массивов по заданным размерам.
         На нижнем уровне для хранения элементов используется тип данных ValueKeepListClass.
@@ -227,7 +227,7 @@ class DynMultyArray:
 
     def make_low_level_array(self, new_capacity):
         """Создаем массив "нижнего" уровня, в котором будут храниться данные"""
-        return ValueKeepListClass(capacity=new_capacity, parent=self)
+        return FixedCapacityList(capacity=new_capacity, parent=self)
 
     def resize(self):
         """

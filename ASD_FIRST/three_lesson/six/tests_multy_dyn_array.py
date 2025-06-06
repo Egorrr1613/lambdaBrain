@@ -2,7 +2,7 @@
 
 import pytest
 
-from ASD_FIRST.three_lesson.six.multy_dyn_array import DynMultyArray, ValueKeepListClass
+from ASD_FIRST.three_lesson.six.multy_dyn_array import DynMultyArray, FixedCapacityList
 
 
 def test_create_multy_array():
@@ -21,7 +21,7 @@ def test_create_multy_array():
     """
     da0 = DynMultyArray(dim_count=1, dim_size=[1])
     assert len(da0) == 1
-    assert isinstance(da0.array, ValueKeepListClass)
+    assert isinstance(da0.array, FixedCapacityList)
 
     with pytest.raises(IndexError):
         da0[1] = "789"
