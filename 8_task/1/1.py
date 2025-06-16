@@ -7,18 +7,18 @@ def white_walkers(village: str) -> bool:
     if len(peasants_and_walkers) < 5:  # O(1)
         return False
 
-    neighboring_peasants = []  # O(1)
-    for i, peasant_or_walker in enumerate(peasants_and_walkers):  # O(n)
+    neighboring_walkers = []  # O(1)
+    for entity_index, peasant_or_walker in enumerate(peasants_and_walkers):  # O(n)
         if peasant_or_walker.isdigit():  # O(1)
-            neighboring_peasants.append((i, int(peasant_or_walker)))  # O(1)
+            neighboring_walkers.append((entity_index, int(peasant_or_walker)))  # O(1)
         if (
-            len(neighboring_peasants) >= 2
-            and (neighboring_peasants[-1][1] + neighboring_peasants[-2][1]) == 10
-            and (neighboring_peasants[-1][0] - neighboring_peasants[-2][0]) != 4
+            len(neighboring_walkers) >= 2
+            and (neighboring_walkers[-1][1] + neighboring_walkers[-2][1]) == 10
+            and (neighboring_walkers[-1][0] - neighboring_walkers[-2][0]) != 4
         ):  # O(1)
             return False
 
-    return len(neighboring_peasants) >= 2  # O(1)
+    return len(neighboring_walkers) >= 2  # O(1)
 
 
 def test():
