@@ -1,7 +1,9 @@
+WHITE_WALKER = "="
+
 def white_walkers(village: str) -> bool:
     peasants_and_walkers = []  # O(1)
     for _, v in enumerate(village):  # O(n)
-        if v.isdigit() or v == "=":  # O(1)
+        if v.isdigit() or v == WHITE_WALKER:  # O(1)
             peasants_and_walkers.append(v)  # O(1)
 
     if len(peasants_and_walkers) < 5:  # O(1)
