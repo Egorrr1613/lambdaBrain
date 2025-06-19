@@ -7,7 +7,7 @@ def MatrixTurn(matrix: list[str], m: int, n: int, t: int) -> None:
             (m - iteration_index, n - iteration_index),
         ]
 
-    matrix_list = list(map(list, matrix))
+    matrix_list = [list(row) for row in matrix]
 
     for iteration_index in range(t):
         for axis_index in range(count_axis):
@@ -33,15 +33,14 @@ def get_count_axis(m: int, n: int) -> int:
 
 
 def move_one_axis(
-    matrix: list[list[str]],
-    axis_i: tuple[int, int],
-    start: tuple[int, int],
-    end: tuple[int, int],
-    init_val: str,
-    indexing: int,
-    iteration: int,
+        matrix: list[list[str]],
+        axis_i: tuple[int, int],
+        start: tuple[int, int],
+        end: tuple[int, int],
+        init_val: str | None,
+        indexing: int,
+        iteration: int,
 ) -> list[str]:
-
     if init_val is None and iteration == 3:
         return []
 

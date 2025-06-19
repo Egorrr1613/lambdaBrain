@@ -1,5 +1,5 @@
 from ASD_FIRST.lesson_11_bloom.bloom_filter import BloomFilter
-from ASD_FIRST.three_lesson.six.multy_dyn_array import DynMultyArray
+from ASD_FIRST.lesson_3_dyn_array.six.multy_dyn_array import DynMultyArray
 
 
 def sum_any_blume(blume_list: list[BloomFilter]) -> BloomFilter:

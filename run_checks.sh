@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_PATH="ASD_FIRST/lesson_12_native_cache/"
+FILE_PATH="ASD_FIRST/0/test_pyryght.py"
 
 python3 -m black "$FILE_PATH"
 python3 -m darker "$FILE_PATH"

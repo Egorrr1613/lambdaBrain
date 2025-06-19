@@ -1,4 +1,6 @@
-BYTE_SIZE = 8
+from typing import Final
+
+BYTE_SIZE: Final[int] = 8
 
 
 def artificial_muscle_fibers(arr: list[int]) -> int:

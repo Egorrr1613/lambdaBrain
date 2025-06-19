@@ -1,5 +1,8 @@
+from typing import Final
+
+
 def EEC_help(arr1: list[int], arr2: list[int]) -> bool:
-    first_arr_len = len(arr1)
+    first_arr_len: Final[int] = len(arr1)
     if first_arr_len != len(arr2):
         return False
 

@@ -1,4 +1,6 @@
-WHITE_WALKER = "="
+from typing import Final
+
+WHITE_WALKER: Final[str] = "="
 
 def white_walkers(village: str) -> bool:
     peasants_and_walkers = []  # O(1)

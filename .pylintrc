@@ -1,2 +1,3 @@
 [MESSAGES CONTROL]
 disable = R0801, C0116, C0115, C0114
+enable=unused-variable,unused-import,unused-argument
