@@ -25,16 +25,19 @@ class DynArray:
             new_array[i] = self.array[i]
         self.array = new_array
         self.capacity = new_capacity
+        self._check_capacity_bigger_len()
 
     def append(self, itm):
         if self.count == self.capacity:
             self.resize(2 * self.capacity)
         self.array[self.count] = itm
         self.count += 1
+        self._check_capacity_bigger_len()
 
     def insert(self, i, itm):
         if i is self.count:
             self.append(itm=itm)
+            self._check_capacity_bigger_len()
             return
 
         self.__getitem__(i)
@@ -46,6 +49,7 @@ class DynArray:
             self.array[i_range] = self.array[i_range - 1]
         self.array[i] = itm
         self.count += 1
+        self._check_capacity_bigger_len()
 
     def delete(self, i):
         self.__getitem__(i)
@@ -58,7 +62,10 @@ class DynArray:
 
         self.count -= 1
         self.resize(self.capacity)
+        self._check_capacity_bigger_len()
 
     def get_list_elements(self):
         return list(self.array._objects.values())
 
+    def _check_capacity_bigger_len(self):
+        assert self.__len__() <= self.capacity, "Количество элементов в динамическом массиве не может быть больше емкости массива"

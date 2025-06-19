@@ -17,6 +17,7 @@ class LinkedList:
         else:
             self.tail.next = item
         self.tail = item
+        self._check_tail_next_link()
 
     def print_all_nodes(self):
         node = self.head
@@ -98,6 +99,7 @@ class LinkedList:
         new_node.next = buffer_node
         if is_new_tail:
             self.tail = new_node
+        self._check_tail_next_link()
 
     def __insert_to_head(self, new_node):
         new_node.next = self.head
@@ -105,6 +107,9 @@ class LinkedList:
 
         if self.tail is None:
             self.tail = self.head
+
+    def _check_tail_next_link(self):
+        assert self.tail.next is None, "Ссылка next для tail при добавлении элемента должна ссылаться на None"
 
 
 def prepare_test_data():
@@ -372,4 +377,3 @@ def test_insert_to_tail():
     assert a.head.next.value == 2
     assert a.tail.value == 9
     assert a.tail.next is None
-

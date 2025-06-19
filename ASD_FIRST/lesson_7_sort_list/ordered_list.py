@@ -28,6 +28,7 @@ class OrderedList:
         return ("Error: Compare error",)
 
     def add(self, value) -> None | tuple[str]:
+        assert isinstance(value, str), "Добавляемые данные должны быть типа str"
         new_node = Node(value)
 
         if self.count_el == 0:

@@ -15,6 +15,7 @@ class PowerSet:
         return self.count_el
 
     def put(self, value: Any) -> None:
+        assert isinstance(value, str), "Добавляемые данные должны быть типа str"
         if value in self.slots[index := self.hash_fun(value)]:
             return
         self.slots[index].append(value)
