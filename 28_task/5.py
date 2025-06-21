@@ -12,7 +12,6 @@ def SynchronizingTables(n: int, ids: list[int], salary: list[int]) -> list[int]:
             salary[max_id_index],
         )
         ignore_index.append(max_id_index)
-    ignore_index = None
     return salary
 
 
