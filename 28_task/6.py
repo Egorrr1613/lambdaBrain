@@ -12,18 +12,16 @@ def PatternUnlock(n: int, hits: list[int]) -> str:
 
 
 def recursion_score(
-    hits: list[int], matrix: list[list[int]], next_index: int, n: int
+        hits: list[int], matrix: list[list[int]], next_index: int, n: int
 ) -> int:
     if next_index == n:
         return 0
-    current_coordinate, next_coordinate, increment_int = (
-        find_coordinate(matrix, hits[next_index - 1]),
-        find_coordinate(matrix, hits[next_index]),
-        1,
-    )
+    current_coordinate = find_coordinate(matrix, hits[next_index - 1])
+    next_coordinate = find_coordinate(matrix, hits[next_index])
+    increment_int = 1
     if (
-        current_coordinate[0] != next_coordinate[0]
-        and current_coordinate[1] != next_coordinate[1]
+            current_coordinate[0] != next_coordinate[0]
+            and current_coordinate[1] != next_coordinate[1]
     ):
         increment_int = 1.4142135623730951
     return increment_int + recursion_score(hits, matrix, next_index + 1, n)
@@ -45,4 +43,3 @@ def test():
     assert PatternUnlock(9, [1, 2, 3, 4, 5, 2, 8, 7, 3]) == "8"
     assert PatternUnlock(10, [1, 2, 3, 4, 5, 6, 2, 7, 8, 9]) == "982843"
     assert PatternUnlock(11, [1, 2, 3, 4, 5, 6, 2, 7, 8, 9, 2]) == "1124264"
-

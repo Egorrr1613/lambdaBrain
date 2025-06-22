@@ -22,7 +22,7 @@ def find_min(input_arr: list[str], len_arr: int, current_el_index: int, min_el: 
     return find_min(input_arr, len_arr, current_el_index + 1, compare_res)
 
 
-def get_all_combination(arr):
+def get_all_combination(arr) -> list:
     res = []
 
     def permute(sub_arr, remaining_arr):
