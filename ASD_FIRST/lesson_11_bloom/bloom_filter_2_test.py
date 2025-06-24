@@ -66,9 +66,9 @@ def test_bloom_filter_delete_3():
 
     bloom_filter.add(test_value)
     assert bloom_filter.is_value(test_value)
-    assert bloom_filter.is_value(collision_value)  # коллизия
-    assert bloom_filter.delete(collision_value)  # удаление коллизии
-    assert not bloom_filter.is_value(test_value)  # после удаления коллизии добавленный элемент перестал находится
+    assert bloom_filter.is_value(collision_value), "Для коллизии ожидается ложно положительное срабатывание проверки на наличие в структуре"
+    assert bloom_filter.delete(collision_value), "Удаление элемента, являющегося коллизией должно быть успешно выполнено"
+    assert not bloom_filter.is_value(test_value), "После удаления коллизии оригинальный элемент должен отсутствовать"
 
 def test_index_el_to_unicode_char_test():
     assert index_el_to_unicode_char(index=0, len_final_str=2, char_set_size=3, end_unicode_index=123) == [0, 0]

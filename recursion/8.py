@@ -23,3 +23,58 @@ def test():
             "/Users/egorreutov/learn/lambdaBrain/recursion/../data/8/42",
         ]
     )
+
+
+
+
+
+
+
+
+
+(O)
+
+
+
+
+# O(?) = O(n)
+def print_all_num(l: list[int]):
+    for i in l:
+        print(i)
+
+# O(?) = O(1)
+def print_all_num(l: list[int]):
+    print(213)
+    print(zzz)
+    a = 888 + l[0]
+    print(l)
+    print(l[0])
+    print(l[1])
+    print(l[2])
+    ...
+    print(l[-1])
+
+# O(?) = O(n^2)
+def print_all_num(l: list[list[int]]):
+    for i in l:
+        for j in i:
+            print(j)
+            print(i)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

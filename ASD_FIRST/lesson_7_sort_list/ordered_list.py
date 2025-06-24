@@ -51,7 +51,9 @@ class OrderedList:
             self.count_el += 1
             return None
 
-        if self.compare(v1=self.tail.value, v2=new_node.value) == -1:
+        is_new_value_greatest = self.compare(v1=self.tail.value, v2=new_node.value) == -1
+        # Если добавляемое значение наибольшее, то: ...
+        if is_new_value_greatest:
             new_node.prev = self.tail
             self.tail.next = new_node
             self.tail = new_node
