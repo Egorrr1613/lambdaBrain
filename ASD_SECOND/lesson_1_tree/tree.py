@@ -109,3 +109,4 @@ class SimpleTree:
         for check_node in current_node.Children:
             result += self._recursion_leaf_count(check_node)
         return result
+
