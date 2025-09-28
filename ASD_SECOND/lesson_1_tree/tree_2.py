@@ -10,8 +10,6 @@ def set_level_to_node(tree: SimpleTree):
 
 def recursion_set_level(current_node: SimpleTreeNode, current_level: int):
     current_node.Level = current_level
-    if current_node.Children is []:
-        return
     for child_node in current_node.Children:
         recursion_set_level(current_node=child_node, current_level=current_level+1)
 
