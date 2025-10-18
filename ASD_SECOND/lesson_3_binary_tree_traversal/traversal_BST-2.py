@@ -348,6 +348,26 @@ class BST:
         return max_level
 
 
+def _build_tree(pref_list: list[int], inf_list: list[int]):
+    if not pref_list or not inf_list:
+        return None
+
+    root_key = pref_list[0]
+    root = BSTNode(key=root_key, val=None, parent=None)
+
+    root_index = inf_list.index(root_key)
+
+    left_inf = inf_list[:root_index]
+    right_inf = inf_list[root_index + 1:]
+
+    left_pref = pref_list[1:1 + len(left_inf)]
+    right_pref = pref_list[1 + len(left_inf):]
+
+    root.LeftChild = _build_tree(left_pref, left_inf)
+    root.RightChild = _build_tree(right_pref, right_inf)
+    return root
+
+
 def restore_tree(prefix_list: list[int], infix_list: list[int]) -> BST:
     """
     Задание: №3
@@ -357,6 +377,30 @@ def restore_tree(prefix_list: list[int], infix_list: list[int]) -> BST:
 
     Рефлексия:
     """
+    if len(prefix_list) != len(infix_list):
+        assert False, "Префиксный и инфиксный массив должны быть одинаковой длинны"
+
+    if len(prefix_list) == 0 and len(infix_list) == 0:
+        return BST(None)
+
+    if not prefix_list or not infix_list:
+        assert False, "Не корректные входные данные"
+
+    return BST(_build_tree(prefix_list, infix_list))
+
+
+def restore_tree_2(prefix_list: list[int], infix_list: list[int]) -> BST:
+    """
+    Задание: -
+    Номер задачи из задания: -
+    Краткое название: -
+    Сложность: size - O(n) / time - O(n)
+
+    Рефлексия:
+    """
+    if len(prefix_list) == 0:
+        return BST(None
+                   )
     copy_pref_list = prefix_list[:]
 
     root_key = copy_pref_list.pop(0)
