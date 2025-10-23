@@ -241,7 +241,7 @@ class TestWideSearch:
         assert all_nodes[1].NodeKey == 5
         assert all_nodes[2].NodeKey == 11
 
-    def test_wide_search_seven_node(sefl):
+    def test_wide_search_seven_node(self):
         test_tree = BST(BSTNode(key=10, val="a", parent=None))
         test_tree.AddKeyValue(key=5, val="b")
         test_tree.AddKeyValue(key=20, val="b")
