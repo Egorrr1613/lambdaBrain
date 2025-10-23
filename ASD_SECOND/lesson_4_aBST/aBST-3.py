@@ -4,13 +4,13 @@ from ASD_SECOND.lesson_4_aBST.aBST_2 import aBST as aBST_2
 
 class TestCreateBst:
 
-    def test_calculate_len(self):
+    def test_calculate_len(self) -> None:
         assert aBST(0)._calculate_tree_len(current_depth=0, depth=0, tree_len=0) == 1
         assert aBST(0)._calculate_tree_len(current_depth=0, depth=1, tree_len=0) == 3
         assert aBST(0)._calculate_tree_len(current_depth=0, depth=2, tree_len=0) == 7
         assert aBST(0)._calculate_tree_len(current_depth=0, depth=3, tree_len=0) == 15
 
-    def test_abst_create(self):
+    def test_abst_create(self) -> None:
         test_tree = aBST(0)
         assert test_tree.Tree == [None]
 
@@ -26,19 +26,19 @@ class TestCreateBst:
 
 class TestFindInAbst:
 
-    def test_find_in_empty_abst(self):
+    def test_find_in_empty_abst(self) -> None:
         test_tree = aBST(0)
 
         assert test_tree.FindKeyIndex(8) == 0
 
-    def test_find_none_in_abst(self):
+    def test_find_none_in_abst(self) -> None:
         test_tree = aBST(2)
         test_tree.Tree = [1, -2, 3, -4, -1, 2, 7]
 
         assert test_tree.FindKeyIndex(0) is None
         assert test_tree.FindKeyIndex(8) is None
 
-    def test_find_node(self):
+    def test_find_node(self) -> None:
         test_tree = aBST(2)
         test_tree.Tree = [1, -2, 3, -4, -1, 2, 7]
 
@@ -50,7 +50,7 @@ class TestFindInAbst:
         assert test_tree.FindKeyIndex(2) == 5
         assert test_tree.FindKeyIndex(7) == 6
 
-    def test_find_node_by_insert(self):
+    def test_find_node_by_insert(self) -> None:
         test_tree = aBST(2)
         test_tree.Tree = [1, -2, 3, -4, None, None, None]
 
@@ -58,7 +58,7 @@ class TestFindInAbst:
         assert test_tree.FindKeyIndex(2) == -5
         assert test_tree.FindKeyIndex(7) == -6
 
-    def test_find_in_right_list_abst(self):
+    def test_find_in_right_list_abst(self) -> None:
         test_tree = aBST(3)
 
         test_tree.AddKey(1)
@@ -74,14 +74,14 @@ class TestFindInAbst:
 
 class TestInsertAbst:
 
-    def test_insert_in_empty_tree(self):
+    def test_insert_in_empty_tree(self) -> None:
         test_tree = aBST(0)
 
         assert test_tree.AddKey(5) == 0
         assert test_tree.FindKeyIndex(5) == 0
         assert test_tree.Tree == [5]
 
-    def test_insert_as_right_list_abst(self):
+    def test_insert_as_right_list_abst(self) -> None:
         test_tree = aBST(2)
 
         assert test_tree.AddKey(1) == 0
@@ -94,16 +94,16 @@ class TestInsertAbst:
 
 
 class TestWideSearch:
-    def test_wide_search_empty_tree(self):
+    def test_wide_search_empty_tree(self) -> None:
         test_tree = aBST(0)
         assert test_tree.WideAllNodes() == (None,)
 
-    def test_wide_search_one_node(self):
+    def test_wide_search_one_node(self) -> None:
         test_tree = aBST(0)
         test_tree.AddKey(10)
         assert test_tree.WideAllNodes() == (10,)
 
-    def test_wide_search_two_left_node(self):
+    def test_wide_search_two_left_node(self) -> None:
         test_tree = aBST(1)
         test_tree.AddKey(key=10)
         test_tree.AddKey(key=9)
@@ -111,7 +111,7 @@ class TestWideSearch:
         all_nodes = test_tree.WideAllNodes()
         assert all_nodes == (10, 9, None)
 
-    def test_wide_search_two_right_node(self):
+    def test_wide_search_two_right_node(self) -> None:
         test_tree = aBST(1)
         test_tree.AddKey(key=10)
         test_tree.AddKey(key=11)
@@ -119,7 +119,7 @@ class TestWideSearch:
         all_nodes = test_tree.WideAllNodes()
         assert all_nodes == (10, None, 11)
 
-    def test_wide_search_three_node(self):
+    def test_wide_search_three_node(self) -> None:
         test_tree = aBST(1)
         test_tree.AddKey(key=10)
         test_tree.AddKey(key=5)
@@ -128,7 +128,7 @@ class TestWideSearch:
         all_nodes = test_tree.WideAllNodes()
         assert all_nodes == (10, 5, 11)
 
-    def test_wide_search_seven_node(self):
+    def test_wide_search_seven_node(self) -> None:
         test_tree = aBST(2)
         test_tree.AddKey(key=10)
         test_tree.AddKey(key=5)
@@ -142,7 +142,7 @@ class TestWideSearch:
 
         assert all_nodes == (10, 5, 20, 3, 6, 11, 25)
 
-    def test_wide_search_random_nodes(self):
+    def test_wide_search_random_nodes(self) -> None:
         test_tree = aBST(5)
         test_tree.AddKey(key=10)
         test_tree.AddKey(key=5)
@@ -223,7 +223,7 @@ class TestWideSearch:
 
 class TestFindLca:
 
-    def test_find_when_lca_root(self):
+    def test_find_when_lca_root(self) -> None:
         test_tree = aBST_2(1)
         test_tree.AddKey(key=10)
         test_tree.AddKey(key=5)
@@ -232,7 +232,7 @@ class TestFindLca:
         lca = test_tree.find_lca(first_node_key=5, second_node_key=15)
         assert lca == 10
 
-    def test_find_lca_1(self):
+    def test_find_lca_1(self) -> None:
         test_tree = aBST_2(2)
         test_tree.AddKey(key=10)
         test_tree.AddKey(key=5)

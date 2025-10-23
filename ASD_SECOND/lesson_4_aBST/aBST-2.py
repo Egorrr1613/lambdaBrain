@@ -19,7 +19,7 @@ class aBST:
             current_depth=current_depth + 1, depth=depth, tree_len=new_tree_len
         )
 
-    def __init__(self, depth: int):
+    def __init__(self, depth: int) -> None:
         tree_size = self._calculate_tree_len(current_depth=0, depth=depth, tree_len=0)
         self.Tree: list[None | int] = [None] * tree_size
 
@@ -40,14 +40,14 @@ class aBST:
         elif key < current_element:
             next_index = calculate_index[LEFT_CHILD](current_tree_index)
         else:
-            assert False, "Некорректное условие"
+            raise AssertionError("Некорректное условие")
 
         return self._recursion_find_key(key=key, current_tree_index=next_index)
 
     def FindKeyIndex(self, key: int) -> int | None:
         return self._recursion_find_key(key=key, current_tree_index=0)
 
-    def AddKey(self, key):
+    def AddKey(self, key: int) -> int:
         if self.Tree[0] is None:
             self.Tree[0] = key
             return 0
@@ -88,13 +88,13 @@ class aBST:
         second_node_index = self.FindKeyIndex(key=second_node_key)
 
         if first_node_index is None or first_node_index < 0:
-            assert False, f"Ключ {first_node_index} отсутствует в дереве"
+            raise AssertionError(f"Ключ {first_node_index} отсутствует в дереве")
 
         if second_node_index is None or second_node_index < 0:
-            assert False, f"Ключ {second_node_index} отсутствует в дереве"
+            raise AssertionError(f"Ключ {second_node_index} отсутствует в дереве")
 
         if first_node_index == 0 or second_node_index == 0:
-            assert False, "Для корня нельзя найти общего предка"
+            raise AssertionError("Для корня нельзя найти общего предка")
 
         first_node_parent_list = self._get_parents_index_list(
             node_index=first_node_index, parents_index_list=[]
