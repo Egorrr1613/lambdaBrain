@@ -12,7 +12,7 @@ calculate_index = {
 class aBST:
 
     def _calculate_tree_len(self, current_depth: int, depth: int, tree_len: int) -> int:
-        new_tree_len = tree_len + 2**current_depth
+        new_tree_len = tree_len + 2 ** current_depth
         if current_depth == depth:
             return new_tree_len
         return self._calculate_tree_len(
@@ -61,7 +61,7 @@ class aBST:
         return insert_index
 
     def _get_parents_index_list(
-        self, node_index: int, parents_index_list: list[int]
+            self, node_index: int, parents_index_list: list[int]
     ) -> list:
         if len(parents_index_list) > 0 and parents_index_list[-1] == 0:
             return parents_index_list
