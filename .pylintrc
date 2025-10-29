@@ -1,3 +1,6 @@
 [MESSAGES CONTROL]
 disable = R0801, C0116, C0115, C0114, C0103
 enable=unused-variable,unused-import,unused-argument
+
+[FORMAT]
+max-line-length=120
