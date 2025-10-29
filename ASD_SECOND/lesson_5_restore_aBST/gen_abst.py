@@ -46,3 +46,4 @@ def _recursion_generate_tree(sorted_list: list[int],
                              list_to_tree=list_to_tree,
                              len_tree=len(right_sublist),
                              current_index_in_tree=calculate_index[RIGHT_CHILD](current_index_in_tree))
+

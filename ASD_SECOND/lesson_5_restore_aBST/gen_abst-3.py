@@ -49,3 +49,4 @@ class TestDeleteAndBalanceTree:
     def test_rebalance_if_delete_root_tree(self) -> None:
         assert (delete_element(binary_search_tree_list=[4, 2, 6, 1, 3, 5, 7], key_to_delete=4) ==
                 [5, 2, 7, 1, 3, 6, None])
+
