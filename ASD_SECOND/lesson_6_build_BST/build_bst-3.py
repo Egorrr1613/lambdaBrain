@@ -1,29 +1,28 @@
-from ASD_SECOND.lesson_6_build_BST.build_bst import BalancedBST, BSTNode
-
-from ASD_SECOND.lesson_6_build_BST.build_bst_2 import BalancedBST as BalancedBST_2, BSTNode as BSTNode_2
+from ASD_SECOND.lesson_6_build_BST.build_bst import BalancedBST
+from ASD_SECOND.lesson_6_build_BST.build_bst_2 import BalancedBST as BalancedBST_2
 
 
 class TestGenBalanceTree:
-    def test_gen_empty_tree(self):
+    def test_gen_empty_tree(self) -> None:
         test_tree = BalancedBST()
         test_tree.GenerateTree(input_list=[])
         assert not test_tree.Root
 
-    def test_gen_one_el_tree(self):
+    def test_gen_one_el_tree(self) -> None:
         test_tree = BalancedBST()
         test_tree.GenerateTree(input_list=[1])
-        test_node: BSTNode = test_tree.Root
+        test_node = test_tree.Root
         assert test_node.NodeKey == 1
         assert not test_node.Parent
         assert not test_node.RightChild
         assert not test_node.LeftChild
         assert test_node.Level == 0
 
-    def test_gen_three_el_tree(self):
+    def test_gen_three_el_tree(self) -> None:
         test_tree = BalancedBST()
         test_tree.GenerateTree(input_list=[1, 3, 5])
 
-        root_node: BSTNode = test_tree.Root
+        root_node = test_tree.Root
 
         assert not root_node.Parent
         assert root_node.NodeKey == 3
@@ -34,11 +33,11 @@ class TestGenBalanceTree:
         assert root_node.RightChild.NodeKey == 5
         assert root_node.RightChild.Parent.NodeKey == 3
 
-    def test_gen_three_el_tree_by_non_sort_list(self):
+    def test_gen_three_el_tree_by_non_sort_list(self) -> None:
         test_tree = BalancedBST()
         test_tree.GenerateTree(input_list=[5, 1, 3])
 
-        root_node: BSTNode = test_tree.Root
+        root_node = test_tree.Root
 
         assert not root_node.Parent
         assert root_node.NodeKey == 3
@@ -49,7 +48,7 @@ class TestGenBalanceTree:
         assert root_node.RightChild.NodeKey == 5
         assert root_node.RightChild.Parent.NodeKey == 3
 
-    def test_gen_large_tree(self):
+    def test_gen_large_tree(self) -> None:
         test_tree = BalancedBST()
         test_tree.GenerateTree(input_list=[8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15])
 
@@ -102,33 +101,33 @@ class TestGenBalanceTree:
 
 
 class TestIsCorrectTree:
-    def test_correct_tree_simple_case(self):
+    def test_correct_tree_simple_case(self) -> None:
         test_tree = BalancedBST_2()
         test_tree.GenerateTree(input_list=[1, 3, 5])
 
         assert test_tree.is_correct_tree()
 
-    def test_correct_tree_negative_case_1(self):
+    def test_correct_tree_negative_case_1(self) -> None:
         test_tree = BalancedBST_2()
         test_tree.GenerateTree(input_list=[1, 3, 5])
 
         test_tree.Root.LeftChild.NodeKey = 6
         assert not test_tree.is_correct_tree()
 
-    def test_correct_tree_negative_case_2(self):
+    def test_correct_tree_negative_case_2(self) -> None:
         test_tree = BalancedBST_2()
         test_tree.GenerateTree(input_list=[1, 3, 5])
 
         test_tree.Root.RightChild.NodeKey = -1
         assert not test_tree.is_correct_tree()
 
-    def test_correct_tree_large_tree(self):
+    def test_correct_tree_large_tree(self) -> None:
         test_tree = BalancedBST_2()
         test_tree.GenerateTree(input_list=[8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15])
 
         assert test_tree.is_correct_tree()
 
-    def test_correct_tree_large_tree_negative_case(self):
+    def test_correct_tree_large_tree_negative_case(self) -> None:
         test_tree = BalancedBST_2()
         test_tree.GenerateTree(input_list=[8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15])
 
@@ -136,21 +135,38 @@ class TestIsCorrectTree:
 
         assert not test_tree.is_correct_tree()
 
+
 class TestIsBalancedTree:
-    def test_is_correct_tree_balance_empty_list(self):
+    def test_is_correct_tree_balance_empty_list(self) -> None:
         test_tree = BalancedBST()
         test_tree.GenerateTree(input_list=[])
 
         assert test_tree.IsBalanced(root_node=test_tree.Root)
 
-    def test_is_correct_tree_balance_one_node(self):
+    def test_is_correct_tree_balance_one_node(self) -> None:
         test_tree = BalancedBST()
         test_tree.GenerateTree(input_list=[5])
 
         assert test_tree.IsBalanced(root_node=test_tree.Root)
 
-    def test_is_correct_tree_balance(self):
+    def test_is_correct_tree_balance(self) -> None:
         test_tree = BalancedBST()
         test_tree.GenerateTree(input_list=[1, 3, 5])
 
         assert test_tree.IsBalanced(root_node=test_tree.Root)
+
+    def test_is_correct_non_balance_tree_1(self) -> None:
+        test_tree = BalancedBST()
+        test_tree.GenerateTree(input_list=[4, 2, 6, 1, 3, 5, 7])
+
+        test_tree.Root.LeftChild = None
+
+        assert not test_tree.IsBalanced(root_node=test_tree.Root)
+
+    def test_is_correct_non_balance_tree_2(self) -> None:
+        test_tree = BalancedBST()
+        test_tree.GenerateTree(input_list=[4, 2, 6, 1, 3, 5, 7])
+
+        test_tree.Root.RightChild = None
+
+        assert not test_tree.IsBalanced(root_node=test_tree.Root)

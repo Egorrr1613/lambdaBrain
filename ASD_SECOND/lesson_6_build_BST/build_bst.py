@@ -1,6 +1,6 @@
 class BSTNode:
 
-    def __init__(self, key, parent):
+    def __init__(self, key: int, parent: "BSTNode | None") -> None:
         self.NodeKey = key
         self.Parent = parent
         self.LeftChild = None
@@ -10,8 +10,8 @@ class BSTNode:
 
 class BalancedBST:
 
-    def __init__(self):
-        self.Root = None  # корень дерева
+    def __init__(self) -> None:
+        self.Root: BSTNode | None = None  # корень дерева
 
     def _recursion_create_tree(self, parent_node: BSTNode | None, list_range: list[int], level: int) -> BSTNode | None:
         len_range = len(list_range)
@@ -49,23 +49,26 @@ class BalancedBST:
                                                 list_range=sorted_list,
                                                 level=0)
 
-    def _recursion_is_balanced(self, current_node: BSTNode | None):
+    def _recursion_find_level(self, current_node: BSTNode, func) -> int:
         if current_node.LeftChild is None and current_node.RightChild is None:
             return current_node.Level
 
-        left_height = self._recursion_is_balanced(current_node.LeftChild)
-        right_height = self._recursion_is_balanced(current_node.RightChild)
-        return max(left_height, right_height), min(left_height, right_height)
+        left_height = self._recursion_find_level(
+            current_node.LeftChild, func) if current_node.LeftChild else current_node.Level
 
-    def IsBalanced(self, root_node):
+        right_height = self._recursion_find_level(
+            current_node.RightChild, func) if current_node.RightChild else current_node.Level
+
+        return func(left_height, right_height)
+
+    def IsBalanced(self, root_node: BSTNode | None) -> bool:
         if root_node is None:
             return True
 
         if not root_node.LeftChild and not root_node.RightChild:
             return True
 
-        max_level, min_level = self._recursion_is_balanced(root_node)
-        if abs(max_level - min_level) >= 2:
-            return False
-        return True
+        max_level = self._recursion_find_level(root_node, max)
+        min_level = self._recursion_find_level(root_node, min)
 
+        return abs(max_level - min_level) < 2
