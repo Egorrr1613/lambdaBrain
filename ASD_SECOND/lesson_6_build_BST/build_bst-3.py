@@ -170,3 +170,21 @@ class TestIsBalancedTree:
         test_tree.Root.RightChild = None
 
         assert not test_tree.IsBalanced(root_node=test_tree.Root)
+
+    def test_is_correct_balance_tree_one_level_1(self) -> None:
+        test_tree = BalancedBST()
+        test_tree.GenerateTree(input_list=[4, 2, 6, 1, 3, 5, 7])
+
+        test_tree.Root.RightChild.RightChild = None
+        test_tree.Root.RightChild.LeftChild = None
+
+        assert test_tree.IsBalanced(root_node=test_tree.Root)
+
+    def test_is_correct_balance_tree_one_level_2(self) -> None:
+        test_tree = BalancedBST()
+        test_tree.GenerateTree(input_list=[4, 2, 6, 1, 3, 5, 7])
+
+        test_tree.Root.LeftChild.RightChild = None
+        test_tree.Root.LeftChild.LeftChild = None
+
+        assert test_tree.IsBalanced(root_node=test_tree.Root)
