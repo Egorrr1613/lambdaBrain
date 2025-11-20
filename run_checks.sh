@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_PATH="ASD_SECOND/lesson_6_build_BST/"
+FILE_PATH="ASD_SECOND/lesson_7_heap/"
 
 #python3 -m black "$FILE_PATH"
 #python3 -m darker "$FILE_PATH" попробую использовать только ruff

@@ -5,7 +5,7 @@ PARENT = "PARENT"
 calculate_index = {
     RIGHT_CHILD: lambda x: 2 * x + 2,
     LEFT_CHILD: lambda x: 2 * x + 1,
-    PARENT: lambda x: (x - 1) / 2,
+    PARENT: lambda x: (x - 1) // 2,
 }
 
 

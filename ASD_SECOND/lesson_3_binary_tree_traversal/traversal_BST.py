@@ -227,9 +227,10 @@ class BST:
     def WideAllNodes(self) -> tuple[BSTNode | None]:
         if self.Root is None:
             return tuple()
-        search_queue = [self.Root]
 
         all_nodes = [self.Root]
+        search_queue = [self.Root]
+
         while search_queue:
             check_node = search_queue.pop(0)
             if check_node.LeftChild:
