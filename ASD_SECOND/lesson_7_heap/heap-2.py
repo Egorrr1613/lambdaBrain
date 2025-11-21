@@ -2,23 +2,30 @@
 Задание: №7
 Номер задачи из задания: №5
 Краткое название: "Эффективный алгоритм поиска в куче элемента по заданному условию"
-Сложность: size -  / time -
+Сложность: size - / time -
+Решение:
+    Кажется, что эффективным алгоритмом поиска по условию будет обход кучи в ширину,
+        с предварительным выбором направления, либо "сверху вниз" либо "снизу вверх".
+    Например, если мы ищем элемент меньше заданного значения, значит можем обходить кучу
+    "снизу вверх", от листов к корню, проверяя на каждом узле выполнение условия.
 
 Рефлексия:
 
 """
 
 
-def find_first_index_not_none(input_list) -> int | None:
+def find_first_index_not_none(input_list: list) -> int | None:
     for i in range(len(input_list) - 1, -1, -1):
         if input_list[i]:
             return i
+    return None
 
 
-def find_first_index_none(input_list) -> int | None:
-    for i in range(len(input_list)):
-        if input_list[i] is None:
-            return i
+def find_first_index_none(input_list: list) -> int | None:
+    for index, value in enumerate(input_list):
+        if value is None:
+            return index
+    return None
 
 
 RIGHT_CHILD = "RIGHT_CHILD"
@@ -32,27 +39,22 @@ calculate_index = {
 }
 
 
-def get_max_by_index(input_list: list, first_index, second_index) -> int:
+def get_max_by_index(input_list: list, first_index: int, second_index: int) -> int:
     list_len = len(input_list)
-    if first_index >= list_len and second_index >= list_len:
+
+    first_valid = first_index < list_len and input_list[first_index] is not None
+    second_valid = list_len > second_index and input_list[second_index] is not None
+
+    if not first_valid and not second_valid:
         return -1
 
-    if first_index < list_len <= second_index and input_list[first_index] is not None:
+    if first_valid and not second_valid:
         return first_index
 
-    if first_index >= list_len > second_index and input_list[second_index] is not None:
+    if not first_valid and second_valid:
         return second_index
 
-    if first_index >= list_len or second_index >= list_len:
-        return -1
-
-    if input_list[first_index] is not None and input_list[second_index] is None:
-        return first_index
-
-    if input_list[first_index] is None and input_list[second_index] is not None:
-        return second_index
-
-    if input_list[first_index] is not None and input_list[second_index] is not None:
+    if first_valid and second_valid:
         return first_index if input_list[first_index] >= input_list[second_index] else second_index
 
     return -1
@@ -61,7 +63,7 @@ def get_max_by_index(input_list: list, first_index, second_index) -> int:
 class Heap:
 
     def __init__(self) -> None:
-        self.HeapArray = []  # хранит неотрицательные числа-ключи
+        self.HeapArray: list = []  # хранит неотрицательные числа-ключи
 
     def _calculate_tree_len(self, current_dept: int, dept: int) -> int:
         if current_dept == dept:
@@ -92,7 +94,7 @@ class Heap:
         return self._recursion_rebuild_heap_to_down(heap=heap, current_index=max_i_by_child)
 
     def GetMax(self) -> int:
-        if len(self.HeapArray) == 0:
+        if len(self.HeapArray) == 0 or self.HeapArray[0] is None:
             return -1
 
         if len(self.HeapArray) == 1:
@@ -100,6 +102,7 @@ class Heap:
 
         max_element = self.HeapArray[0]
         index_min_el = find_first_index_not_none(self.HeapArray)
+        assert index_min_el is not None, "В текущей куче должен быть элемент, содержащий НЕ None"
         self.HeapArray[0] = self.HeapArray[index_min_el]
         self.HeapArray[index_min_el] = None
 
@@ -152,7 +155,7 @@ class Heap:
             return True
         return self._recursion_check_heap(current_index=0)
 
-    def _has_value_at_index(self, index: int, len_heap: int):
+    def _has_value_at_index(self, index: int, len_heap: int) -> bool:
         return 0 <= index < len_heap and self.HeapArray[index] is not None
 
     def find_max_el_in_range(self, min_range: int, max_range: int) -> int:
@@ -199,3 +202,19 @@ class Heap:
 
         return max(index_in_find_range, key=lambda i: self.HeapArray[i])
 
+    def merge_heap(self, heap_to_merge: "Heap") -> None:
+        """
+        Задание: №7
+        Номер задачи из задания: №6
+        Краткое название: "Объединение с кучей параметром"
+        Сложность: size - O(n+m) / time - O(n) (?)
+
+        Рефлексия:
+
+        """
+        while True:
+            key_to_merge = heap_to_merge.GetMax()
+            if key_to_merge == -1:
+                return
+            if not self.Add(key_to_merge):
+                return

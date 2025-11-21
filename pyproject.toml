@@ -4,7 +4,7 @@
 # McCabe complexity (`C901`) by default.
 lint.select = ["E", "F", "I", "UP", "YTT", "ANN", "S", "BLE", "FBT", "RUF", "SIM", "B", "C",
     "ARG", "Q", "PT"]
-lint.ignore = ["S101", "RUF002"]
+lint.ignore = ["S101", "RUF002", "RUF001"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 lint.fixable = ["ALL"]

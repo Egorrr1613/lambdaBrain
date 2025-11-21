@@ -204,3 +204,64 @@ class TestFindMaxInRange:
 
         assert test_heap.find_max_el_in_range(min_range=90, max_range=101) == 0
 
+
+class TestMergeHeap:
+    def test_empty_heap_merge(self) -> None:
+        test_heap = Heap_2()
+        test_heap.MakeHeap(input_list=[], depth=0)
+
+        test_heap_2 = Heap_2()
+        test_heap_2.MakeHeap(input_list=[], depth=0)
+
+        test_heap.merge_heap(test_heap_2)
+
+        assert test_heap.HeapArray == [None]
+        assert test_heap.is_correct_heap()
+
+    def test_empty_and_not_empty_heap_merge(self) -> None:
+        test_heap = Heap_2()
+        test_heap.MakeHeap(input_list=[], depth=0)
+
+        test_heap_2 = Heap_2()
+        test_heap_2.MakeHeap(input_list=[1, 2, 3], depth=1)
+
+        test_heap.merge_heap(test_heap_2)
+
+        assert test_heap.HeapArray == [3]
+        assert test_heap.is_correct_heap()
+
+    def test_not_empty_and_empty_heap_merge(self) -> None:
+        test_heap = Heap_2()
+        test_heap.MakeHeap(input_list=[1, 2, 3], depth=1)
+
+        test_heap_2 = Heap_2()
+        test_heap_2.MakeHeap(input_list=[], depth=0)
+
+        test_heap.merge_heap(test_heap_2)
+
+        assert test_heap.HeapArray == [3, 1, 2]
+        assert test_heap.is_correct_heap()
+
+    def test_base_merge(self) -> None:
+        test_heap = Heap_2()
+        test_heap.MakeHeap(input_list=[10, 66, 100], depth=2)
+
+        test_heap_2 = Heap_2()
+        test_heap_2.MakeHeap(input_list=[15, 77, 99], depth=1)
+
+        test_heap.merge_heap(heap_to_merge=test_heap_2)
+
+        assert test_heap.is_correct_heap()
+        assert test_heap.HeapArray == [100, 99, 66, 10, 77, 15, None]
+
+    def test_merge_big_heap(self) -> None:
+        test_heap = Heap_2()
+        test_heap.MakeHeap(input_list=[1, 2, 3], depth=2)
+
+        test_heap_2 = Heap_2()
+        test_heap_2.MakeHeap(input_list=[99, 98, 97, 96, 95, 94, 93], depth=2)
+
+        test_heap.merge_heap(test_heap_2)
+
+        assert test_heap.HeapArray == [99, 98, 97, 1, 3, 2, 96]
+        assert test_heap.is_correct_heap()

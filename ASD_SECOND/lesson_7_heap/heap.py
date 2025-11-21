@@ -1,13 +1,15 @@
-def find_first_index_not_none(input_list) -> int | None:
+def find_first_index_not_none(input_list: list) -> int | None:
     for i in range(len(input_list) - 1, -1, -1):
         if input_list[i]:
             return i
+    return None
 
 
-def find_first_index_none(input_list) -> int | None:
-    for i in range(len(input_list)):
-        if input_list[i] is None:
-            return i
+def find_first_index_none(input_list: list) -> int | None:
+    for index, value in enumerate(input_list):
+        if value is None:
+            return index
+    return None
 
 
 RIGHT_CHILD = "RIGHT_CHILD"
@@ -21,27 +23,22 @@ calculate_index = {
 }
 
 
-def get_max_by_index(input_list: list, first_index, second_index) -> int:
+def get_max_by_index(input_list: list, first_index: int, second_index: int) -> int:
     list_len = len(input_list)
-    if first_index >= list_len and second_index >= list_len:
+
+    first_valid = first_index < list_len and input_list[first_index] is not None
+    second_valid = list_len > second_index and input_list[second_index] is not None
+
+    if not first_valid and not second_valid:
         return -1
 
-    if first_index < list_len <= second_index and isinstance(input_list[first_index], int):
+    if first_valid and not second_valid:
         return first_index
 
-    if first_index >= list_len > second_index and isinstance(input_list[second_index], int):
+    if not first_valid and second_valid:
         return second_index
 
-    if first_index >= list_len or second_index >= list_len:
-        return -1
-
-    if isinstance(input_list[first_index], int) and input_list[second_index] is None:
-        return first_index
-
-    if input_list[first_index] is None and isinstance(input_list[second_index], int):
-        return second_index
-
-    if isinstance(input_list[first_index], int) and isinstance(input_list[second_index], int):
+    if first_valid and second_valid:
         return first_index if input_list[first_index] >= input_list[second_index] else second_index
 
     return -1
@@ -50,7 +47,7 @@ def get_max_by_index(input_list: list, first_index, second_index) -> int:
 class Heap:
 
     def __init__(self) -> None:
-        self.HeapArray = []  # хранит неотрицательные числа-ключи
+        self.HeapArray: list = []  # хранит неотрицательные числа-ключи
 
     def _calculate_tree_len(self, current_dept: int, dept: int) -> int:
         if current_dept == dept:
@@ -89,6 +86,7 @@ class Heap:
 
         max_element = self.HeapArray[0]
         index_min_el = find_first_index_not_none(self.HeapArray)
+        assert index_min_el is not None, "В текущей куче должен быть элемент, содержащий НЕ None"
         self.HeapArray[0] = self.HeapArray[index_min_el]
         self.HeapArray[index_min_el] = None
 
@@ -126,10 +124,12 @@ class Heap:
         is_left_in_range = left_index < len(self.HeapArray)
         is_right_in_range = right_index < len(self.HeapArray)
 
-        if is_left_in_range and self.HeapArray[left_index] is not None and self.HeapArray[current_index] < self.HeapArray[left_index]:
+        if is_left_in_range and self.HeapArray[left_index] is not None and self.HeapArray[current_index] < \
+                self.HeapArray[left_index]:
             return False
 
-        if is_right_in_range and self.HeapArray[right_index] is not None and self.HeapArray[current_index] < self.HeapArray[right_index]:
+        if is_right_in_range and self.HeapArray[right_index] is not None and self.HeapArray[current_index] < \
+                self.HeapArray[right_index]:
             return False
 
         return self._recursion_check_heap(left_index) and self._recursion_check_heap(right_index)
