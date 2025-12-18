@@ -1,5 +1,5 @@
 from ASD_SECOND.lesson_8_graph.graph import SimpleGraph
-from ASD_SECOND.lesson_8_graph.graph_2 import AdjacencyType, DirectionalGraph
+from ASD_SECOND.lesson_8_graph.graph_2 import DirectionalGraph
 
 
 class TestSimpleGraph:
@@ -92,6 +92,7 @@ class TestGraph:
 
         expected_matrix = [[0] * 3 for _ in range(3)]
         expected_matrix[0][2] = 1
+        expected_matrix[2][0] = 1
 
         assert test_graph.m_adjacency == expected_matrix
         assert test_graph.IsEdge(0, 2)
@@ -121,7 +122,7 @@ class TestGraph:
         test_graph.AddEdge(0, 2)
         for i in range(3):
             for j in range(3):
-                if i == 0 and j == 2:
+                if (i == 0 and j == 2) or (i == 2 and j == 0):
                     assert test_graph.IsEdge(i, j)
                 else:
                     assert not test_graph.IsEdge(i, j)
@@ -150,13 +151,13 @@ class TestDirectionalGraph:
         test_graph.AddVertex(5)
 
         assert test_graph.max_vertex == 1
-        assert test_graph.m_adjacency == [[AdjacencyType.NO_ADJACENCY]]
+        assert test_graph.m_adjacency == [[0]]
         assert not test_graph.IsEdge(v1=0, v2=0)
 
         test_graph.AddEdge(0, 0)
 
         assert test_graph.is_cycle()
-        assert test_graph.m_adjacency[0][0] == AdjacencyType.SELF_LINK
+        assert test_graph.m_adjacency[0][0] == 1
         assert test_graph.IsEdge(v1=0, v2=0)
 
     def test_edge_3x3_graph(self) -> None:
@@ -169,12 +170,45 @@ class TestDirectionalGraph:
         assert not test_graph.IsEdge(0, 2)
         test_graph.AddEdge(0, 2)
 
-        expected_matrix = [[AdjacencyType.NO_ADJACENCY] * 3 for _ in range(3)]
-        expected_matrix[0][2] = "0|2"
+        expected_matrix = [[0] * 3 for _ in range(3)]
+        expected_matrix[0][2] = 1
 
         assert test_graph.m_adjacency == expected_matrix
         assert test_graph.IsEdge(0, 2)
 
         test_graph.RemoveEdge(0, 2)
-        assert test_graph.m_adjacency == [[AdjacencyType.NO_ADJACENCY] * 3 for _ in range(3)]
+        assert test_graph.m_adjacency == [[0] * 3 for _ in range(3)]
         assert not test_graph.IsEdge(0, 2)
+
+
+    def test_3x3_graph_has_cycle(self) -> None:
+        test_graph = DirectionalGraph(3)
+
+        test_graph.AddVertex(0)
+        test_graph.AddVertex(1)
+        test_graph.AddVertex(2)
+
+        test_graph.AddEdge(0, 1)
+        test_graph.AddEdge(1, 2)
+        test_graph.AddEdge(2, 0)
+
+        expected_matrix = [[0] * 3 for _ in range(3)]
+        expected_matrix[0][1] = 1
+        expected_matrix[1][2] = 1
+        expected_matrix[2][0] = 1
+
+        assert test_graph.m_adjacency == expected_matrix
+        assert test_graph.IsEdge(2, 0)
+        assert test_graph.is_cycle()
+
+    def test_3x3_graph_no_cycle(self):
+        test_graph = DirectionalGraph(3)
+
+        test_graph.AddVertex(1)
+        test_graph.AddVertex(2)
+        test_graph.AddVertex(3)
+
+        test_graph.AddEdge(0, 1)
+        test_graph.AddEdge(1, 2)
+
+        assert not test_graph.is_cycle()
